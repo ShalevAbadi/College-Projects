@@ -2,10 +2,10 @@ import java.util.Arrays;
 
 /***
  * 
- * @author xxxx
+ * @author ShalevAbadi
  *
  */
-public class HW4_xxxx {
+public class HW4_ShalevAbadi {
 
 	private final static int EXCLUDE_NUMBER = 0;
 
@@ -23,47 +23,54 @@ public class HW4_xxxx {
 		int[] subset = new int[set.length];
 		System.out.print("Array: ");
 		printArray(set);
-		
+
 		System.out.println("Subsets of array: ");
 		subset(set, subset, 0);
 		System.out.println();
-		
+
 		/* Test Question 3 */
 		specialPrint("Hello", '$');
 	}
 
 	/* Question 1.1 */
-	private static int dec2Bin(int num) {
-		if (num == 0) {
-			return 0;
+	public static int dec2Bin(int num) {
+		if (num <= 1) {
+			return num;
 		}
-		// Complete the recursion
+		return (dec2Bin(num / 2) * 10 + num % 2);
 	}
 
 	/* Question 1.2 */
-	private static int bin2Dec(int num) {
-		if (num == 0) {
-			return 0;
+	public static int bin2Dec(int num) {
+		if (num <= 1) {
+			return num;
 		}
-		// Complete the recursion
+		return (bin2Dec(num / 10) * 2 + num % 10);
 	}
 
 	/* Question 1.3 */
-	private static int hex2Dec(String str) {
+	public static int hex2Dec(String str) {
 		if (str == null || str.length() == 0) {
 			return 0;
 		}
-		// Complete the recursion
+		int lsbIndex = str.length() - 1;
+		if (str.length() == 1) {
+			return Character.getNumericValue(str.charAt(lsbIndex));
+		}
+		return (hex2Dec(str.substring(0, lsbIndex)) * 16 + hex2Dec("" + str.charAt(lsbIndex)));
+
 	}
 
 	/* Question 1.4 */
-	private static char[] hexaMap = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
+	// public static char[] hexaMap = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
+	// '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
-	private static String dec2Hex(int num) {
+	public static String dec2Hex(int num) {
 		if (num < 16) {
-			return "" + hexaMap[num];
+			return ("" + Character.forDigit(num, 16)).toUpperCase();
 		}
-		// Complete the recursion
+		
+		return (dec2Hex(num/16) + dec2Hex(num%16)); 
 	}
 
 	/* Question 2 */
