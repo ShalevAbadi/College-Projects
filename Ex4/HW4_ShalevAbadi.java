@@ -103,16 +103,21 @@ public class HW4_ShalevAbadi {
 			printArray(subset);
 			return;
 		}
-
-		// Complete the recursion
+		subset[idx] = set[idx];
+		subset(set, subset, idx+1);
+		subset[idx] = EXCLUDE_NUMBER;
+		subset(set, subset, idx+1);
 	}
 
 	/* Question 3 */
-	private static void specialPrint(String str, char delimeter) {
-		if (str == null || str.length() == 0) {
-			return;
+	public static String specialPrint(String str, char delimeter) {
+		if (str == null) {
+			return "";
 		}
-
+		if (str.length()<=1) {
+			return str;
+		}
+		return specialPrint(str.substring(0,str.length()-1), delimeter) + delimeter + str.charAt(str.length()-1);
 		// Complete the recursion
 	}
 
