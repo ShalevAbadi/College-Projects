@@ -1,5 +1,3 @@
-import java.util.Arrays;
-
 /***
  * 
  * @author ShalevAbadi
@@ -62,20 +60,17 @@ public class HW4_ShalevAbadi {
 	}
 
 	/* Question 1.4 */
-	// public static char[] hexaMap = { '0', '1', '2', '3', '4', '5', '6', '7', '8',
-	// '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
 	public static String dec2Hex(int num) {
 		if (num < 16) {
 			return ("" + Character.forDigit(num, 16)).toUpperCase();
 		}
-		
-		return (dec2Hex(num/16) + dec2Hex(num%16)); 
+
+		return (dec2Hex(num / 16) + dec2Hex(num % 16));
 	}
 
 	/* Question 2 */
 
-	/* Helper - prints an array except of EXCLUDE_NUMBER */
 	private static void printArray(int[] arr) {
 		System.out.print('{');
 		printArray(arr, 0, true);
@@ -104,21 +99,22 @@ public class HW4_ShalevAbadi {
 			return;
 		}
 		subset[idx] = set[idx];
-		subset(set, subset, idx+1);
+		subset(set, subset, idx + 1);
 		subset[idx] = EXCLUDE_NUMBER;
-		subset(set, subset, idx+1);
+		subset(set, subset, idx + 1);
 	}
 
 	/* Question 3 */
-	public static String specialPrint(String str, char delimeter) {
+	public static void specialPrint(String str, char delimeter) {
 		if (str == null) {
-			return "";
+			return;
 		}
-		if (str.length()<=1) {
-			return str;
+		if (str.length() <= 1) {
+			System.out.print(str);
+			return;
 		}
-		return specialPrint(str.substring(0,str.length()-1), delimeter) + delimeter + str.charAt(str.length()-1);
-		// Complete the recursion
+		specialPrint(str.substring(0, str.length() - 1), delimeter);
+		System.out.print("" + delimeter + str.charAt(str.length() - 1));
 	}
 
 }

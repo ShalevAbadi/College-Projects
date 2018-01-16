@@ -255,53 +255,53 @@ class HW4_ShalevAbadiTest {
 		assertEquals("123ABC", result);
 	}
 	
-	@Test
-	void testSpecialPrint_Str_Empty_Return_Empty() {
-		//Given
-		String str = "";
-		char delimeter = '$';
-		//when
-		String result = HW4_ShalevAbadi.specialPrint(str, delimeter);
-		
-		//then
-		assertEquals("", result);
-	}
-
-	@Test
-	void testSpecialPrint_Str_SingleChar_Return_SingleChar() {
-		//Given
-		String str = "A";
-		char delimeter = '$';
-		//when
-		String result = HW4_ShalevAbadi.specialPrint(str , delimeter);
-		
-		//then
-		assertEquals("A", result);
-	}
-
-	@Test
-	void testSpecialPrint_Str_DubleChar_Delimeter_Return_DubleCarAndDelimeter() {
-		//Given
-		String str = "AB";
-		char delimeter = '$';
-		//when
-		String result = HW4_ShalevAbadi.specialPrint(str , delimeter);
-		
-		//then
-		assertEquals("A$B", result);
-	}
-
-	@Test
-	void testSpecialPrint_Str_Hello_Delimeter_Return_HelloWithDelimeters() {
-		//Given
-		String str = "Hello";
-		char delimeter = '!';
-		//when
-		String result = HW4_ShalevAbadi.specialPrint(str , delimeter);
-		
-		//then
-		assertEquals("H!e!l!l!o", result);
-	}
+//	@Test
+//	void testSpecialPrint_Str_Empty_Return_Empty() {
+//		//Given
+//		String str = "";
+//		char delimeter = '$';
+//		//when
+//		String result = HW4_ShalevAbadi.specialPrint(str, delimeter);
+//		
+//		//then
+//		assertEquals("", result);
+//	}
+//
+//	@Test
+//	void testSpecialPrint_Str_SingleChar_Return_SingleChar() {
+//		//Given
+//		String str = "A";
+//		char delimeter = '$';
+//		//when
+//		String result = HW4_ShalevAbadi.specialPrint(str , delimeter);
+//		
+//		//then
+//		assertEquals("A", result);
+//	}
+//
+//	@Test
+//	void testSpecialPrint_Str_DubleChar_Delimeter_Return_DubleCarAndDelimeter() {
+//		//Given
+//		String str = "AB";
+//		char delimeter = '$';
+//		//when
+//		String result = HW4_ShalevAbadi.specialPrint(str , delimeter);
+//		
+//		//then
+//		assertEquals("A$B", result);
+//	}
+//
+//	@Test
+//	void testSpecialPrint_Str_Hello_Delimeter_Return_HelloWithDelimeters() {
+//		//Given
+//		String str = "Hello";
+//		char delimeter = '!';
+//		//when
+//		String result = HW4_ShalevAbadi.specialPrint(str , delimeter);
+//		
+//		//then
+//		assertEquals("H!e!l!l!o", result);
+//	}
 	
 }
 	
