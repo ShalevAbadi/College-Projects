@@ -113,8 +113,9 @@ public class HW4_ShalevAbadi {
 			System.out.print(str);
 			return;
 		}
-		specialPrint(str.substring(0, str.length() - 1), delimeter);
-		System.out.print("" + delimeter + str.charAt(str.length() - 1));
+		int lastCharIdx = str.length() - 1;
+		specialPrint(str.substring(0, lastCharIdx), delimeter);
+		System.out.print("" + delimeter + str.charAt(lastCharIdx));
 	}
 
 }
