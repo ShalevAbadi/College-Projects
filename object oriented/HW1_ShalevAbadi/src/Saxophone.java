@@ -8,10 +8,11 @@ public class Saxophone extends WindInstruments {
 	
 	@Override
 	public boolean equals(Object other) {
-		if (super.equals(other)) {
-			return (other instanceof Saxophone);
-		}
-		return false;
+		return super.equals(other) && isSaxophone(other);
+	}
+
+	public boolean isSaxophone(Object other) {
+		return other instanceof Saxophone;
 	}
 
 }

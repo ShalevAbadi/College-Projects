@@ -18,16 +18,15 @@ public class Guitar extends StringInstruments {
 	
 	@Override
 	public boolean equals(Object other) {
-		if (other == this) {
-			return true;
-		}
-		if (super.equals(other)) {
-			if (!(other instanceof Guitar)) {
-				return false;
-			}
-			return (((Guitar) other).getType() == this.getType());
-		}
-		return false;
+		return super.equals(other) && isGuitar(other) && isEqualType(other);
+	}
+
+	public boolean isGuitar(Object other) {
+		return other instanceof Guitar;
+	}
+
+	public boolean isEqualType(Object other) {
+		return ((Guitar) other).getType() == this.getType();
 	}
 	
 }

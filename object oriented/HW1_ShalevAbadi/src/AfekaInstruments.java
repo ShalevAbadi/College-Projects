@@ -4,14 +4,13 @@ public class AfekaInstruments {
 
 	private String brand;
 	private double price;
-	
+
 	public AfekaInstruments(String brand, double price) {
 		setBrand(brand);
 		setPrice(price);
-		
+
 	}
-	
-	
+
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
@@ -28,17 +27,13 @@ public class AfekaInstruments {
 		return this.price;
 	}
 
-	public void myAddAll(ArrayList addFrom, ArrayList addTo) {
+	public void addAllInstruments(ArrayList<AfekaInstruments> addFrom, ArrayList<AfekaInstruments> addTo) {
 		for (int i = 0; i < addFrom.size(); i++) {
 			addTo.add(addFrom.get(i));
 		}
 	}
 
-	public void addAllInstruments(ArrayList<AfekaInstruments> addFrom, ArrayList<AfekaInstruments> addTo) {
-		myAddAll(addFrom, addTo);
-	}
-
-	public void myPrintArrayList(ArrayList arr) {
+	public void myPrintArrayList(ArrayList<AfekaInstruments> arr) {
 		for (int i = 0; i < arr.size(); i++) {
 			System.out.println(arr.get(i).toString());
 		}
@@ -46,13 +41,11 @@ public class AfekaInstruments {
 
 	@Override
 	public boolean equals(Object other) {
-		if (other == this) {
-			return true;
-		}
-		if (!(other instanceof AfekaInstruments)) {
-			return false;
-		}
-		return (isEqualPrices(other) && isEqualBrands(other));
+		return (other == this) || isAfekaInstrument(other) && isEqualPrices(other) && isEqualBrands(other);
+	}
+
+	public boolean isAfekaInstrument(Object other) {
+		return other instanceof AfekaInstruments;
 	}
 
 	public boolean isEqualBrands(Object other) {

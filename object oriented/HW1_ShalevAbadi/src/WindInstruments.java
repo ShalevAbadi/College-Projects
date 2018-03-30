@@ -18,15 +18,12 @@ public class WindInstruments extends AfekaInstruments {
 	
 	@Override
 	public boolean equals(Object other) {
-		if (other == this) {
-			return true;
-		}
-		if (super.equals(other)) {
-			if (!(other instanceof WindInstruments)) {
-				return false;
-			}
-			return (((WindInstruments) other).getMaterial() == this.getMaterial());
-		}
-		return false;
+		return super.equals(other) && isWindInstrument(other) && isEqualMaterial(other);
+	}
+	public boolean isEqualMaterial(Object other) {
+		return ((WindInstruments) other).getMaterial() == this.getMaterial();
+	}
+	public boolean isWindInstrument(Object other) {
+		return other instanceof WindInstruments;
 	}
 }
