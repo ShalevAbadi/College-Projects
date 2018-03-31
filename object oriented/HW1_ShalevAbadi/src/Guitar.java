@@ -2,12 +2,19 @@ import java.util.Scanner;
 
 public class Guitar extends StringInstruments {
 
-	private final static String[] types = { "acoustic", "electric", "classic" };
-	private final static int CLASSIC_NUM_OF_STRINGS = 6;
-	private final static int ACOUSTIC_NUM_OF_STRINGS = 6;
-	private final static int ELECTRIC_MAX_NUM_OF_STRINGS = 8;
-	private final static int ELECTRIC_MIN_NUM_OF_STRINGS = 6;
-	protected final static int DEFAULT_NUM_OF_STRINGS = 6;
+	public static class Consts {
+		public final static int CLASSIC_NUM_OF_STRINGS = 6;
+		public final static int ACOUSTIC_NUM_OF_STRINGS = 6;
+		public final static int ELECTRIC_MAX_NUM_OF_STRINGS = 8;
+		public final static int ELECTRIC_MIN_NUM_OF_STRINGS = 6;
+		public final static int DEFAULT_NUM_OF_STRINGS = 6;
+		public static class Types {
+			public final static String CLASSIC = "Classic";
+			public final static String ELECTRIC = "Electric";
+			public final static String ACOUSTIC = "Acoustic";
+		}
+	}
+
 	private String type;
 
 	public Guitar(Scanner s) throws Exception {
@@ -20,8 +27,7 @@ public class Guitar extends StringInstruments {
 	}
 
 	public Guitar(String brand, double price, String type) throws Exception {
-		super(brand, price, DEFAULT_NUM_OF_STRINGS);
-		setType(type);
+		this(brand, price, Consts.DEFAULT_NUM_OF_STRINGS, type);
 	}
 
 	public Guitar(String brand, double price, int numOfStrings, String type) throws Exception {
@@ -31,23 +37,39 @@ public class Guitar extends StringInstruments {
 
 	public void setType(String type) throws Exception {
 
-		for (int i = 0; i < types.length; i++) {
-			if (type.equalsIgnoreCase(types[i])) {
+		this.type = type;
+		throwIfTypeAndNumberOfStringsInvalid();
+		
+	}
 
-				this.type = type;
-				return;
-			}
+	private void throwIfTypeAndNumberOfStringsInvalid() throws Exception {
+		if (this.type.equalsIgnoreCase(Consts.Types.ACOUSTIC)) {
+			this.type = Consts.Types.ACOUSTIC;
+			throwIfInvalidNumOfStrings(Consts.ACOUSTIC_NUM_OF_STRINGS); 
 		}
-		throw new Exception("guitar can only be of type " + types.toString());
-
+		else if (this.type.equalsIgnoreCase("classic")) {
+			this.type = Consts.Types.CLASSIC;
+			throwIfInvalidNumOfStrings(Consts.CLASSIC_NUM_OF_STRINGS);
+		}
+		else if (this.type.equalsIgnoreCase("electric")) {
+			this.type = Consts.Types.ELECTRIC;
+			throwIfInvalidNumOfStrings(Consts.ELECTRIC_MIN_NUM_OF_STRINGS, Consts.ELECTRIC_MAX_NUM_OF_STRINGS);
+			
+		}
+		else {
+			throw new Exception("guitar type invalid");
+		}
 	}
 
-	private boolean validateTypeAndStringsAmount(int numOfStrings, int numToCheck) {
-		return (numToCheck == numOfStrings);
+	private void throwIfInvalidNumOfStrings(int validNumOfStrings) throws Exception {
+		if (validNumOfStrings != numOfStrings) {
+			throw new Exception(type + "guitars have " + validNumOfStrings + " strings, not " + numOfStrings);}
 	}
 
-	private boolean validateTypeAndStringsAmount(int minNumOfStrings, int maxNumOfStrings, int numToCheck) {
-		return (numToCheck <= maxNumOfStrings && numToCheck >= minNumOfStrings);
+	private void throwIfInvalidNumOfStrings(int minNumOfStrings, int maxNumOfStrings) throws Exception {
+		if (numOfStrings <= maxNumOfStrings && numOfStrings >= minNumOfStrings) {
+			throw new Exception(type + "guitars number of string is a number between " + minNumOfStrings + " and " + maxNumOfStrings );
+		}
 	}
 
 	public String getType() {
