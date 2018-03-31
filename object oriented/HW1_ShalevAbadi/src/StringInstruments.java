@@ -1,13 +1,19 @@
+import java.util.Scanner;
 
 public class StringInstruments extends AfekaInstruments {
-	private final static int defaultNumOfStrings = 6;
-	private int numOfStrings;
 
-	public StringInstruments(String brand, double price) {
-		this(brand, price, defaultNumOfStrings);
+	protected int numOfStrings;
+
+	public StringInstruments(Scanner s) throws Exception {
+		super(s);
+		if (!s.hasNextInt()) {
+			throw new Exception("num of strings didn't mentioned");
+		}
+		setNumOfStrings(s.nextInt());
+
 	}
 
-	public StringInstruments(String brand, double price, int numOfStrings) {
+	public StringInstruments(String brand, double price, int numOfStrings) throws Exception {
 		super(brand, price);
 		setNumOfStrings(numOfStrings);
 	}

@@ -9,22 +9,30 @@ public class HW1_ShalevAbadi {
 		Scanner userInput = new Scanner(System.in);
 		do {
 			isFileFlag = true;
-		try {
-			
-			System.out.println("Please enter instruments file name / path:");
-			String input = userInput.next();
-			File f = new File(input);
-			userInput = new Scanner(f);
-			
-		} catch (FileNotFoundException e) {
-			System.out.println("File Error! Please try again:");
-			isFileFlag = !isFileFlag;
-			userInput = new Scanner(System.in);
-		}
-	}
-		while (!isFileFlag);
-		
+			try {
+
+				System.out.println("Please enter instruments file name / path:");
+				String input = userInput.next();
+				File f = new File(input);
+				userInput = new Scanner(f);
+
+			} catch (FileNotFoundException e) {
+				System.out.println("File Error! Please try again:");
+				isFileFlag = !isFileFlag;
+				userInput = new Scanner(System.in);
+			}
+		} while (!isFileFlag);
+
+		// TODO: get amount of guitars
+		// TODO: create guitars
+		// TODO: get amount of bass
+		// TODO: create bass
+		// TODO: get amount of flutes
+		// TODO: create flutes
+		// TODO: get amount of saxs
+		// TODO: create saxs
+
 		userInput.close();
-	
-		
-}}
+
+	}
+}

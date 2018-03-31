@@ -3,7 +3,7 @@ public class Bass extends StringInstruments {
 
 	private boolean fretless;
 
-	public Bass(String brand, double price, int numOfStrings, Boolean fretless) {
+	public Bass(String brand, double price, int numOfStrings, Boolean fretless) throws Exception {
 		super(brand, price, numOfStrings);
 		setFreless(fretless);
 	}

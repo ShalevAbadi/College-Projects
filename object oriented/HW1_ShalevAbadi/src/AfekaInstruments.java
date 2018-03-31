@@ -1,21 +1,36 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class AfekaInstruments {
 
-	private String brand;
-	private double price;
+	protected String brand;
+	protected double price;
 
-	public AfekaInstruments(String brand, double price) {
+	public AfekaInstruments(String brand, double price) throws Exception {
 		setBrand(brand);
 		setPrice(price);
 
+	}
+
+	public AfekaInstruments(Scanner s) throws Exception {
+		if (!s.hasNext()) {
+			throw new Exception("brand didn't mentioned");
+		}
+		setBrand(s.next());
+		if (!s.hasNext()) {
+			throw new Exception("price didn't mentioned");
+		}
+		setPrice(s.nextDouble());
 	}
 
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(double price) throws Exception {
+		if (price < 0) {
+			throw new Exception("Price must be a positive number!");
+		}
 		this.price = price;
 	}
 

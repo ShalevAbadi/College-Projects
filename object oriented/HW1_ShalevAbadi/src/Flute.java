@@ -1,14 +1,31 @@
+import java.util.Scanner;
 
 public class Flute extends WindInstruments {
+
+	private final static String[] types = { "recorder", "bass", "transverse" };
 	private String type;
 
-	public Flute(String brand, double price, String material, String type) {
+	public Flute(Scanner s) throws Exception {
+		super(s);
+		if (!s.hasNext()) {
+			throw new Exception("flute type didn't mentioned");
+		}
+		setType(s.next());
+	}
+
+	public Flute(String brand, double price, String material, String type) throws Exception {
 		super(brand, price, material);
 		setType(type);
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setType(String type) throws Exception {
+		for (int i = 0; i < types.length; i++) {
+			if (type.equalsIgnoreCase(types[i])) {
+				this.type = type;
+				return;
+			}
+		}
+		throw new Exception("Flute can only be of type " + types.toString());
 	}
 
 	public String getType() {
