@@ -8,6 +8,7 @@ public class Guitar extends StringInstruments {
 		public final static int ELECTRIC_MAX_NUM_OF_STRINGS = 8;
 		public final static int ELECTRIC_MIN_NUM_OF_STRINGS = 6;
 		public final static int DEFAULT_NUM_OF_STRINGS = 6;
+
 		public static class Types {
 			public final static String CLASSIC = "Classic";
 			public final static String ELECTRIC = "Electric";
@@ -39,36 +40,35 @@ public class Guitar extends StringInstruments {
 
 		this.type = type;
 		throwIfTypeAndNumberOfStringsInvalid();
-		
+
 	}
 
 	private void throwIfTypeAndNumberOfStringsInvalid() throws Exception {
 		if (this.type.equalsIgnoreCase(Consts.Types.ACOUSTIC)) {
 			this.type = Consts.Types.ACOUSTIC;
-			throwIfInvalidNumOfStrings(Consts.ACOUSTIC_NUM_OF_STRINGS); 
-		}
-		else if (this.type.equalsIgnoreCase("classic")) {
+			throwIfInvalidNumOfStrings(Consts.ACOUSTIC_NUM_OF_STRINGS);
+		} else if (this.type.equalsIgnoreCase("classic")) {
 			this.type = Consts.Types.CLASSIC;
 			throwIfInvalidNumOfStrings(Consts.CLASSIC_NUM_OF_STRINGS);
-		}
-		else if (this.type.equalsIgnoreCase("electric")) {
+		} else if (this.type.equalsIgnoreCase("electric")) {
 			this.type = Consts.Types.ELECTRIC;
 			throwIfInvalidNumOfStrings(Consts.ELECTRIC_MIN_NUM_OF_STRINGS, Consts.ELECTRIC_MAX_NUM_OF_STRINGS);
-			
-		}
-		else {
+
+		} else {
 			throw new Exception("guitar type invalid");
 		}
 	}
 
 	private void throwIfInvalidNumOfStrings(int validNumOfStrings) throws Exception {
 		if (validNumOfStrings != numOfStrings) {
-			throw new Exception(type + "guitars have " + validNumOfStrings + " strings, not " + numOfStrings);}
+			throw new Exception(type + " guitars have " + validNumOfStrings + " strings, not " + numOfStrings);
+		}
 	}
 
 	private void throwIfInvalidNumOfStrings(int minNumOfStrings, int maxNumOfStrings) throws Exception {
-		if (numOfStrings <= maxNumOfStrings && numOfStrings >= minNumOfStrings) {
-			throw new Exception(type + "guitars number of string is a number between " + minNumOfStrings + " and " + maxNumOfStrings );
+		if (numOfStrings > maxNumOfStrings || numOfStrings < minNumOfStrings) {
+			throw new Exception(type + " guitars number of string is a number between " + minNumOfStrings + " and "
+					+ maxNumOfStrings);
 		}
 	}
 
