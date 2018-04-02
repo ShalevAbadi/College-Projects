@@ -52,7 +52,7 @@ public class AfekaInstruments {
 		}
 	}
 
-	public void myPrintArrayList(ArrayList<AfekaInstruments> arr) {
+	public static void printInstruments(ArrayList<AfekaInstruments> arr) {
 		for (int i = 0; i < arr.size(); i++) {
 			System.out.println(arr.get(i).toString());
 		}
@@ -75,11 +75,7 @@ public class AfekaInstruments {
 		return ((AfekaInstruments) other).getPrice() == this.getPrice();
 	}
 
-	public void printInstruments(ArrayList<AfekaInstruments> arr) {
-		myPrintArrayList(arr);
-	}
-
-	public AfekaInstruments getMostExpensiveInstrument(ArrayList<AfekaInstruments> arr) {
+	public static AfekaInstruments getMostExpensiveInstrument(ArrayList<AfekaInstruments> arr) {
 		int resInstrumentIndex = 0;
 		for (int i = 0; i < arr.size(); i++) {
 			if (arr.get(resInstrumentIndex).getPrice() > arr.get(i).getPrice())
@@ -88,13 +84,13 @@ public class AfekaInstruments {
 		return arr.get(resInstrumentIndex);
 	}
 
-	public int getNumOfDifferentElements(ArrayList<AfekaInstruments> arr) {
+	public static int getNumOfDifferentElements(ArrayList<AfekaInstruments> arr) {
 		ArrayList<AfekaInstruments> differentElements = new ArrayList<AfekaInstruments>();
 		fillArrayWithDifferentObjects(arr, differentElements);
 		return differentElements.size();
 	}
 
-	public void fillArrayWithDifferentObjects(ArrayList<AfekaInstruments> arrToCheck,
+	public static void fillArrayWithDifferentObjects(ArrayList<AfekaInstruments> arrToCheck,
 			ArrayList<AfekaInstruments> arrToFill) {
 		for (int i = 0; i < arrToCheck.size(); i++) {
 			boolean isExists = checkExistenceInArray(arrToCheck.get(i), arrToFill);
@@ -104,7 +100,7 @@ public class AfekaInstruments {
 		}
 	}
 
-	public boolean checkExistenceInArray(AfekaInstruments objectToCheck,
+	public static boolean checkExistenceInArray(AfekaInstruments objectToCheck,
 			ArrayList<AfekaInstruments> differentElements) {
 		for (int j = 0; j < differentElements.size(); j++) {
 			if (differentElements.get(j).equals(objectToCheck)) {

@@ -37,6 +37,11 @@ public class HW1_ShalevAbadi {
 		createInstrumentsAndAddToArrayList(userInput, Consts.FLUTES, myInstruments);
 		createInstrumentsAndAddToArrayList(userInput, Consts.SAXOPHONES, myInstruments);
 
+		AfekaInstruments.printInstruments(myInstruments);
+		System.out.println("Diffetent Instruments: " + AfekaInstruments.getNumOfDifferentElements(myInstruments) );
+		System.out.println("Most Expensive Instrument: ");
+		AfekaInstruments.getMostExpensiveInstrument(myInstruments).toString();
+
 		userInput.close();
 
 	}
