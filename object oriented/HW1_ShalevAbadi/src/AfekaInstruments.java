@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class AfekaInstruments {
 
+	protected ArrayList<AfekaInstruments> listOfInstruments;
 	protected String brand;
 	protected double price;
 
@@ -14,13 +15,19 @@ public class AfekaInstruments {
 
 	public AfekaInstruments(Scanner s) throws Exception {
 		if (!s.hasNext()) {
-			throw new Exception("brand didn't mentioned");
-		}
-		setBrand(s.next());
-		if (!s.hasNext()) {
 			throw new Exception("price didn't mentioned");
 		}
 		setPrice(s.nextDouble());
+		s.nextLine();
+		if (!s.hasNext()) {
+			throw new Exception("brand didn't mentioned");
+		}
+		setBrand(s.nextLine());
+	}
+
+	public void setListOfInstruments(ArrayList<AfekaInstruments> listOfInstruments) {
+		addAllInstruments(listOfInstruments, this.listOfInstruments);
+		;
 	}
 
 	public void setBrand(String brand) {
@@ -53,14 +60,18 @@ public class AfekaInstruments {
 	}
 
 	public static void printInstruments(ArrayList<AfekaInstruments> arr) {
-		for (int i = 0; i < arr.size(); i++) {
-			System.out.println(arr.get(i).toString());
+		if (arr.size() == 0) {
+			System.out.println("There are no instruments in the store currently");
+		} else {
+			for (int i = 0; i < arr.size(); i++) {
+				System.out.println(arr.get(i).toString());
+			}
 		}
 	}
 
 	@Override
 	public boolean equals(Object other) {
-		return (other == this) || isAfekaInstrument(other) && isEqualPrices(other) && isEqualBrands(other);
+		return (other == this) || (isAfekaInstrument(other) && isEqualPrices(other) && isEqualBrands(other));
 	}
 
 	public boolean isAfekaInstrument(Object other) {
@@ -68,7 +79,7 @@ public class AfekaInstruments {
 	}
 
 	public boolean isEqualBrands(Object other) {
-		return ((AfekaInstruments) other).getBrand() == this.getBrand();
+		return (((AfekaInstruments) other).getBrand() == this.getBrand());
 	}
 
 	public boolean isEqualPrices(Object other) {
@@ -78,7 +89,7 @@ public class AfekaInstruments {
 	public static AfekaInstruments getMostExpensiveInstrument(ArrayList<AfekaInstruments> arr) {
 		int resInstrumentIndex = 0;
 		for (int i = 0; i < arr.size(); i++) {
-			if (arr.get(resInstrumentIndex).getPrice() > arr.get(i).getPrice())
+			if (arr.get(resInstrumentIndex).getPrice() < arr.get(i).getPrice())
 				resInstrumentIndex = i;
 		}
 		return arr.get(resInstrumentIndex);
@@ -103,7 +114,7 @@ public class AfekaInstruments {
 	public static boolean checkExistenceInArray(AfekaInstruments objectToCheck,
 			ArrayList<AfekaInstruments> differentElements) {
 		for (int j = 0; j < differentElements.size(); j++) {
-			if (differentElements.get(j).equals(objectToCheck)) {
+			if (objectToCheck.equals(differentElements.get(j))) {
 				return true;
 			}
 		}
@@ -111,7 +122,7 @@ public class AfekaInstruments {
 	}
 
 	public String toString() {
-		return (getBrand() + this.getClass().getName() + " | Price: " + getPrice());
+		return (getBrand() + " " + this.getClass().getName() + " | Price: " + getPrice());
 
 	}
 

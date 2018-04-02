@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class WindInstruments extends AfekaInstruments {
 
-	protected final static String[] materials = { "wood", "metal", "plastic" };
+	protected final static String[] materials = { "Wood", "Metal", "Plastic" };
 	protected String material;
 
 	public WindInstruments(Scanner s) throws Exception {
@@ -10,7 +10,7 @@ public class WindInstruments extends AfekaInstruments {
 		if (!s.hasNext()) {
 			throw new Exception("material didn't mentioned");
 		}
-		setMaterial(s.next());
+		setMaterial(s.nextLine());
 	}
 
 	public WindInstruments(String brand, double price, String material) throws Exception {
@@ -34,11 +34,11 @@ public class WindInstruments extends AfekaInstruments {
 
 	@Override
 	public boolean equals(Object other) {
-		return super.equals(other) && isWindInstrument(other) && isEqualMaterial(other);
+		return (super.equals(other) && isWindInstrument(other) && isEqualMaterial(other));
 	}
 
 	public boolean isEqualMaterial(Object other) {
-		return ((WindInstruments) other).getMaterial() == this.getMaterial();
+		return (((WindInstruments) other).getMaterial() == this.getMaterial());
 	}
 
 	public boolean isWindInstrument(Object other) {

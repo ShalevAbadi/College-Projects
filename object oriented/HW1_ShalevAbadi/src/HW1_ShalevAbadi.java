@@ -20,7 +20,7 @@ public class HW1_ShalevAbadi {
 			try {
 
 				System.out.println("Please enter instruments file name / path:");
-				String input = userInput.next();
+				String input = userInput.nextLine();
 				File f = new File(input);
 				userInput = new Scanner(f);
 
@@ -30,19 +30,19 @@ public class HW1_ShalevAbadi {
 				userInput = new Scanner(System.in);
 			}
 		} while (!isFileFlag);
-
+		System.out.println("Instruments loaded from file successfully!");
 		ArrayList<AfekaInstruments> myInstruments = new ArrayList<>();
 		createInstrumentsAndAddToArrayList(userInput, Consts.GUITARS, myInstruments);
 		createInstrumentsAndAddToArrayList(userInput, Consts.BASS, myInstruments);
 		createInstrumentsAndAddToArrayList(userInput, Consts.FLUTES, myInstruments);
 		createInstrumentsAndAddToArrayList(userInput, Consts.SAXOPHONES, myInstruments);
+		userInput.close();
 
 		AfekaInstruments.printInstruments(myInstruments);
 		System.out.println("Diffetent Instruments: " + AfekaInstruments.getNumOfDifferentElements(myInstruments) );
 		System.out.println("Most Expensive Instrument: ");
-		AfekaInstruments.getMostExpensiveInstrument(myInstruments).toString();
+		System.out.println(AfekaInstruments.getMostExpensiveInstrument(myInstruments).toString());
 
-		userInput.close();
 
 	}
 
@@ -55,7 +55,7 @@ public class HW1_ShalevAbadi {
 			}
 		} else if (instrument == Consts.BASS) {
 			for (int i = 0; i < amountOfInstrument; i++) {
-				arrToFill.add(new Guitar(userInput));
+				arrToFill.add(new Bass(userInput));
 			}
 		} else if (instrument == Consts.FLUTES) {
 			for (int i = 0; i < amountOfInstrument; i++) {
@@ -73,6 +73,7 @@ public class HW1_ShalevAbadi {
 		if (!s.hasNextInt()) {
 			throw new Exception("Number of " + instrument + " didn't mentioned");
 		}
-		return s.nextInt();
+		int res = s.nextInt();
+		return res;
 	}
 }

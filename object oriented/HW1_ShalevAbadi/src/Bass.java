@@ -19,7 +19,7 @@ public class Bass extends StringInstruments {
 		if (!s.hasNext()) {
 			throw new Exception("didn't mentioned if fretless");
 		}
-		setFretless(parseBoolean(s.next()));
+		setFretless(parseBoolean(s.nextLine()));
 
 	}
 

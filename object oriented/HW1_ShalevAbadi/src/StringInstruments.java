@@ -10,7 +10,7 @@ public class StringInstruments extends AfekaInstruments {
 			throw new Exception("num of strings didn't mentioned");
 		}
 		setNumOfStrings(s.nextInt());
-
+		s.nextLine();
 	}
 
 	public StringInstruments(String brand, double price, int numOfStrings) throws Exception {

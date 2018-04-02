@@ -24,7 +24,7 @@ public class Guitar extends StringInstruments {
 		if (!s.hasNext()) {
 			throw new Exception("guitar type didn't mentioned");
 		}
-		setType(s.next());
+		setType(s.nextLine());
 	}
 
 	public Guitar(String brand, double price, String type) throws Exception {

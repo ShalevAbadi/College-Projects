@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Saxophone extends WindInstruments {
 
-	private final static String[] MATERIALS = { "metal" };
+	private final static String[] MATERIALS = { "Metal" };
 
 	public Saxophone(Scanner s) throws Exception {
 		super(s);
@@ -11,7 +11,7 @@ public class Saxophone extends WindInstruments {
 
 	private void throwIfInvalidMaterial() throws Exception {
 		for (int i = 0; i < MATERIALS.length; i++) {
-			if (material.equalsIgnoreCase(MATERIALS[i])) {
+			if (MATERIALS[i].equalsIgnoreCase(material)) {
 				return;
 			}
 		}
@@ -25,7 +25,7 @@ public class Saxophone extends WindInstruments {
 
 	@Override
 	public boolean equals(Object other) {
-		return super.equals(other) && isSaxophone(other);
+		return (isSaxophone(other) && super.equals(other));
 	}
 
 	public boolean isSaxophone(Object other) {
