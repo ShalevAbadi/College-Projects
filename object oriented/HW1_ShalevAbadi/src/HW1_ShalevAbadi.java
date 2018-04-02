@@ -36,7 +36,7 @@ public class HW1_ShalevAbadi {
 		createInstrumentsAndAddToArrayList(userInput, Consts.BASS, myInstruments);
 		createInstrumentsAndAddToArrayList(userInput, Consts.FLUTES, myInstruments);
 		createInstrumentsAndAddToArrayList(userInput, Consts.SAXOPHONES, myInstruments);
-		
+
 		userInput.close();
 
 	}

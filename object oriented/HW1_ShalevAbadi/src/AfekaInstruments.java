@@ -114,4 +114,9 @@ public class AfekaInstruments {
 		return false;
 	}
 
+	public String toString() {
+		return (getBrand() + this.getClass().getName() + " | Price: " + getPrice());
+
+	}
+
 }

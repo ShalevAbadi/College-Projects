@@ -87,5 +87,10 @@ public class Guitar extends StringInstruments {
 	public boolean isEqualType(Object other) {
 		return ((Guitar) other).getType() == this.getType();
 	}
+	
+	@Override
+	public String toString() {
+		return (super.toString() + "Type: " + getType());
 
+	}
 }

@@ -66,4 +66,10 @@ public class Bass extends StringInstruments {
 		return other instanceof Bass;
 	}
 
+	@Override
+	public String toString() {
+		return (super.toString() + "Fretless: " + getFretless());
+
+	}
+
 }

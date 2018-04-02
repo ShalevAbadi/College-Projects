@@ -19,7 +19,7 @@ public class Saxophone extends WindInstruments {
 	}
 
 	public Saxophone(String brand, double price) throws Exception {
-		super(brand, price, "metal");
+		super(brand, price, MATERIALS[0]);
 
 	}
 

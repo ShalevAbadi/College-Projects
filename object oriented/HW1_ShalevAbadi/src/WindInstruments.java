@@ -44,4 +44,10 @@ public class WindInstruments extends AfekaInstruments {
 	public boolean isWindInstrument(Object other) {
 		return other instanceof WindInstruments;
 	}
+
+	@Override
+	public String toString() {
+		return (super.toString() + ", Made of:	" + getMaterial() + "|");
+
+	}
 }
