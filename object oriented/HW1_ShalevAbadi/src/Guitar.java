@@ -37,7 +37,6 @@ public class Guitar extends StringInstruments {
 	}
 
 	public void setType(String type) throws Exception {
-
 		this.type = type;
 		throwIfTypeAndNumberOfStringsInvalid();
 

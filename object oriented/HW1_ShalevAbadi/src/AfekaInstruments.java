@@ -28,10 +28,14 @@ public class AfekaInstruments {
 	}
 
 	public void setPrice(double price) throws Exception {
+		throwIfPriceInvalid(price);
+		this.price = price;
+	}
+
+	public void throwIfPriceInvalid(double price) throws Exception {
 		if (price < 0) {
 			throw new Exception("Price must be a positive number!");
 		}
-		this.price = price;
 	}
 
 	public String getBrand() {
