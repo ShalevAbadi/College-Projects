@@ -7,10 +7,14 @@ public class Flute extends WindInstruments {
 
 	public Flute(Scanner s) throws Exception {
 		super(s);
-		if (!s.hasNext()) {
-			throw new Exception("flute type didn't mentioned");
-		}
+		throwIfTypeNotMentioned(s);
 		setType(s.nextLine());
+	}
+
+	public void throwIfTypeNotMentioned(Scanner s) throws Exception {
+		if (!s.hasNext()) {
+			throw new Exception("Flute type didn't mentioned");
+		}
 	}
 
 	public Flute(String brand, double price, String material, String type) throws Exception {

@@ -7,10 +7,14 @@ public class WindInstruments extends AfekaInstruments {
 
 	public WindInstruments(Scanner s) throws Exception {
 		super(s);
-		if (!s.hasNext()) {
-			throw new Exception("material didn't mentioned");
-		}
+		throwIfMaterialNotMentioned(s);
 		setMaterial(s.nextLine());
+	}
+
+	public void throwIfMaterialNotMentioned(Scanner s) throws Exception {
+		if (!s.hasNext()) {
+			throw new Exception("Material didn't mentioned");
+		}
 	}
 
 	public WindInstruments(String brand, double price, String material) throws Exception {

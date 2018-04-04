@@ -16,11 +16,15 @@ public class Bass extends StringInstruments {
 		super(s);
 
 		throwIfInvalidNumOfStrings(Consts.MIN_NUM_OF_STRINGS, Consts.MAX_NUM_OF_STRINGS);
-		if (!s.hasNext()) {
-			throw new Exception("didn't mentioned if fretless");
-		}
+		throwIfFretlessNotMentioned(s);
 		setFretless(parseBoolean(s.nextLine()));
 
+	}
+
+	public void throwIfFretlessNotMentioned(Scanner s) throws Exception {
+		if (!s.hasNext()) {
+			throw new Exception("Didn't mentioned if fretless");
+		}
 	}
 
 	private void throwIfInvalidNumOfStrings(int minNumOfStrings, int maxNumOfStrings) throws Exception {
