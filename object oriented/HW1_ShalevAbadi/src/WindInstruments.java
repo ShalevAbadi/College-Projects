@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class WindInstruments extends AfekaInstruments {
 
-	protected final static String[] materials = { "Wood", "Metal", "Plastic" };
+	protected final static String[] MATERIALS = { "Wood", "Metal", "Plastic" };
 	protected String material;
 
 	public WindInstruments(Scanner s) throws Exception {
@@ -19,9 +19,9 @@ public class WindInstruments extends AfekaInstruments {
 	}
 
 	public void setMaterial(String material) throws Exception {
-		for (int i = 0; i < materials.length; i++) {
-			if (material.equalsIgnoreCase(materials[i])) {
-				this.material = material;
+		for (int i = 0; i < MATERIALS.length; i++) {
+			if (material.equalsIgnoreCase(MATERIALS[i])) {
+				this.material = MATERIALS[i];
 				return;
 			}
 		}
