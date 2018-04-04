@@ -3,7 +3,6 @@ import java.util.Scanner;
 
 public class AfekaInstruments {
 
-	protected ArrayList<AfekaInstruments> listOfInstruments;
 	protected String brand;
 	protected double price;
 
@@ -14,20 +13,23 @@ public class AfekaInstruments {
 	}
 
 	public AfekaInstruments(Scanner s) throws Exception {
-		if (!s.hasNext()) {
-			throw new Exception("price didn't mentioned");
-		}
+		throwIfPriceNotMentioned(s);
 		setPrice(s.nextDouble());
 		s.nextLine();
-		if (!s.hasNext()) {
-			throw new Exception("brand didn't mentioned");
-		}
+		throwIfBrandNotMentioned(s);
 		setBrand(s.nextLine());
 	}
 
-	public void setListOfInstruments(ArrayList<AfekaInstruments> listOfInstruments) {
-		addAllInstruments(listOfInstruments, this.listOfInstruments);
-		;
+	public void throwIfBrandNotMentioned(Scanner s) throws Exception {
+		if (!s.hasNext()) {
+			throw new Exception("Brand didn't mentioned");
+		}
+	}
+
+	public void throwIfPriceNotMentioned(Scanner s) throws Exception {
+		if (!s.hasNext()) {
+			throw new Exception("Price didn't mentioned");
+		}
 	}
 
 	public void setBrand(String brand) {

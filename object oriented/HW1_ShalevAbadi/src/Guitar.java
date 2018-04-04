@@ -20,11 +20,14 @@ public class Guitar extends StringInstruments {
 
 	public Guitar(Scanner s) throws Exception {
 		super(s);
-
-		if (!s.hasNext()) {
-			throw new Exception("guitar type didn't mentioned");
-		}
+		throwIfTypeNotMentioned(s);
 		setType(s.nextLine());
+	}
+
+	public void throwIfTypeNotMentioned(Scanner s) throws Exception {
+		if (!s.hasNext()) {
+			throw new Exception("Guitar type didn't mentioned");
+		}
 	}
 
 	public Guitar(String brand, double price, String type) throws Exception {

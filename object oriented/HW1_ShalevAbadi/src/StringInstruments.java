@@ -6,11 +6,15 @@ public class StringInstruments extends AfekaInstruments {
 
 	public StringInstruments(Scanner s) throws Exception {
 		super(s);
-		if (!s.hasNextInt()) {
-			throw new Exception("num of strings didn't mentioned");
-		}
+		throwIfNumOfStringsNotMentioned(s);
 		setNumOfStrings(s.nextInt());
 		s.nextLine();
+	}
+
+	public void throwIfNumOfStringsNotMentioned(Scanner s) throws Exception {
+		if (!s.hasNextInt()) {
+			throw new Exception("Num of strings didn't mentioned");
+		}
 	}
 
 	public StringInstruments(String brand, double price, int numOfStrings) throws Exception {
