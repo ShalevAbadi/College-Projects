@@ -38,7 +38,7 @@ public class StringInstruments extends AfekaInstruments {
 	public boolean isEqualNumOfStrings(Object other) {
 		return (((StringInstruments) other).getNumOfStrings() == this.getNumOfStrings());
 	}
-	
+
 	@Override
 	public String toString() {
 		return (super.toString() + ", Number of strings:	" + getNumOfStrings() + "|");
