@@ -71,7 +71,7 @@ public class AfekaInstruments {
 
 	@Override
 	public boolean equals(Object other) {
-		return (other == this) || (isAfekaInstrument(other) && isEqualPrices(other) && isEqualBrands(other));
+		return (other == this) || ((isAfekaInstrument(other) && isEqualPrices(other) && isEqualBrands(other)));
 	}
 
 	public boolean isAfekaInstrument(Object other) {

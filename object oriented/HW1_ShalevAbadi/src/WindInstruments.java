@@ -34,7 +34,7 @@ public class WindInstruments extends AfekaInstruments {
 
 	@Override
 	public boolean equals(Object other) {
-		return (super.equals(other) && isWindInstrument(other) && isEqualMaterial(other));
+		return (isWindInstrument(other) && super.equals(other)  && isEqualMaterial(other));
 	}
 
 	public boolean isEqualMaterial(Object other) {
@@ -42,7 +42,7 @@ public class WindInstruments extends AfekaInstruments {
 	}
 
 	public boolean isWindInstrument(Object other) {
-		return other instanceof WindInstruments;
+		return (other instanceof WindInstruments);
 	}
 
 	@Override

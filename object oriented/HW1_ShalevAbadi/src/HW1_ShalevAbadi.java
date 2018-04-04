@@ -30,20 +30,25 @@ public class HW1_ShalevAbadi {
 				userInput = new Scanner(System.in);
 			}
 		} while (!isFileFlag);
-		System.out.println("Instruments loaded from file successfully!");
-		ArrayList<AfekaInstruments> myInstruments = new ArrayList<>();
-		createInstrumentsAndAddToArrayList(userInput, Consts.GUITARS, myInstruments);
-		createInstrumentsAndAddToArrayList(userInput, Consts.BASS, myInstruments);
-		createInstrumentsAndAddToArrayList(userInput, Consts.FLUTES, myInstruments);
-		createInstrumentsAndAddToArrayList(userInput, Consts.SAXOPHONES, myInstruments);
-		userInput.close();
+		try {
+			ArrayList<AfekaInstruments> myInstruments = new ArrayList<>();
+			createInstrumentsAndAddToArrayList(userInput, Consts.GUITARS, myInstruments);
+			createInstrumentsAndAddToArrayList(userInput, Consts.BASS, myInstruments);
+			createInstrumentsAndAddToArrayList(userInput, Consts.FLUTES, myInstruments);
+			createInstrumentsAndAddToArrayList(userInput, Consts.SAXOPHONES, myInstruments);
+			userInput.close();
 
-		AfekaInstruments.printInstruments(myInstruments);
-		System.out.println("Diffetent Instruments: " + AfekaInstruments.getNumOfDifferentElements(myInstruments) );
-		System.out.println("Most Expensive Instrument: ");
-		System.out.println(AfekaInstruments.getMostExpensiveInstrument(myInstruments).toString());
-
-
+			AfekaInstruments.printInstruments(myInstruments);
+			if (myInstruments.size() > 0) {
+				System.out.println("Instruments loaded from file successfully!");
+				System.out
+						.println("Diffetent Instruments: " + AfekaInstruments.getNumOfDifferentElements(myInstruments));
+				System.out.println("Most Expensive Instrument: ");
+				System.out.println(AfekaInstruments.getMostExpensiveInstrument(myInstruments).toString());
+			}
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	private static void createInstrumentsAndAddToArrayList(Scanner userInput, String instrument,

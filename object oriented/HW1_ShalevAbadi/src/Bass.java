@@ -26,7 +26,7 @@ public class Bass extends StringInstruments {
 	private void throwIfInvalidNumOfStrings(int minNumOfStrings, int maxNumOfStrings) throws Exception {
 		if (numOfStrings > maxNumOfStrings || numOfStrings < minNumOfStrings) {
 			throw new Exception(
-					"Bass guitars number of string is a number between " + minNumOfStrings + " and " + maxNumOfStrings);
+					"Bass number of string is a number between " + minNumOfStrings + " and " + maxNumOfStrings);
 		}
 	}
 
