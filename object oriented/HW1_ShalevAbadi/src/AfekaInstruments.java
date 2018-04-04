@@ -79,7 +79,7 @@ public class AfekaInstruments {
 	}
 
 	public boolean isEqualBrands(Object other) {
-		return (((AfekaInstruments) other).getBrand() == this.getBrand());
+		return (((AfekaInstruments) other).getBrand().equals(this.getBrand()));
 	}
 
 	public boolean isEqualPrices(Object other) {

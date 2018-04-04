@@ -43,7 +43,7 @@ public class Flute extends WindInstruments {
 	}
 
 	public boolean isEqualType(Object other) {
-		return ((Flute) other).getType() == this.getType();
+		return ((Flute) other).getType().equals(this.getType());
 	}
 
 	@Override

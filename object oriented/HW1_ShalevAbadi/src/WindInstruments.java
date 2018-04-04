@@ -38,7 +38,7 @@ public class WindInstruments extends AfekaInstruments {
 	}
 
 	public boolean isEqualMaterial(Object other) {
-		return (((WindInstruments) other).getMaterial() == this.getMaterial());
+		return (((WindInstruments) other).getMaterial().equals(this.getMaterial()));
 	}
 
 	public boolean isWindInstrument(Object other) {
