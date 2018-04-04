@@ -38,9 +38,9 @@ public class HW1_ShalevAbadi {
 			createInstrumentsAndAddToArrayList(userInput, Consts.SAXOPHONES, myInstruments);
 			userInput.close();
 
+			System.out.println("Instruments loaded from file successfully!");
 			AfekaInstruments.printInstruments(myInstruments);
 			if (myInstruments.size() > 0) {
-				System.out.println("Instruments loaded from file successfully!");
 				System.out
 						.println("Diffetent Instruments: " + AfekaInstruments.getNumOfDifferentElements(myInstruments));
 				System.out.println("Most Expensive Instrument: ");
