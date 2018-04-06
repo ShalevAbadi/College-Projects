@@ -20,19 +20,25 @@ public class AfekaInstruments {
 		setBrand(s.nextLine());
 	}
 
-	public void throwIfBrandNotMentioned(Scanner s) throws Exception {
+	private void throwIfBrandNotMentioned(Scanner s) throws Exception {
 		if (!s.hasNext()) {
 			throw new Exception("Brand didn't mentioned");
 		}
 	}
+	private void throwIfBrandNotMentioned(String brand) throws Exception {
+		if (brand.trim().isEmpty() || brand == null) {
+			throw new Exception("Brand didn't mentioned");
+		}
+	}
 
-	public void throwIfPriceNotMentioned(Scanner s) throws Exception {
+	private void throwIfPriceNotMentioned(Scanner s) throws Exception {
 		if (!s.hasNext()) {
 			throw new Exception("Price didn't mentioned");
 		}
 	}
 
-	public void setBrand(String brand) {
+	public void setBrand(String brand) throws Exception {
+		throwIfBrandNotMentioned(brand);
 		this.brand = brand;
 	}
 
@@ -41,8 +47,8 @@ public class AfekaInstruments {
 		this.price = price;
 	}
 
-	public void throwIfPriceInvalid(double price) throws Exception {
-		if (price < 0) {
+	private void throwIfPriceInvalid(double price) throws Exception {
+		if (price <= 0) {
 			throw new Exception("Price must be a positive number!");
 		}
 	}
@@ -55,7 +61,7 @@ public class AfekaInstruments {
 		return this.price;
 	}
 
-	public void addAllInstruments(ArrayList<AfekaInstruments> addFrom, ArrayList<AfekaInstruments> addTo) {
+	public static void addAllInstruments(ArrayList<AfekaInstruments> addTo, ArrayList<AfekaInstruments> addFrom) throws Exception {
 		for (int i = 0; i < addFrom.size(); i++) {
 			addTo.add(addFrom.get(i));
 		}
@@ -72,29 +78,36 @@ public class AfekaInstruments {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		return (other == this) || ((isAfekaInstrument(other) && isEqualPrices(other) && isEqualBrands(other)));
+	public boolean equals(Object obj) {
+		return (obj == this) || ((isAfekaInstrument(obj) && isEqualPrices(obj) && isEqualBrands(obj)));
 	}
 
-	public boolean isAfekaInstrument(Object other) {
-		return other instanceof AfekaInstruments;
+	private boolean isAfekaInstrument(Object obj) {
+		return obj instanceof AfekaInstruments;
 	}
 
-	public boolean isEqualBrands(Object other) {
-		return (((AfekaInstruments) other).getBrand().equals(this.getBrand()));
+	private boolean isEqualBrands(Object obj) {
+		return (((AfekaInstruments) obj).getBrand().equals(this.getBrand()));
 	}
 
-	public boolean isEqualPrices(Object other) {
-		return ((AfekaInstruments) other).getPrice() == this.getPrice();
+	private boolean isEqualPrices(Object obj) {
+		return ((AfekaInstruments) obj).getPrice() == this.getPrice();
 	}
 
-	public static AfekaInstruments getMostExpensiveInstrument(ArrayList<AfekaInstruments> arr) {
-		int resInstrumentIndex = 0;
-		for (int i = 0; i < arr.size(); i++) {
-			if (arr.get(resInstrumentIndex).getPrice() < arr.get(i).getPrice())
-				resInstrumentIndex = i;
+	public static AfekaInstruments getMostExpensiveInstrument(ArrayList<AfekaInstruments> arr) throws Exception {
+		throwIfListIsEmpty(arr);
+		AfekaInstruments resInstrument =arr.get(0);
+		for (int i = 1; i < arr.size(); i++) {
+			if (resInstrument.getPrice() < arr.get(i).getPrice())
+				resInstrument = arr.get(i);
 		}
-		return arr.get(resInstrumentIndex);
+		return resInstrument;
+	}
+
+	private static void throwIfListIsEmpty(ArrayList<AfekaInstruments> arr) throws Exception {
+		if (arr.isEmpty()) {
+			throw new Exception("The list can't be empty!");
+		}
 	}
 
 	public static int getNumOfDifferentElements(ArrayList<AfekaInstruments> arr) {
@@ -103,17 +116,22 @@ public class AfekaInstruments {
 		return differentElements.size();
 	}
 
-	public static void fillArrayWithDifferentObjects(ArrayList<AfekaInstruments> arrToCheck,
+	private static void fillArrayWithDifferentObjects(ArrayList<AfekaInstruments> arrToCheck,
 			ArrayList<AfekaInstruments> arrToFill) {
 		for (int i = 0; i < arrToCheck.size(); i++) {
-			boolean isExists = checkExistenceInArray(arrToCheck.get(i), arrToFill);
-			if (!isExists) {
-				arrToFill.add(arrToCheck.get(i));
-			}
+			addIfNotExist(arrToCheck, arrToFill, i);
 		}
 	}
 
-	public static boolean checkExistenceInArray(AfekaInstruments objectToCheck,
+	public static void addIfNotExist(ArrayList<AfekaInstruments> arrToCheck, ArrayList<AfekaInstruments> arrToFill,
+			int i) {
+		boolean isExists = checkExistenceInArray(arrToCheck.get(i), arrToFill);
+		if (!isExists) {
+			arrToFill.add(arrToCheck.get(i));
+		}
+	}
+
+	private static boolean checkExistenceInArray(AfekaInstruments objectToCheck,
 			ArrayList<AfekaInstruments> differentElements) {
 		for (int j = 0; j < differentElements.size(); j++) {
 			if (objectToCheck.equals(differentElements.get(j))) {

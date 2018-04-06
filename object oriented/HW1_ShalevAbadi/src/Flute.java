@@ -37,17 +37,16 @@ public class Flute extends WindInstruments {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-
-		return super.equals(other) && isFlute(other) && isEqualType(other);
+	public boolean equals(Object obj) {
+		return super.equals(obj) && isFlute(obj) && isEqualType(obj);
 	}
 
-	public boolean isFlute(Object other) {
-		return other instanceof Flute;
+	private boolean isFlute(Object obj) {
+		return obj instanceof Flute;
 	}
 
-	public boolean isEqualType(Object other) {
-		return ((Flute) other).getType().equals(this.getType());
+	private boolean isEqualType(Object obj) {
+		return ((Flute) obj).getType().equals(this.getType());
 	}
 
 	@Override

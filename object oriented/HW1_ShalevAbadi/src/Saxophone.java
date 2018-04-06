@@ -6,16 +6,11 @@ public class Saxophone extends WindInstruments {
 
 	public Saxophone(Scanner s) throws Exception {
 		super(s);
-		throwIfInvalidMaterial();
 	}
-
-	private void throwIfInvalidMaterial() throws Exception {
-		for (int i = 0; i < MATERIALS.length; i++) {
-			if (MATERIALS[i].equalsIgnoreCase(material)) {
-				return;
-			}
-		}
-		throw new Exception("Saxophone can only be made of " + MATERIALS.toString());
+	
+	@Override
+	protected String[] getValidMaterials() {
+		return Saxophone.MATERIALS;
 	}
 
 	public Saxophone(String brand, double price) throws Exception {
@@ -24,12 +19,11 @@ public class Saxophone extends WindInstruments {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		return (isSaxophone(other) && super.equals(other));
+	public boolean equals(Object obj) {
+		return (isSaxophone(obj) && super.equals(obj));
 	}
 
-	public boolean isSaxophone(Object other) {
-		return other instanceof Saxophone;
+	private boolean isSaxophone(Object obj) {
+		return obj instanceof Saxophone;
 	}
-
 }

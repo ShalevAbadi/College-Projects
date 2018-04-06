@@ -24,7 +24,7 @@ public class Guitar extends StringInstruments {
 		setType(s.nextLine());
 	}
 
-	public void throwIfTypeNotMentioned(Scanner s) throws Exception {
+	private void throwIfTypeNotMentioned(Scanner s) throws Exception {
 		if (!s.hasNext()) {
 			throw new Exception("Guitar type didn't mentioned");
 		}
@@ -79,21 +79,20 @@ public class Guitar extends StringInstruments {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		return super.equals(other) && isGuitar(other) && isEqualType(other);
+	public boolean equals(Object obj) {
+		return super.equals(obj) && isGuitar(obj) && isEqualType(obj);
 	}
 
-	public boolean isGuitar(Object other) {
-		return other instanceof Guitar;
+	private boolean isGuitar(Object obj) {
+		return obj instanceof Guitar;
 	}
 
-	public boolean isEqualType(Object other) {
-		return ((Guitar) other).getType().equals(this.getType());
+	private boolean isEqualType(Object obj) {
+		return ((Guitar) obj).getType().equals(this.getType());
 	}
 
 	@Override
 	public String toString() {
 		return (super.toString() + "Type: " + getType());
-
 	}
 }

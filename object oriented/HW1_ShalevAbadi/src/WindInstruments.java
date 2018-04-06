@@ -11,7 +11,7 @@ public class WindInstruments extends AfekaInstruments {
 		setMaterial(s.nextLine());
 	}
 
-	public void throwIfMaterialNotMentioned(Scanner s) throws Exception {
+	private void throwIfMaterialNotMentioned(Scanner s) throws Exception {
 		if (!s.hasNext()) {
 			throw new Exception("Material didn't mentioned");
 		}
@@ -21,15 +21,20 @@ public class WindInstruments extends AfekaInstruments {
 		super(brand, price);
 		setMaterial(material);
 	}
+	
+	protected String[] getValidMaterials() {
+		return WindInstruments.MATERIALS;
+	}
 
 	public void setMaterial(String material) throws Exception {
-		for (int i = 0; i < MATERIALS.length; i++) {
-			if (material.equalsIgnoreCase(MATERIALS[i])) {
-				this.material = MATERIALS[i];
+		String[] validMaterials = getValidMaterials();
+		for (int i = 0; i < validMaterials.length; i++) {
+			if (material.equalsIgnoreCase(validMaterials[i])) {
+				this.material = validMaterials[i];
 				return;
 			}
 		}
-		throw new Exception(this.getClass() + " can only be of type " + material.toString());
+		throw new Exception(this.getClass() + " can only be made of " + material.toString());
 	}
 
 	public String getMaterial() {
@@ -37,16 +42,16 @@ public class WindInstruments extends AfekaInstruments {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		return (isWindInstrument(other) && super.equals(other) && isEqualMaterial(other));
+	public boolean equals(Object obj) {
+		return (isWindInstrument(obj) && super.equals(obj) && isEqualMaterial(obj));
 	}
 
-	public boolean isEqualMaterial(Object other) {
-		return (((WindInstruments) other).getMaterial().equals(this.getMaterial()));
+	private boolean isEqualMaterial(Object obj) {
+		return (((WindInstruments) obj).getMaterial().equals(this.getMaterial()));
 	}
 
-	public boolean isWindInstrument(Object other) {
-		return (other instanceof WindInstruments);
+	private boolean isWindInstrument(Object obj) {
+		return (obj instanceof WindInstruments);
 	}
 
 	@Override

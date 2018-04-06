@@ -11,7 +11,7 @@ public class StringInstruments extends AfekaInstruments {
 		s.nextLine();
 	}
 
-	public void throwIfNumOfStringsNotMentioned(Scanner s) throws Exception {
+	private void throwIfNumOfStringsNotMentioned(Scanner s) throws Exception {
 		if (!s.hasNextInt()) {
 			throw new Exception("Num of strings didn't mentioned");
 		}
@@ -31,21 +31,20 @@ public class StringInstruments extends AfekaInstruments {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		return super.equals(other) && isStringInstrument(other) && isEqualNumOfStrings(other);
+	public boolean equals(Object obj) {
+		return super.equals(obj) && isStringInstrument(obj) && isEqualNumOfStrings(obj);
 	}
 
-	public boolean isStringInstrument(Object other) {
-		return other instanceof StringInstruments;
+	private boolean isStringInstrument(Object obj) {
+		return obj instanceof StringInstruments;
 	}
 
-	public boolean isEqualNumOfStrings(Object other) {
-		return (((StringInstruments) other).getNumOfStrings() == this.getNumOfStrings());
+	private boolean isEqualNumOfStrings(Object obj) {
+		return (((StringInstruments) obj).getNumOfStrings() == this.getNumOfStrings());
 	}
 
 	@Override
 	public String toString() {
 		return (super.toString() + ", Number of strings:	" + getNumOfStrings() + "|");
-
 	}
 }
