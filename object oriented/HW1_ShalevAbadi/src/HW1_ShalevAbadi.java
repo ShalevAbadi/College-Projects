@@ -13,65 +13,94 @@ public class HW1_ShalevAbadi {
 	}
 
 	public static void main(String[] args) throws Exception {
-		boolean isFileFlag;
-		Scanner userInput = new Scanner(System.in);
-		do {
-			isFileFlag = true;
-			try {
-
-				System.out.println("Please enter instruments file name / path:");
-				String input = userInput.nextLine();
-				File f = new File(input);
-				userInput = new Scanner(f);
-
-			} catch (FileNotFoundException e) {
-				System.out.println("File Error! Please try again:");
-				isFileFlag = !isFileFlag;
-				userInput = new Scanner(System.in);
-			}
-		} while (!isFileFlag);
 		try {
-			ArrayList<AfekaInstruments> myInstruments = new ArrayList<>();
-			createInstrumentsAndAddToArrayList(userInput, Consts.GUITARS, myInstruments);
-			createInstrumentsAndAddToArrayList(userInput, Consts.BASS, myInstruments);
-			createInstrumentsAndAddToArrayList(userInput, Consts.FLUTES, myInstruments);
-			createInstrumentsAndAddToArrayList(userInput, Consts.SAXOPHONES, myInstruments);
-			userInput.close();
-
-			System.out.println("Instruments loaded from file successfully!");
-			AfekaInstruments.printInstruments(myInstruments);
-			if (myInstruments.size() > 0) {
-				System.out
-						.println("Diffetent Instruments: " + AfekaInstruments.getNumOfDifferentElements(myInstruments));
-				System.out.println("Most Expensive Instrument: ");
-				System.out.println(AfekaInstruments.getMostExpensiveInstrument(myInstruments).toString());
-			}
+			programFlow();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			System.exit(0);
 		}
 	}
 
-	private static void createInstrumentsAndAddToArrayList(Scanner userInput, String instrument,
-			ArrayList<AfekaInstruments> arrToFill) throws Exception {
-		int amountOfInstrument = getAmountOfInstrument(userInput, instrument);
-		if (instrument == Consts.GUITARS) {
-			for (int i = 0; i < amountOfInstrument; i++) {
-				arrToFill.add(new Guitar(userInput));
-			}
-		} else if (instrument == Consts.BASS) {
-			for (int i = 0; i < amountOfInstrument; i++) {
-				arrToFill.add(new Bass(userInput));
-			}
-		} else if (instrument == Consts.FLUTES) {
-			for (int i = 0; i < amountOfInstrument; i++) {
-				arrToFill.add(new Flute(userInput));
-			}
-		} else if (instrument == Consts.SAXOPHONES) {
-			for (int i = 0; i < amountOfInstrument; i++) {
-				arrToFill.add(new Saxophone(userInput));
+	public static void programFlow() throws Exception {
+		Scanner s = GetFileScanner();
+		ArrayList<AfekaInstruments> instruments = ReadAllInstruments(s);
+		printStatisticData(instruments);
+	}
+
+	private static void printStatisticData(ArrayList<AfekaInstruments> instruments) throws Exception {
+		AfekaInstruments.printInstruments(instruments);
+		if (instruments.size() > 0) {
+			System.out.println("Diffetent Instruments: " + AfekaInstruments.getNumOfDifferentElements(instruments));
+			System.out.println("Most Expensive Instrument: ");
+			System.out.println(AfekaInstruments.getMostExpensiveInstrument(instruments).toString());
+		}
+	}
+
+	private static ArrayList<AfekaInstruments> ReadAllInstruments(Scanner s) throws Exception {
+		ArrayList<AfekaInstruments> afekaInstruments = new ArrayList<AfekaInstruments>();
+		try {
+			AfekaInstruments.addAllInstruments(afekaInstruments, createGuitars(s));
+			AfekaInstruments.addAllInstruments(afekaInstruments, createBass(s));
+			AfekaInstruments.addAllInstruments(afekaInstruments, createFlutes(s));
+			AfekaInstruments.addAllInstruments(afekaInstruments, createSaxophones(s));
+			System.out.println("Instruments loaded from file successfully!");
+		} finally {
+			s.close();
+		}
+		return afekaInstruments;
+	}
+
+	private static Scanner GetFileScanner() {
+		Scanner userInput = new Scanner(System.in);
+		System.out.println("Please enter instruments file name / path:");
+		while (true) {
+			try {
+				String input = userInput.nextLine();
+				File f = new File(input);
+				Scanner file = new Scanner(f);
+				userInput.close();
+				return file;
+			} catch (FileNotFoundException e) {
+				System.out.println("File Error! Please try again:");
 			}
 		}
+		
+	}
 
+	private static ArrayList<AfekaInstruments> createGuitars(Scanner s) throws Exception {
+		int amountOfInstrument = getAmountOfInstrument(s, Consts.GUITARS);
+		ArrayList<AfekaInstruments> guitars = new ArrayList<AfekaInstruments>(amountOfInstrument);
+		for (int i = 0; i < amountOfInstrument; i++) {
+			guitars.add(new Guitar(s));
+		}
+		return guitars;
+	}
+
+	private static ArrayList<AfekaInstruments> createBass(Scanner s) throws Exception {
+		int amountOfInstrument = getAmountOfInstrument(s, Consts.BASS);
+		ArrayList<AfekaInstruments> bass = new ArrayList<AfekaInstruments>(amountOfInstrument);
+		for (int i = 0; i < amountOfInstrument; i++) {
+			bass.add(new Bass(s));
+		}
+		return bass;
+	}
+
+	private static ArrayList<AfekaInstruments> createFlutes(Scanner s) throws Exception {
+		int amountOfInstrument = getAmountOfInstrument(s, Consts.FLUTES);
+		ArrayList<AfekaInstruments> flutes = new ArrayList<AfekaInstruments>(amountOfInstrument);
+		for (int i = 0; i < amountOfInstrument; i++) {
+			flutes.add(new Flute(s));
+		}
+		return flutes;
+	}
+
+	private static ArrayList<AfekaInstruments> createSaxophones(Scanner s) throws Exception {
+		int amountOfInstrument = getAmountOfInstrument(s, Consts.FLUTES);
+		ArrayList<AfekaInstruments> saxsophones = new ArrayList<AfekaInstruments>(amountOfInstrument);
+		for (int i = 0; i < amountOfInstrument; i++) {
+			saxsophones.add(new Saxophone(s));
+		}
+		return saxsophones;
 	}
 
 	private static int getAmountOfInstrument(Scanner s, String instrument) throws Exception {

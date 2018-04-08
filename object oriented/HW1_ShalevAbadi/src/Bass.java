@@ -21,7 +21,7 @@ public class Bass extends StringInstruments {
 
 	}
 
-	public void throwIfFretlessNotMentioned(Scanner s) throws Exception {
+	private void throwIfFretlessNotMentioned(Scanner s) throws Exception {
 		if (!s.hasNext()) {
 			throw new Exception("Didn't mentioned if fretless");
 		}
@@ -58,22 +58,20 @@ public class Bass extends StringInstruments {
 	}
 
 	@Override
-	public boolean equals(Object other) {
-		return super.equals(other) && isBass(other) && isEqualFretless(other);
+	public boolean equals(Object obj) {
+		return super.equals(obj) && isBass(obj) && isEqualFretless(obj);
 	}
 
-	public boolean isEqualFretless(Object other) {
-		return ((Bass) other).getFretless() == this.getFretless();
+	private boolean isEqualFretless(Object obj) {
+		return ((Bass) obj).getFretless() == this.getFretless();
 	}
 
-	public boolean isBass(Object other) {
-		return other instanceof Bass;
+	private boolean isBass(Object obj) {
+		return obj instanceof Bass;
 	}
 
 	@Override
 	public String toString() {
 		return (super.toString() + "Fretless: " + getFretless());
-
 	}
-
 }
