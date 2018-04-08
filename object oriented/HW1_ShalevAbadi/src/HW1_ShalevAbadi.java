@@ -109,42 +109,4 @@ public class HW1_ShalevAbadi {
 		int res = s.nextInt();
 		return res;
 	}
-
-	// boolean isFilePathInvalid;
-	// Scanner userInput = null;
-	// do {
-	//
-	// try {
-	// isFilePathInvalid = false;
-	// userInput = new Scanner(System.in);
-	// System.out.println("Please enter instruments file name / path:");
-	// String input = userInput.nextLine();
-	// File f = new File(input);
-	// Scanner resource = new Scanner(f);
-	//
-	// } catch (FileNotFoundException e) {
-	// System.out.println("File Error! Please try again:");
-	// isFilePathInvalid = true;
-	// } finally {
-	// userInput.close();
-	// }
-	// } while (isFilePathInvalid);
-	// try {
-	// ArrayList<AfekaInstruments> myInstruments = new ArrayList<>();
-	// AfekaInstruments.addAllInstruments(myInstruments, createGuitars(userInput));
-	//
-	// userInput.close();
-	//
-	// System.out.println("Instruments loaded from file successfully!");
-	// AfekaInstruments.printInstruments(myInstruments);
-	// if (myInstruments.size() > 0) {
-	// System.out
-	// .println("Diffetent Instruments: " +
-	// AfekaInstruments.getNumOfDifferentElements(myInstruments));
-	// System.out.println("Most Expensive Instrument: ");
-	// System.out.println(AfekaInstruments.getMostExpensiveInstrument(myInstruments).toString());
-	// }
-	// } catch (Exception e) {
-	// System.err.println(e.getMessage());
-	// }
 }
