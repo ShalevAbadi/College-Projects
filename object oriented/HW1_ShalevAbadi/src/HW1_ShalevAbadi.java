@@ -17,6 +17,7 @@ public class HW1_ShalevAbadi {
 			programFlow();
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
+			System.exit(0);
 		}
 	}
 
