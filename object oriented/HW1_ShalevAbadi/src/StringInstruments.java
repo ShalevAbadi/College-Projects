@@ -45,6 +45,6 @@ public class StringInstruments extends AfekaInstruments {
 
 	@Override
 	public String toString() {
-		return (super.toString() + ", Number of strings:	" + getNumOfStrings() + "|");
+		return super.toString() + String.format(", Number of strings:%3s|" , getNumOfStrings());
 	}
 }

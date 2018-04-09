@@ -30,7 +30,9 @@ public class HW1_ShalevAbadi {
 	private static void printStatisticData(ArrayList<AfekaInstruments> instruments) throws Exception {
 		AfekaInstruments.printInstruments(instruments);
 		if (instruments.size() > 0) {
+			System.out.println();
 			System.out.println("Diffetent Instruments: " + AfekaInstruments.getNumOfDifferentElements(instruments));
+			System.out.println();
 			System.out.println("Most Expensive Instrument: ");
 			System.out.println(AfekaInstruments.getMostExpensiveInstrument(instruments).toString());
 		}

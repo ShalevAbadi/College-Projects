@@ -93,6 +93,6 @@ public class Guitar extends StringInstruments {
 
 	@Override
 	public String toString() {
-		return (super.toString() + "Type: " + getType());
+		return (super.toString() + "  Type: " + getType());
 	}
 }
