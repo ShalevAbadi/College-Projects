@@ -56,7 +56,7 @@ public class WindInstruments extends AfekaInstruments {
 
 	@Override
 	public String toString() {
-		return (super.toString() + ", Made of:	" + getMaterial() + "|");
+		return super.toString()  + String.format(", Made of:%13s|", getMaterial());
 
 	}
 }

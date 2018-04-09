@@ -51,7 +51,7 @@ public class Flute extends WindInstruments {
 
 	@Override
 	public String toString() {
-		return (super.toString() + "Type: " + getType());
+		return (super.toString() + "  Type: " + getType());
 
 	}
 }

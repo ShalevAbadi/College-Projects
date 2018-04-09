@@ -142,7 +142,8 @@ public class AfekaInstruments {
 	}
 
 	public String toString() {
-		return (getBrand() + " " + this.getClass().getName() + " | Price: " + String.format("%.2f", getPrice()));
+		String strPrice = String.format("%4.2f", getPrice());
+		return	String.format(" %-9s%-9s| Price: %7s",getBrand() ,this.getClass().getName(),strPrice);
 
 	}
 

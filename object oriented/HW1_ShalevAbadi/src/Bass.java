@@ -72,6 +72,6 @@ public class Bass extends StringInstruments {
 
 	@Override
 	public String toString() {
-		return (super.toString() + "Fretless: " + getFretless());
+		return (super.toString() + "  Fretless: " + getFretless());
 	}
 }
