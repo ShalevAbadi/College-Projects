@@ -3,8 +3,8 @@ import java.util.Scanner;
 
 public class AfekaInstruments {
 
-	protected String brand;
-	protected double price;
+	private String brand;
+	private double price;
 
 	public AfekaInstruments(String brand, double price) throws Exception {
 		setBrand(brand);

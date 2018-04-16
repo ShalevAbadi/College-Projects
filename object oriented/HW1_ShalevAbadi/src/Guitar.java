@@ -40,35 +40,40 @@ public class Guitar extends StringInstruments {
 	}
 
 	public void setType(String type) throws Exception {
+		throwIfTypeAndNumberOfStringsInvalid(type, getNumOfStrings());
 		this.type = type;
-		throwIfTypeAndNumberOfStringsInvalid();
 
 	}
-
-	private void throwIfTypeAndNumberOfStringsInvalid() throws Exception {
-		if (this.type.equalsIgnoreCase(Consts.Types.ACOUSTIC)) {
-			this.type = Consts.Types.ACOUSTIC;
-			throwIfInvalidNumOfStrings(Consts.ACOUSTIC_NUM_OF_STRINGS);
-		} else if (this.type.equalsIgnoreCase("classic")) {
-			this.type = Consts.Types.CLASSIC;
-			throwIfInvalidNumOfStrings(Consts.CLASSIC_NUM_OF_STRINGS);
-		} else if (this.type.equalsIgnoreCase("electric")) {
-			this.type = Consts.Types.ELECTRIC;
-			throwIfInvalidNumOfStrings(Consts.ELECTRIC_MIN_NUM_OF_STRINGS, Consts.ELECTRIC_MAX_NUM_OF_STRINGS);
-
+	
+	private void throwIfTypeAndNumberOfStringsInvalid(String type, int numOfStringsToValidate) throws Exception {
+		if (type.equalsIgnoreCase(Consts.Types.ACOUSTIC)) {
+			throwIfInvalidNumOfStrings(Consts.Types.ACOUSTIC, Consts.ACOUSTIC_NUM_OF_STRINGS , numOfStringsToValidate);
+		} else if (type.equalsIgnoreCase("classic")) {
+			throwIfInvalidNumOfStrings(Consts.Types.CLASSIC, Consts.CLASSIC_NUM_OF_STRINGS, numOfStringsToValidate);
+		} else if (type.equalsIgnoreCase("electric")) {
+			throwIfInvalidNumOfStrings(Consts.Types.ELECTRIC, Consts.ELECTRIC_MIN_NUM_OF_STRINGS, Consts.ELECTRIC_MAX_NUM_OF_STRINGS , numOfStringsToValidate);
 		} else {
 			throw new Exception("guitar type invalid");
 		}
 	}
-
-	private void throwIfInvalidNumOfStrings(int validNumOfStrings) throws Exception {
-		if (validNumOfStrings != numOfStrings) {
-			throw new Exception(type + " guitars have " + validNumOfStrings + " strings, not " + numOfStrings);
+	
+	@Override
+	public void validateNumOfStrings(int numOfStrings) throws Exception {
+		if (type == null) {
+			super.validateNumOfStrings(numOfStrings);
+		}
+		else {
+			throwIfTypeAndNumberOfStringsInvalid(this.type, numOfStrings);
+		}
+	}
+	private void throwIfInvalidNumOfStrings(String type, int validNumOfStrings, int numOfStringsToValidate) throws Exception {
+		if (validNumOfStrings != numOfStringsToValidate) {
+			throw new Exception(type + " guitars have " + validNumOfStrings + " strings, not " + numOfStringsToValidate);
 		}
 	}
 
-	private void throwIfInvalidNumOfStrings(int minNumOfStrings, int maxNumOfStrings) throws Exception {
-		if (numOfStrings > maxNumOfStrings || numOfStrings < minNumOfStrings) {
+	private void throwIfInvalidNumOfStrings(String type, int minNumOfStrings, int maxNumOfStrings, int numOfStringsToValidate) throws Exception {
+		if (numOfStringsToValidate > maxNumOfStrings || numOfStringsToValidate < minNumOfStrings) {
 			throw new Exception(type + " guitars number of string is a number between " + minNumOfStrings + " and "
 					+ maxNumOfStrings);
 		}

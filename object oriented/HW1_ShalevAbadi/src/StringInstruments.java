@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class StringInstruments extends AfekaInstruments {
 
-	protected int numOfStrings;
+	private int numOfStrings;
 
 	public StringInstruments(Scanner s) throws Exception {
 		super(s);
@@ -16,13 +16,20 @@ public class StringInstruments extends AfekaInstruments {
 			throw new Exception("Num of strings didn't mentioned");
 		}
 	}
-
+	
+	public void validateNumOfStrings(int numOfStrings) throws Exception {
+		if ( numOfStrings < 0) {
+			throw new Exception("Num of strings must be a positive number!");
+		}
+	}
+	
 	public StringInstruments(String brand, double price, int numOfStrings) throws Exception {
 		super(brand, price);
 		setNumOfStrings(numOfStrings);
 	}
 
-	public void setNumOfStrings(int numOfStrings) {
+	public void setNumOfStrings(int numOfStrings) throws Exception {
+		validateNumOfStrings(numOfStrings);
 		this.numOfStrings = numOfStrings;
 	}
 

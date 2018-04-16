@@ -9,7 +9,7 @@ public class Saxophone extends WindInstruments {
 	}
 	
 	@Override
-	protected String[] getValidMaterials() {
+	public String[] getValidMaterials() {
 		return Saxophone.MATERIALS;
 	}
 
