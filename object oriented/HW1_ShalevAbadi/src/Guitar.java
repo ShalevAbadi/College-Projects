@@ -45,13 +45,13 @@ public class Guitar extends StringInstruments {
 
 	}
 	
-	private void throwIfTypeAndNumberOfStringsInvalid(String type, int numOfStringsToValidate) throws Exception {
+	private void throwIfTypeAndNumberOfStringsInvalid(String type, int numOfStrings) throws Exception {
 		if (type.equalsIgnoreCase(Consts.Types.ACOUSTIC)) {
-			throwIfInvalidNumOfStrings(Consts.Types.ACOUSTIC, Consts.ACOUSTIC_NUM_OF_STRINGS , numOfStringsToValidate);
+			throwIfInvalidNumOfStrings(Consts.Types.ACOUSTIC, Consts.ACOUSTIC_NUM_OF_STRINGS , numOfStrings);
 		} else if (type.equalsIgnoreCase("classic")) {
-			throwIfInvalidNumOfStrings(Consts.Types.CLASSIC, Consts.CLASSIC_NUM_OF_STRINGS, numOfStringsToValidate);
+			throwIfInvalidNumOfStrings(Consts.Types.CLASSIC, Consts.CLASSIC_NUM_OF_STRINGS, numOfStrings);
 		} else if (type.equalsIgnoreCase("electric")) {
-			throwIfInvalidNumOfStrings(Consts.Types.ELECTRIC, Consts.ELECTRIC_MIN_NUM_OF_STRINGS, Consts.ELECTRIC_MAX_NUM_OF_STRINGS , numOfStringsToValidate);
+			throwIfInvalidNumOfStrings(Consts.Types.ELECTRIC, Consts.ELECTRIC_MIN_NUM_OF_STRINGS, Consts.ELECTRIC_MAX_NUM_OF_STRINGS , numOfStrings);
 		} else {
 			throw new Exception("guitar type invalid");
 		}
@@ -66,9 +66,9 @@ public class Guitar extends StringInstruments {
 			throwIfTypeAndNumberOfStringsInvalid(this.type, numOfStrings);
 		}
 	}
-	private void throwIfInvalidNumOfStrings(String type, int validNumOfStrings, int numOfStringsToValidate) throws Exception {
-		if (validNumOfStrings != numOfStringsToValidate) {
-			throw new Exception(type + " guitars have " + validNumOfStrings + " strings, not " + numOfStringsToValidate);
+	private void throwIfInvalidNumOfStrings(String type, int validNumOfStrings, int numOfStrings) throws Exception {
+		if (validNumOfStrings != numOfStrings) {
+			throw new Exception(type + " guitars have " + validNumOfStrings + " strings, not " + numOfStrings);
 		}
 	}
 
