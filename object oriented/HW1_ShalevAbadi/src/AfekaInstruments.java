@@ -143,7 +143,7 @@ public class AfekaInstruments {
 
 	public String toString() {
 		String strPrice = String.format("%4.2f", getPrice());
-		return	String.format(" %-9s%-9s| Price: %7s",getBrand() ,this.getClass().getName(),strPrice);
+		return	String.format("%-9s%-9s| Price: %7s",getBrand() ,this.getClass().getName(),strPrice);
 
 	}
 
