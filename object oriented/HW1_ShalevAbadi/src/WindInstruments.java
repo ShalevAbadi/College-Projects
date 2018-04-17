@@ -22,7 +22,7 @@ public class WindInstruments extends AfekaInstruments {
 		setMaterial(material);
 	}
 	
-	public String[] getValidMaterials() {
+	protected String[] getValidMaterials() {
 		return WindInstruments.MATERIALS;
 	}
 
