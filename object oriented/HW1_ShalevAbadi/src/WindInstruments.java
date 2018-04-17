@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 public class WindInstruments extends AfekaInstruments {
 
-	protected final static String[] MATERIALS = { "Wood", "Metal", "Plastic" };
-	protected String material;
+	private final static String[] MATERIALS = { "Wood", "Metal", "Plastic" };
+	private String material;
 
 	public WindInstruments(Scanner s) throws Exception {
 		super(s);

@@ -14,8 +14,6 @@ public class Bass extends StringInstruments {
 
 	public Bass(Scanner s) throws Exception {
 		super(s);
-
-		throwIfInvalidNumOfStrings(Consts.MIN_NUM_OF_STRINGS, Consts.MAX_NUM_OF_STRINGS);
 		throwIfFretlessNotMentioned(s);
 		setFretless(parseBoolean(s.nextLine()));
 
@@ -26,11 +24,12 @@ public class Bass extends StringInstruments {
 			throw new Exception("Didn't mentioned if fretless");
 		}
 	}
-
-	private void throwIfInvalidNumOfStrings(int minNumOfStrings, int maxNumOfStrings) throws Exception {
-		if (numOfStrings > maxNumOfStrings || numOfStrings < minNumOfStrings) {
+	
+	@Override
+	public void validateNumOfStrings(int numOfStrings) throws Exception {
+	if (numOfStrings > Consts.MAX_NUM_OF_STRINGS || numOfStrings < Consts.MIN_NUM_OF_STRINGS) {
 			throw new Exception(
-					"Bass number of string is a number between " + minNumOfStrings + " and " + maxNumOfStrings);
+					"Bass number of string is a number between " + Consts.MAX_NUM_OF_STRINGS + " and " + Consts.MIN_NUM_OF_STRINGS);
 		}
 	}
 
