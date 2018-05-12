@@ -21,4 +21,9 @@ public class Saxophone extends WindInstrument{
 
         return o instanceof  Saxophone;
     }
+    public Saxophone clone() throws CloneNotSupportedException{
+		return (Saxophone) super.clone();
+	}
+
+	
 }

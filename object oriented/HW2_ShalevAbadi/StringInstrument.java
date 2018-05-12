@@ -2,7 +2,7 @@ import java.io.PrintWriter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class StringInstrument extends MusicalInstrument {
+public abstract class StringInstrument extends MusicalInstrument {
     private int numOfStrings;
 
     public StringInstrument(String brand, double price, int numOfStrings){

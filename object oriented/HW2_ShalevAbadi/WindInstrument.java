@@ -1,7 +1,7 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class WindInstrument extends MusicalInstrument {
+public abstract class WindInstrument extends MusicalInstrument {
     public final static String WIND_INSTRUMENT_MATERIAL[] = {"Wood", "Metal", "Plastic"};
 
     private String material;
