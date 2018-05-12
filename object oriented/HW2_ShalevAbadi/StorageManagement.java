@@ -2,18 +2,21 @@ import java.util.ArrayList;
 
 public interface StorageManagement<T extends MusicalInstrument> {
 
-	void addAllStringInstruments(ArrayList<T> musicalList, ArrayList<T> stringToPutList);
+	void addAllStringInstruments(ArrayList<? extends MusicalInstrument> src, ArrayList<? super MusicalInstrument> dest);
 
-	void addAllWindInstruments(ArrayList<T> musicalList, ArrayList<T> windToPutList);
+	void addAllWindInstruments(ArrayList<? extends MusicalInstrument> src, ArrayList<? super MusicalInstrument> dest);
 
 	void SortByBrandAndPrice(ArrayList<MusicalInstrument> musicalList);
 
 	int binnarySearchByBrandAndPrice(ArrayList<MusicalInstrument> musicalList, String brand, Number price);
 
-	void addInstrument(ArrayList<MusicalInstrument> musicalList, MusicalInstrument instrument);
+	void  addInstrument(ArrayList<? super MusicalInstrument> musicalList, T instrument);
 
-	boolean removeInstrument(ArrayList<MusicalInstrument> musicalList, MusicalInstrument instrument);
+	boolean removeInstrument(ArrayList<MusicalInstrument> musicalList, T instrument);
 
 	boolean removeAll(ArrayList<MusicalInstrument> musicalList);
+
+
+
 
 }
