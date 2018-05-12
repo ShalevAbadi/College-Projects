@@ -1,6 +1,4 @@
-import java.io.PrintWriter;
 import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Guitar extends StringInstrument {

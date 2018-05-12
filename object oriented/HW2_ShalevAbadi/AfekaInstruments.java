@@ -5,7 +5,7 @@ import java.util.*;
 public class AfekaInstruments {
 
     public static void main(String[] args) {
-        ArrayList allInstruments = new ArrayList();
+        ArrayList<MusicalInstrument> allInstruments = new ArrayList<>();
         Scanner consoleScanner = new Scanner(System.in);
         File file = getInstrumentsFileFromUser(consoleScanner);
 

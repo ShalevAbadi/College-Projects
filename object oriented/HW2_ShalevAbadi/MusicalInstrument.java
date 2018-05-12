@@ -1,6 +1,4 @@
-import java.io.PrintWriter;
 import java.util.InputMismatchException;
-import java.util.Objects;
 import java.util.Scanner;
 
 abstract class MusicalInstrument implements InstrumentFunc<MusicalInstrument>{
