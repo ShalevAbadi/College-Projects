@@ -3,11 +3,11 @@ import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
-public class MusicalInstrument{
-    private double price;
+abstract class MusicalInstrument{
+    private Number price;
     private String brand;
 
-    public MusicalInstrument(String brand, double price){
+    public <T extends Number> MusicalInstrument(String brand, T price){
         setBrand(brand);
         setPrice(price);
     }
@@ -35,13 +35,19 @@ public class MusicalInstrument{
         this.brand = brand;
     }
 
-    public double getPrice() {
+    public Number getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        if(price > 0)
-            this.price = price;
+    public <T extends Number>  void setPrice(T price) {
+        if(price.doubleValue() > 0) {
+        	if (price.doubleValue() - price.intValue() > 0) {
+        		this.price = price.doubleValue();
+        	}
+        	else {
+            this.price = price.intValue();
+        	}
+        }
         else
             throw new InputMismatchException("Price must be a positive number!");
 

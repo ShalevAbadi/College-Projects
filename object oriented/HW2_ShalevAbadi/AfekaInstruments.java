@@ -6,7 +6,8 @@ public class AfekaInstruments {
 
     public static void main(String[] args) {
         ArrayList allInstruments = new ArrayList();
-        File file = getInstrumentsFileFromUser();
+        Scanner consoleScanner = new Scanner(System.in);
+        File file = getInstrumentsFileFromUser(consoleScanner);
 
         loadInstrumentsFromFile(file, allInstruments);
 
@@ -24,13 +25,12 @@ public class AfekaInstruments {
         MusicalInstrument mostExpensive = getMostExpensiveInstrument(allInstruments);
 
         System.out.println("\n\nMost Expensive Instrument:\n" + mostExpensive);
+        consoleScanner.close();
     }
 
-    public static File getInstrumentsFileFromUser(){
+    public static File getInstrumentsFileFromUser(Scanner consoleScanner){
         boolean stopLoop = true;
         File file;
-        Scanner consoleScanner = new Scanner(System.in);
-
         do {
             System.out.println("Please enter instruments file name / path:");
             String filepath = consoleScanner.nextLine();
@@ -154,8 +154,8 @@ public class AfekaInstruments {
         for(int i = 0 ; i < instruments.size() ; i++){
             MusicalInstrument temp = (MusicalInstrument)instruments.get(i);
 
-            if(temp.getPrice() > maxPrice){
-                maxPrice = temp.getPrice();
+            if(temp.getPrice().doubleValue() > maxPrice){
+                maxPrice = temp.getPrice().doubleValue();
                 mostExpensive = temp;
             }
         }
