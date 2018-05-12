@@ -51,9 +51,17 @@ public class Bass extends StringInstrument {
 
         return isFretless() == ((Bass)o).isFretless();
     }
-
+    
+  	@Override
+  	public Bass clone() throws CloneNotSupportedException {
+  		return (Bass) super.clone();
+  	}
+  	
     @Override
     public String toString() {
         return super.toString() + String.format(" Fretless: %3s", isFretless() ? "Yes" : "No");
     }
+    
+  
+
 }

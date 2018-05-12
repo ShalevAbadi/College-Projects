@@ -3,7 +3,7 @@ import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
-abstract class MusicalInstrument{
+abstract class MusicalInstrument implements InstrumentFunc<MusicalInstrument>{
     private Number price;
     private String brand;
 
@@ -73,7 +73,22 @@ abstract class MusicalInstrument{
 
         return getPrice() == otherInstrument.getPrice() && getBrand().equals(otherInstrument.getBrand());
     }
-
+    
+    @Override
+	public int compareTo(MusicalInstrument compared) {
+    	int brandCompare = this.getBrand().compareTo(compared.getBrand());
+		if ( brandCompare == 0) {
+			double priceCompare = (this.getPrice().doubleValue() - compared.getPrice().doubleValue());
+			if (priceCompare < 0) {
+				return -1;
+			}
+			else if (priceCompare > 0) {
+				return 1;
+			}
+			return 0;
+		}
+		return brandCompare;
+	}
 
     @Override
     public String toString() {

@@ -43,7 +43,12 @@ public class Flute extends WindInstrument {
 
         return getFluteType().equals(((Flute)o).getFluteType());
     }
-
+    
+    @Override
+  	public Flute clone() throws CloneNotSupportedException {
+  		return (Flute) super.clone();
+  	}
+    
     @Override
     public String toString() {
         return super.toString() + String.format(" Type: %7s", getFluteType().toString());

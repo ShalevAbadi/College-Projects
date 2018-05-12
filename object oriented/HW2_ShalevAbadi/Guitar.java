@@ -91,6 +91,11 @@ public class Guitar extends StringInstrument {
 
         return getType().equals(((Guitar)o).getType());
     }
+    
+    @Override
+  	public Guitar clone() throws CloneNotSupportedException {
+  		return (Guitar) super.clone();
+  	}
 
     @Override
     public String toString() {
