@@ -10,9 +10,9 @@ public interface StorageManagement<T extends MusicalInstrument> {
 
 	int binnarySearchByBrandAndPrice(ArrayList<MusicalInstrument> musicalList, String brand, Number price);
 
-	void  addInstrument(ArrayList<? super MusicalInstrument> musicalList, T instrument);
+	void addInstrument(ArrayList<T> musicalList, T instrument);
 
-	boolean removeInstrument(ArrayList<MusicalInstrument> musicalList, T instrument);
+	boolean removeInstrument(ArrayList<T> musicalList, T instrument);
 
 	boolean removeAll(ArrayList<MusicalInstrument> musicalList);
 
