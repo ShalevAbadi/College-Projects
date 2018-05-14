@@ -150,6 +150,4 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 		}
 		return res;
 	}
-
-	
 }

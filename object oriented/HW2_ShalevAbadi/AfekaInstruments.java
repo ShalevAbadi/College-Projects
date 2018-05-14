@@ -291,6 +291,4 @@ public class AfekaInstruments {
 		}
 		return mostExpensive;
 	}
-
-
 }
