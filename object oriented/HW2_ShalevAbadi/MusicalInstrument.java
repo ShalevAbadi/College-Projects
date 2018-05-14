@@ -69,7 +69,7 @@ abstract class MusicalInstrument implements InstrumentFunc<MusicalInstrument>{
 
         MusicalInstrument otherInstrument = (MusicalInstrument) o;
 
-        return getPrice() == otherInstrument.getPrice() && getBrand().equals(otherInstrument.getBrand());
+        return getPrice().doubleValue() == otherInstrument.getPrice().doubleValue() && getBrand().equals(otherInstrument.getBrand());
     }
     
     @Override
@@ -90,6 +90,8 @@ abstract class MusicalInstrument implements InstrumentFunc<MusicalInstrument>{
 
     @Override
     public String toString() {
-        return String.format("%-8s %-9s| Price: %7.2f,", getBrand(), getClass().getCanonicalName(), getPrice());
+        return String.format("%-8s %-9s| Price: %7s,", getBrand(), getClass().getCanonicalName(), getPrice().toString());
     }
+    
+    
 }

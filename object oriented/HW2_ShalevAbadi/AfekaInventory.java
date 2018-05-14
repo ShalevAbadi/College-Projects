@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+
 
 public class AfekaInventory<T extends MusicalInstrument> implements StorageManagement<T> {
 	private ArrayList<T> instruments = new ArrayList<>();
@@ -64,18 +66,9 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 		setTotalPrice();
 	}
 
-	public void SortByBrandAndPrice(ArrayList<MusicalInstrument> list) {
-		MusicalInstrument temp;
-		for (int i = 1; i < list.size(); i++) {
-			for (int j = i; j > 0; j--) {
-				if (list.get(j).compareTo(list.get(j - 1)) < 0) {
-					temp = list.get(j);
-					list.set(j, list.get(j - 1));
-					list.set(j - 1, temp);
-				}
-			}
-		}
-		isSorted = true;
+	public void SortByBrandAndPrice(ArrayList<? extends MusicalInstrument> list) {
+		Collections.sort(list);
+		setSorted(true);
 	}
 
 	@Override
@@ -101,7 +94,7 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 		while (high >= low) {
 			middle = (high + low) / 2;
 			int compareBrands = list.get(middle).getBrand().compareTo(brand);
-			if (compareBrands == 0 || list.get(middle).getPrice() == price) {
+			if (compareBrands == 0 && list.get(middle).getPrice().doubleValue() == price.doubleValue()) {
 				return middle;
 			} else if (compareBrands > 0 || list.get(middle).getPrice().doubleValue() > price.doubleValue()) {
 				high = middle - 1;
@@ -119,7 +112,7 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 	}
 
 	@Override
-	public boolean removeInstrument(ArrayList<T> list, T instrument) {
+	public boolean removeInstrument(ArrayList<? extends MusicalInstrument> list, MusicalInstrument instrument) {
 		boolean remove = list.remove(instrument);
 		setTotalPrice();
 		return remove;
@@ -127,8 +120,14 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 
 	@Override
 	public boolean removeAll(ArrayList<MusicalInstrument> list) {
-		boolean remove = list.removeAll(list);
+		boolean remove = false;
+		while (!list.isEmpty()) {
+			remove = list.remove(list.get(0));
+		}
+		if (remove) {
 		setTotalPrice();
+		setSorted(false);
+		}
 		return remove;
 	}
 

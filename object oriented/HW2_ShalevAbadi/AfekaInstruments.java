@@ -47,8 +47,8 @@ public class AfekaInstruments {
 
 	public static char getCommend(Scanner consoleScanner) {
 		System.out.print("Your Option: ");
-		char choice = consoleScanner.next().charAt(0);
-		System.out.println(choice + "\n");
+	char choice = consoleScanner.next().charAt(0);
+	
 		return choice;
 	}
 
@@ -76,6 +76,7 @@ public class AfekaInstruments {
 					getPriceToSearch(consoleScanner));
 			if (index == -1) {
 				System.out.println("Instrument Not Found!");
+				
 			} else {
 				System.out.println(inventory.getInstruments().get(index).toString());
 			}
@@ -93,7 +94,8 @@ public class AfekaInstruments {
 		default:{
 			System.out.println("\nFinished!");
 			return false;
-		}} return true;
+		}} 
+		return true;
 }
 
 	public static void case6Flow(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory) {
@@ -125,6 +127,7 @@ public class AfekaInstruments {
 		int index = inventory.binnarySearchByBrandAndPrice(inventory.getInstruments(), getBrandToSearch(consoleScanner),
 				getPriceToSearch(consoleScanner));
 		if (index != -1) {
+			System.out.println(inventory.getInstruments().get(index));
 			System.out.print("Are You Sure?(Y/N)  ");
 			do {
 			char removeAnswer = consoleScanner.next().charAt(0);
@@ -152,15 +155,17 @@ public class AfekaInstruments {
 	private static String getBrandToSearch(Scanner consoleScanner) {
 		System.out.println("\nBrand: ");
 		return consoleScanner.next();
+		
 	}
 
 	private static Number getPriceToSearch(Scanner consoleScanner) {
-		Number res = 0;
 		System.out.println("\nPrice: ");
 		if (consoleScanner.hasNextDouble()) {
-			res = consoleScanner.nextDouble();
+			return consoleScanner.nextDouble();
 		}
-		return res;
+		consoleScanner.nextLine();
+		consoleScanner.nextLine();
+		return 0;
 	}
 
 	private static void printMenu() {
@@ -189,21 +194,14 @@ public class AfekaInstruments {
 		return file;
 	}
 
-	public static void loadInstrumentsFromFile(File file, ArrayList allInstruments) {
+	public static void loadInstrumentsFromFile(File file, ArrayList<MusicalInstrument> allInstruments) {
 		Scanner scanner = null;
-
 		try {
-
 			scanner = new Scanner(file);
-
 			addAllInstruments(allInstruments, loadGuitars(scanner));
-
 			addAllInstruments(allInstruments, loadBassGuitars(scanner));
-
 			addAllInstruments(allInstruments, loadFlutes(scanner));
-
 			addAllInstruments(allInstruments, loadSaxophones(scanner));
-
 		} catch (InputMismatchException | IllegalArgumentException ex) {
 			System.err.println("\n" + ex.getMessage());
 			System.exit(1);
@@ -217,91 +215,82 @@ public class AfekaInstruments {
 
 	}
 
-	public static ArrayList loadGuitars(Scanner scanner) {
+	public static ArrayList<Guitar> loadGuitars(Scanner scanner) {
 		int numOfInstruments = scanner.nextInt();
-		ArrayList guitars = new ArrayList(numOfInstruments);
-
+		ArrayList<Guitar> guitars = new ArrayList<>(numOfInstruments);
 		for (int i = 0; i < numOfInstruments; i++)
 			guitars.add(new Guitar(scanner));
-
 		return guitars;
 	}
 
-	public static ArrayList loadBassGuitars(Scanner scanner) {
+	public static ArrayList<Bass> loadBassGuitars(Scanner scanner) {
 		int numOfInstruments = scanner.nextInt();
-		ArrayList bassGuitars = new ArrayList(numOfInstruments);
-
+		ArrayList<Bass> bassGuitars = new ArrayList<>(numOfInstruments);
 		for (int i = 0; i < numOfInstruments; i++)
 			bassGuitars.add(new Bass(scanner));
-
 		return bassGuitars;
 	}
 
-	public static ArrayList loadFlutes(Scanner scanner) {
+	public static ArrayList<Flute> loadFlutes(Scanner scanner) {
 		int numOfInstruments = scanner.nextInt();
-		ArrayList flutes = new ArrayList(numOfInstruments);
-
+		ArrayList<Flute> flutes = new ArrayList<>(numOfInstruments);
 		for (int i = 0; i < numOfInstruments; i++)
 			flutes.add(new Flute(scanner));
-
 		return flutes;
 	}
 
-	public static ArrayList loadSaxophones(Scanner scanner) {
+	public static ArrayList<Saxophone> loadSaxophones(Scanner scanner) {
 		int numOfInstruments = scanner.nextInt();
-		ArrayList saxophones = new ArrayList(numOfInstruments);
-
+		ArrayList<Saxophone> saxophones = new ArrayList<>(numOfInstruments);
 		for (int i = 0; i < numOfInstruments; i++)
 			saxophones.add(new Saxophone(scanner));
-
 		return saxophones;
 	}
 
-	public static void addAllInstruments(ArrayList instruments, ArrayList moreInstruments) {
+	public static void addAllInstruments(ArrayList<MusicalInstrument> instruments,
+			ArrayList<? extends MusicalInstrument> moreInstruments) {
 		for (int i = 0; i < moreInstruments.size(); i++) {
 			instruments.add(moreInstruments.get(i));
 		}
 	}
 
-	public static void printInstruments(ArrayList instruments) {
-		for (int i = 0; i < instruments.size(); i++)
-			System.out.println(instruments.get(i));
+	public static <T extends MusicalInstrument> void printInstruments(ArrayList<T> instruments) {
+		if (instruments.isEmpty())
+			System.out.println("There Are No Instruments To Show");
+		else {
+			for (int i = 0; i < instruments.size(); i++)
+				System.out.println(instruments.get(i));
+		}
 	}
 
-	public static int getNumOfDifferentElements(ArrayList instruments) {
+	public static <T extends MusicalInstrument> int getNumOfDifferentElements(ArrayList<T> instruments) {
 		int numOfDifferentInstruments;
-		ArrayList differentInstruments = new ArrayList();
+		ArrayList<T> differentInstruments = new ArrayList<>();
 		System.out.println();
-
 		for (int i = 0; i < instruments.size(); i++) {
 			if (!differentInstruments.contains((instruments.get(i)))) {
 				differentInstruments.add(instruments.get(i));
 			}
 		}
-
 		if (differentInstruments.size() == 1)
 			numOfDifferentInstruments = 0;
-
 		else
 			numOfDifferentInstruments = differentInstruments.size();
-
 		return numOfDifferentInstruments;
 	}
 
-	public static MusicalInstrument getMostExpensiveInstrument(ArrayList instruments) {
+	public static <T extends MusicalInstrument> MusicalInstrument getMostExpensiveInstrument(ArrayList<T> instruments){
 		double maxPrice = 0;
-		MusicalInstrument mostExpensive = (MusicalInstrument) instruments.get(0);
-
+		MusicalInstrument mostExpensive = instruments.get(0);
 		for (int i = 0; i < instruments.size(); i++) {
-			MusicalInstrument temp = (MusicalInstrument) instruments.get(i);
-
+			MusicalInstrument temp = instruments.get(i);
 			if (temp.getPrice().doubleValue() > maxPrice) {
 				maxPrice = temp.getPrice().doubleValue();
 				mostExpensive = temp;
 			}
 		}
-
 		return mostExpensive;
 	}
+
 
 }
