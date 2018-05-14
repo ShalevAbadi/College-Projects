@@ -106,7 +106,7 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 	}
 
 	@Override
-	public void addInstrument(ArrayList<T> list, T instrument) {
+	public void addInstrument(ArrayList<? super MusicalInstrument> list, MusicalInstrument instrument) {
 		list.add(instrument);
 		setTotalPrice();
 	}

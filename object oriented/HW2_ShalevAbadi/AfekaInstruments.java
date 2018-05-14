@@ -55,38 +55,22 @@ public class AfekaInstruments {
 	private static boolean executeCommend(char choice, Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory, ArrayList<MusicalInstrument> allInstruments) {
 		switch(choice) {
 		case '1':
-			inventory.addAllStringInstruments(allInstruments, inventory.getInstruments());
-			System.out.println("\nAll String Instruments Added Successfully!");
+			addAllStringInstrumentsFlow(inventory, allInstruments);
 			break;
 		case '2':
-			inventory.addAllWindInstruments(allInstruments, inventory.getInstruments());
-			System.out.println("\nAll Wind Instruments Added Successfully!");
+			addAllWindIntrumentsFlow(inventory, allInstruments);
 			break;
 		case '3':
-			inventory.SortByBrandAndPrice(inventory.getInstruments());
-			System.out.println("\nInstruments Sorted Successfully!");
+			sortInventoryFlow(inventory);
 			break;
 		case '4':
-			if (!inventory.getIsSorted()) {
-				System.out.println("\nYou cannot preform binnary search on an unsorted list \n");
-			}
-			else {
-			System.out.println("SEARCH INSTRUMENT: ");
-			int index = inventory.binnarySearchByBrandAndPrice(inventory.getInstruments(), getBrandToSearch(consoleScanner),
-					getPriceToSearch(consoleScanner));
-			if (index == -1) {
-				System.out.println("Instrument Not Found!");
-				
-			} else {
-				System.out.println(inventory.getInstruments().get(index).toString());
-			}
-			}
+			searchInstrumentFlow(consoleScanner, inventory);
 			break;
 		case '5':
-			case5Flow(consoleScanner, inventory);
+			removeOneInstrumentFlow(consoleScanner, inventory);
 			break;
 		case '6':
-			case6Flow(consoleScanner, inventory);
+			removeAllInstrumentsFlow(consoleScanner, inventory);
 			break;
 		case '7':
 			System.out.print(inventory.toString());
@@ -98,27 +82,66 @@ public class AfekaInstruments {
 		return true;
 }
 
-	public static void case6Flow(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory) {
+	public static void searchInstrumentFlow(Scanner consoleScanner,
+			AfekaInventory<MusicalInstrument> inventory) {
+		if (!inventory.getIsSorted()) {
+			System.out.println("\nYou cannot preform binnary search on an unsorted list \n");
+		}
+		else {
+		System.out.println("SEARCH INSTRUMENT: ");
+		int index = inventory.binnarySearchByBrandAndPrice(inventory.getInstruments(), getBrandToSearch(consoleScanner),
+				getPriceToSearch(consoleScanner));
+		if (index == -1) {
+			System.out.println("Instrument Not Found!");
+			
+		} else {
+			System.out.println(inventory.getInstruments().get(index).toString());
+		}
+		}
+	}
+
+	public static void sortInventoryFlow(AfekaInventory<MusicalInstrument> inventory) {
+		inventory.SortByBrandAndPrice(inventory.getInstruments());
+		System.out.println("\nInstruments Sorted Successfully!");
+	}
+
+	public static void addAllWindIntrumentsFlow(AfekaInventory<MusicalInstrument> inventory,
+			ArrayList<MusicalInstrument> allInstruments) {
+		inventory.addAllWindInstruments(allInstruments, inventory.getInstruments());
+		System.out.println("\nAll Wind Instruments Added Successfully!");
+	}
+
+	public static void addAllStringInstrumentsFlow(AfekaInventory<MusicalInstrument> inventory,
+			ArrayList<MusicalInstrument> allInstruments) {
+		inventory.addAllStringInstruments(allInstruments, inventory.getInstruments());
+		System.out.println("\nAll String Instruments Added Successfully!");
+	}
+
+	public static void removeAllInstrumentsFlow(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory) {
 		System.out.println("\nDELETE ALL INSTRUMENTS:\n  ");
 			System.out.print("Are You Sure?(Y/N)  ");
 			do {
 			char removeAnswer = consoleScanner.next().charAt(0);
 			if (removeAnswer == 'Y' || removeAnswer == 'y') {
-				if (inventory.removeAll(inventory.getInstruments())) {
-					System.out.println("All Instruments Deleted Successfully!");
-				} else{
-					System.out.println("Error occured. Instruments didn't remove");
-				}
+				removeAllAndPrintMessage(inventory);
 				return;
 			}
-			if ((removeAnswer == 'N' || removeAnswer == 'n')) {
+			else if ((removeAnswer == 'N' || removeAnswer == 'n')) {
 				System.out.println("You chose not to delete");
 				return;
 			}
 			}while(true);
 	}
 
-	public static void case5Flow(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory) {
+	public static void removeAllAndPrintMessage(AfekaInventory<MusicalInstrument> inventory) {
+		if (inventory.removeAll(inventory.getInstruments())) {
+			System.out.println("All Instruments Deleted Successfully!");
+		} else{
+			System.out.println("Error occured. Instruments didn't remove");
+		}
+	}
+
+	public static void removeOneInstrumentFlow(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory) {
 		if (!inventory.getIsSorted()) {
 			System.out.println("\nYou cannot delete from an unsorted list \n");
 		}
@@ -132,12 +155,7 @@ public class AfekaInstruments {
 			do {
 			char removeAnswer = consoleScanner.next().charAt(0);
 			if (removeAnswer == 'Y' || removeAnswer == 'y') {
-				if (inventory.removeInstrument(inventory.getInstruments(),
-						inventory.getInstruments().get(index))) {
-					System.out.println("Instrument Deleted Successfully!");
-				} else{
-					System.out.println("Error occured. Instrument didn't remove");
-				}
+				deleteOneInstrumentAndPrintMessage(inventory, index);
 				return;
 			}
 			if ((removeAnswer == 'N' || removeAnswer == 'n')) {
@@ -149,6 +167,15 @@ public class AfekaInstruments {
 		} else {
 			System.out.println("Instrument Not Found!");
 		}
+		}
+	}
+
+	public static void deleteOneInstrumentAndPrintMessage(AfekaInventory<MusicalInstrument> inventory, int index) {
+		if (inventory.removeInstrument(inventory.getInstruments(),
+				inventory.getInstruments().get(index))) {
+			System.out.println("Instrument Deleted Successfully!");
+		} else{
+			System.out.println("Error occured. Instrument didn't remove");
 		}
 	}
 
