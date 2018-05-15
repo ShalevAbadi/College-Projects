@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 public class AfekaInventory<T extends MusicalInstrument> implements StorageManagement<T> {
 	private ArrayList<T> instruments = new ArrayList<>();
 	private double totalPrice;
@@ -18,11 +17,11 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 	public Number getTotalPrice() {
 		return totalPrice;
 	}
-	
+
 	public void setTotalPrice(Double totalPrice) {
 		this.totalPrice = totalPrice;
 	}
-	
+
 	public void setTotalPrice() {
 		double sum = 0;
 		for (int i = 0; i < instruments.size(); i++) {
@@ -45,7 +44,8 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 	}
 
 	@Override
-	public void addAllStringInstruments(ArrayList<? extends MusicalInstrument> src, ArrayList<? super MusicalInstrument> dest) {
+	public void addAllStringInstruments(ArrayList<? extends MusicalInstrument> src,
+			ArrayList<? super MusicalInstrument> dest) {
 		for (int i = 0; i < src.size(); i++) {
 			if (src.get(i) instanceof StringInstrument) {
 				dest.add(src.get(i));
@@ -56,7 +56,8 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 	}
 
 	@Override
-	public void addAllWindInstruments(ArrayList<? extends MusicalInstrument> src, ArrayList<? super MusicalInstrument> dest) {
+	public void addAllWindInstruments(ArrayList<? extends MusicalInstrument> src,
+			ArrayList<? super MusicalInstrument> dest) {
 		for (int i = 0; i < src.size(); i++) {
 			if (src.get(i) instanceof WindInstrument) {
 				dest.add(src.get(i));
@@ -125,8 +126,8 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 			remove = list.remove(list.get(0));
 		}
 		if (remove) {
-		setTotalPrice();
-		setSorted(false);
+			setTotalPrice();
+			setSorted(false);
 		}
 		return remove;
 	}

@@ -1,4 +1,4 @@
 
-public interface InstrumentFunc <T extends MusicalInstrument>  extends Cloneable, Comparable <T>{
+public interface InstrumentFunc<T extends MusicalInstrument> extends Cloneable, Comparable<T> {
 
 }

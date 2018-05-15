@@ -47,13 +47,14 @@ public class AfekaInstruments {
 
 	public static char getCommend(Scanner consoleScanner) {
 		System.out.print("Your Option: ");
-	char choice = consoleScanner.next().charAt(0);
-	
+		char choice = consoleScanner.next().charAt(0);
+
 		return choice;
 	}
 
-	private static boolean executeCommend(char choice, Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory, ArrayList<MusicalInstrument> allInstruments) {
-		switch(choice) {
+	private static boolean executeCommend(char choice, Scanner consoleScanner,
+			AfekaInventory<MusicalInstrument> inventory, ArrayList<MusicalInstrument> allInstruments) {
+		switch (choice) {
 		case '1':
 			addAllStringInstrumentsFlow(inventory, allInstruments);
 			break;
@@ -75,28 +76,27 @@ public class AfekaInstruments {
 		case '7':
 			System.out.print(inventory.toString());
 			break;
-		default:{
+		default: {
 			System.out.println("\nFinished!");
 			return false;
-		}} 
+		}
+		}
 		return true;
-}
+	}
 
-	public static void searchInstrumentFlow(Scanner consoleScanner,
-			AfekaInventory<MusicalInstrument> inventory) {
+	public static void searchInstrumentFlow(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory) {
 		if (!inventory.getIsSorted()) {
 			System.out.println("\nYou cannot preform binnary search on an unsorted list \n");
-		}
-		else {
-		System.out.println("SEARCH INSTRUMENT: ");
-		int index = inventory.binnarySearchByBrandAndPrice(inventory.getInstruments(), getBrandToSearch(consoleScanner),
-				getPriceToSearch(consoleScanner));
-		if (index == -1) {
-			System.out.println("Instrument Not Found!");
-			
 		} else {
-			System.out.println(inventory.getInstruments().get(index).toString());
-		}
+			System.out.println("SEARCH INSTRUMENT: ");
+			int index = inventory.binnarySearchByBrandAndPrice(inventory.getInstruments(),
+					getBrandToSearch(consoleScanner), getPriceToSearch(consoleScanner));
+			if (index == -1) {
+				System.out.println("Instrument Not Found!");
+
+			} else {
+				System.out.println(inventory.getInstruments().get(index).toString());
+			}
 		}
 	}
 
@@ -119,24 +119,28 @@ public class AfekaInstruments {
 
 	public static void removeAllInstrumentsFlow(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory) {
 		System.out.println("\nDELETE ALL INSTRUMENTS:\n  ");
-			System.out.print("Are You Sure?(Y/N)  ");
-			do {
+		if (getUserApprovalToDelete(consoleScanner)) {
+			removeAllAndPrintMessage(inventory);
+		}
+	}
+
+	public static boolean getUserApprovalToDelete(Scanner consoleScanner) {
+		System.out.print("Are You Sure?(Y/N)  ");
+		do {
 			char removeAnswer = consoleScanner.next().charAt(0);
 			if (removeAnswer == 'Y' || removeAnswer == 'y') {
-				removeAllAndPrintMessage(inventory);
-				return;
-			}
-			else if ((removeAnswer == 'N' || removeAnswer == 'n')) {
+				return true;
+			} else if ((removeAnswer == 'N' || removeAnswer == 'n')) {
 				System.out.println("You chose not to delete");
-				return;
+				return false;
 			}
-			}while(true);
+		} while (true);
 	}
 
 	public static void removeAllAndPrintMessage(AfekaInventory<MusicalInstrument> inventory) {
 		if (inventory.removeAll(inventory.getInstruments())) {
 			System.out.println("All Instruments Deleted Successfully!");
-		} else{
+		} else {
 			System.out.println("Error occured. Instruments didn't remove");
 		}
 	}
@@ -144,37 +148,25 @@ public class AfekaInstruments {
 	public static void removeOneInstrumentFlow(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory) {
 		if (!inventory.getIsSorted()) {
 			System.out.println("\nYou cannot delete from an unsorted list \n");
-		}
-		else {
-		System.out.println("\nDELETE INSTRUMENT:\n  ");
-		int index = inventory.binnarySearchByBrandAndPrice(inventory.getInstruments(), getBrandToSearch(consoleScanner),
-				getPriceToSearch(consoleScanner));
-		if (index != -1) {
-			System.out.println(inventory.getInstruments().get(index));
-			System.out.print("Are You Sure?(Y/N)  ");
-			do {
-			char removeAnswer = consoleScanner.next().charAt(0);
-			if (removeAnswer == 'Y' || removeAnswer == 'y') {
-				deleteOneInstrumentAndPrintMessage(inventory, index);
-				return;
-			}
-			if ((removeAnswer == 'N' || removeAnswer == 'n')) {
-				System.out.println("You chose not to delete");
-				return;
-			}
-			}while(true);
-			
 		} else {
-			System.out.println("Instrument Not Found!");
-		}
+			System.out.println("\nDELETE INSTRUMENT:\n  ");
+			int index = inventory.binnarySearchByBrandAndPrice(inventory.getInstruments(),
+					getBrandToSearch(consoleScanner), getPriceToSearch(consoleScanner));
+			if (index != -1) {
+				System.out.println(inventory.getInstruments().get(index));
+				if (getUserApprovalToDelete(consoleScanner)) {
+					deleteOneInstrumentAndPrintMessage(inventory, index);
+				}
+			} else {
+				System.out.println("Instrument Not Found!");
+			}
 		}
 	}
 
 	public static void deleteOneInstrumentAndPrintMessage(AfekaInventory<MusicalInstrument> inventory, int index) {
-		if (inventory.removeInstrument(inventory.getInstruments(),
-				inventory.getInstruments().get(index))) {
+		if (inventory.removeInstrument(inventory.getInstruments(), inventory.getInstruments().get(index))) {
 			System.out.println("Instrument Deleted Successfully!");
-		} else{
+		} else {
 			System.out.println("Error occured. Instrument didn't remove");
 		}
 	}
@@ -182,7 +174,7 @@ public class AfekaInstruments {
 	private static String getBrandToSearch(Scanner consoleScanner) {
 		System.out.println("\nBrand: ");
 		return consoleScanner.next();
-		
+
 	}
 
 	private static Number getPriceToSearch(Scanner consoleScanner) {
@@ -306,7 +298,7 @@ public class AfekaInstruments {
 		return numOfDifferentInstruments;
 	}
 
-	public static <T extends MusicalInstrument> MusicalInstrument getMostExpensiveInstrument(ArrayList<T> instruments){
+	public static <T extends MusicalInstrument> MusicalInstrument getMostExpensiveInstrument(ArrayList<T> instruments) {
 		double maxPrice = 0;
 		MusicalInstrument mostExpensive = instruments.get(0);
 		for (int i = 0; i < instruments.size(); i++) {
