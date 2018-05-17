@@ -1,7 +1,8 @@
+//Shalev Abadi 205740772
 import java.util.ArrayList;
 
-public interface StorageManagement{
-	//Itzik allowed not to use <E> because its unnecessary
+public interface StorageManagement {
+	// Itzik allowed not to use <E> because its unnecessary
 	void addAllStringInstruments(ArrayList<? extends MusicalInstrument> src, ArrayList<? super MusicalInstrument> dest);
 
 	void addAllWindInstruments(ArrayList<? extends MusicalInstrument> src, ArrayList<? super MusicalInstrument> dest);
@@ -15,8 +16,5 @@ public interface StorageManagement{
 	boolean removeInstrument(ArrayList<? extends MusicalInstrument> musicalList, MusicalInstrument instrument);
 
 	boolean removeAll(ArrayList<? extends MusicalInstrument> musicalList);
-
-
-
 
 }

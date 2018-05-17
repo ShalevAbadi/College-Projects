@@ -1,3 +1,4 @@
+//Shalev Abadi 205740772
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -51,8 +52,8 @@ public class AfekaInstruments {
 		return choice;
 	}
 
-	private static boolean executeCommend(char choice, Scanner consoleScanner,
-			AfekaInventory inventory, ArrayList<MusicalInstrument> allInstruments) {
+	private static boolean executeCommend(char choice, Scanner consoleScanner, AfekaInventory inventory,
+			ArrayList<MusicalInstrument> allInstruments) {
 		switch (choice) {
 		case '1':
 			addAllStringInstrumentsFlow(inventory, allInstruments);
@@ -104,8 +105,7 @@ public class AfekaInstruments {
 		System.out.println("\nInstruments Sorted Successfully!");
 	}
 
-	public static void addAllWindIntrumentsFlow(AfekaInventory inventory,
-			ArrayList<MusicalInstrument> allInstruments) {
+	public static void addAllWindIntrumentsFlow(AfekaInventory inventory, ArrayList<MusicalInstrument> allInstruments) {
 		inventory.addAllWindInstruments(allInstruments, inventory.getInstruments());
 		System.out.println("\nAll Wind Instruments Added Successfully!");
 	}

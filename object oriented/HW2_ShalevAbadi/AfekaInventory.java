@@ -1,3 +1,5 @@
+
+//Shalev Abadi 205740772
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -79,7 +81,7 @@ public class AfekaInventory implements StorageManagement {
 			middle = (high + low) / 2;
 			int compareResult = list.get(middle).getBrand().compareTo(brand);
 			if (compareResult == 0) {
-				return secondBinnarySearch(list, brand, price, high, low, middle);
+				return secondSearch(list, brand, price, high, low, middle);
 			} else if (compareResult > 0) {
 				high = middle - 1;
 			} else {
@@ -89,21 +91,43 @@ public class AfekaInventory implements StorageManagement {
 		return -1;
 	}
 
-	private int secondBinnarySearch(ArrayList<? extends MusicalInstrument> list, String brand, Number price, int high, int low,
-			int middle) {
-		int res = middle;
-		while (high >= low) {
-			middle = (high + low) / 2;
-			int compareBrands = list.get(middle).getBrand().compareTo(brand);
-			if (compareBrands == 0 && list.get(middle).getPrice().doubleValue() == price.doubleValue()) {
-				return middle;
-			} else if (compareBrands > 0 || list.get(middle).getPrice().doubleValue() > price.doubleValue()) {
-				high = middle - 1;
-			} else {
-				low = middle + 1;
+	private int secondSearch(ArrayList<? extends MusicalInstrument> list, String brand, Number price, int high,
+			int low, int currentRes) {
+		// searchRight
+		for (int i = currentRes + 1; i <= high; i++) {
+			if (list.get(i).getBrand().equals(brand)) {
+				if(list.get(i).getPrice().doubleValue() == price.doubleValue())
+					return i;
+
+				else if (list.get(i).getPrice().doubleValue()
+						- (price).doubleValue() < list.get(i).getPrice().doubleValue()
+								- list.get(currentRes).getPrice().doubleValue()) {
+					currentRes = i;
+				}
+				}
+			else if (!list.get(i).getBrand().equals(brand)
+							|| list.get(i).getPrice().doubleValue() > price.doubleValue()) {
+						i = high + 1;
 			}
+			}
+		// searchLeft
+		for (int i = currentRes - 1; i >= low; i--) {
+			if (list.get(i).getBrand().equals(brand)) {
+			if(list.get(i).getPrice().doubleValue() == price.doubleValue())
+				return i;
+
+			else if (list.get(i).getPrice().doubleValue()
+					- (price).doubleValue() < list.get(i).getPrice().doubleValue()
+							- list.get(currentRes).getPrice().doubleValue()) {
+				currentRes = i;
+			}
+			}
+		else if (!list.get(i).getBrand().equals(brand)
+						|| list.get(i).getPrice().doubleValue() < price.doubleValue()) {
+					i = low - 1;
 		}
-		return res;
+		}
+		return currentRes;
 	}
 
 	@Override
