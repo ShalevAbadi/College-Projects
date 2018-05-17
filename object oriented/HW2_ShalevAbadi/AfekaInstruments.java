@@ -31,7 +31,7 @@ public class AfekaInstruments {
 
 	private static void menuFlow(Scanner consoleScanner, ArrayList<MusicalInstrument> allInstruments) {
 		boolean continues = true;
-		AfekaInventory<MusicalInstrument> inventory = new AfekaInventory<>();
+		AfekaInventory inventory = new AfekaInventory();
 		do {
 			printMenu();
 			continues = getAndExecuteUserCommend(consoleScanner, inventory, allInstruments);
@@ -39,7 +39,7 @@ public class AfekaInstruments {
 
 	}
 
-	private static boolean getAndExecuteUserCommend(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory,
+	private static boolean getAndExecuteUserCommend(Scanner consoleScanner, AfekaInventory inventory,
 			ArrayList<MusicalInstrument> allInstruments) {
 		char choice = getCommend(consoleScanner);
 		return executeCommend(choice, consoleScanner, inventory, allInstruments);
@@ -48,12 +48,11 @@ public class AfekaInstruments {
 	public static char getCommend(Scanner consoleScanner) {
 		System.out.print("Your Option: ");
 		char choice = consoleScanner.next().charAt(0);
-
 		return choice;
 	}
 
 	private static boolean executeCommend(char choice, Scanner consoleScanner,
-			AfekaInventory<MusicalInstrument> inventory, ArrayList<MusicalInstrument> allInstruments) {
+			AfekaInventory inventory, ArrayList<MusicalInstrument> allInstruments) {
 		switch (choice) {
 		case '1':
 			addAllStringInstrumentsFlow(inventory, allInstruments);
@@ -84,7 +83,7 @@ public class AfekaInstruments {
 		return true;
 	}
 
-	public static void searchInstrumentFlow(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory) {
+	public static void searchInstrumentFlow(Scanner consoleScanner, AfekaInventory inventory) {
 		if (!inventory.getIsSorted()) {
 			System.out.println("\nYou cannot preform binnary search on an unsorted list \n");
 		} else {
@@ -100,24 +99,24 @@ public class AfekaInstruments {
 		}
 	}
 
-	public static void sortInventoryFlow(AfekaInventory<MusicalInstrument> inventory) {
+	public static void sortInventoryFlow(AfekaInventory inventory) {
 		inventory.SortByBrandAndPrice(inventory.getInstruments());
 		System.out.println("\nInstruments Sorted Successfully!");
 	}
 
-	public static void addAllWindIntrumentsFlow(AfekaInventory<MusicalInstrument> inventory,
+	public static void addAllWindIntrumentsFlow(AfekaInventory inventory,
 			ArrayList<MusicalInstrument> allInstruments) {
 		inventory.addAllWindInstruments(allInstruments, inventory.getInstruments());
 		System.out.println("\nAll Wind Instruments Added Successfully!");
 	}
 
-	public static void addAllStringInstrumentsFlow(AfekaInventory<MusicalInstrument> inventory,
+	public static void addAllStringInstrumentsFlow(AfekaInventory inventory,
 			ArrayList<MusicalInstrument> allInstruments) {
 		inventory.addAllStringInstruments(allInstruments, inventory.getInstruments());
 		System.out.println("\nAll String Instruments Added Successfully!");
 	}
 
-	public static void removeAllInstrumentsFlow(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory) {
+	public static void removeAllInstrumentsFlow(Scanner consoleScanner, AfekaInventory inventory) {
 		System.out.println("\nDELETE ALL INSTRUMENTS:\n  ");
 		if (getUserApprovalToDelete(consoleScanner)) {
 			removeAllAndPrintMessage(inventory);
@@ -137,7 +136,7 @@ public class AfekaInstruments {
 		} while (true);
 	}
 
-	public static void removeAllAndPrintMessage(AfekaInventory<MusicalInstrument> inventory) {
+	public static void removeAllAndPrintMessage(AfekaInventory inventory) {
 		if (inventory.removeAll(inventory.getInstruments())) {
 			System.out.println("All Instruments Deleted Successfully!");
 		} else {
@@ -145,7 +144,7 @@ public class AfekaInstruments {
 		}
 	}
 
-	public static void removeOneInstrumentFlow(Scanner consoleScanner, AfekaInventory<MusicalInstrument> inventory) {
+	public static void removeOneInstrumentFlow(Scanner consoleScanner, AfekaInventory inventory) {
 		if (!inventory.getIsSorted()) {
 			System.out.println("\nYou cannot delete from an unsorted list \n");
 		} else {
@@ -163,7 +162,7 @@ public class AfekaInstruments {
 		}
 	}
 
-	public static void deleteOneInstrumentAndPrintMessage(AfekaInventory<MusicalInstrument> inventory, int index) {
+	public static void deleteOneInstrumentAndPrintMessage(AfekaInventory inventory, int index) {
 		if (inventory.removeInstrument(inventory.getInstruments(), inventory.getInstruments().get(index))) {
 			System.out.println("Instrument Deleted Successfully!");
 		} else {

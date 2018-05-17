@@ -1,16 +1,16 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class AfekaInventory<T extends MusicalInstrument> implements StorageManagement<T> {
-	private ArrayList<T> instruments = new ArrayList<>();
+public class AfekaInventory implements StorageManagement {
+	private ArrayList<MusicalInstrument> instruments = new ArrayList<>();
 	private double totalPrice;
 	private boolean isSorted;
 
-	public ArrayList<T> getInstruments() {
+	public ArrayList<MusicalInstrument> getInstruments() {
 		return instruments;
 	}
 
-	public void setInstruments(ArrayList<T> arr) {
+	public void setInstruments(ArrayList<MusicalInstrument> arr) {
 		this.instruments = arr;
 	}
 
@@ -73,7 +73,7 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 	}
 
 	@Override
-	public int binnarySearchByBrandAndPrice(ArrayList<MusicalInstrument> list, String brand, Number price) {
+	public int binnarySearchByBrandAndPrice(ArrayList<? extends MusicalInstrument> list, String brand, Number price) {
 		int high = list.size() - 1, low = 0, middle;
 		while (high >= low) {
 			middle = (high + low) / 2;
@@ -89,7 +89,7 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 		return -1;
 	}
 
-	private int secondBinnarySearch(ArrayList<MusicalInstrument> list, String brand, Number price, int high, int low,
+	private int secondBinnarySearch(ArrayList<? extends MusicalInstrument> list, String brand, Number price, int high, int low,
 			int middle) {
 		int res = middle;
 		while (high >= low) {
@@ -120,7 +120,7 @@ public class AfekaInventory<T extends MusicalInstrument> implements StorageManag
 	}
 
 	@Override
-	public boolean removeAll(ArrayList<MusicalInstrument> list) {
+	public boolean removeAll(ArrayList<? extends MusicalInstrument> list) {
 		boolean remove = false;
 		while (!list.isEmpty()) {
 			remove = list.remove(list.get(0));
