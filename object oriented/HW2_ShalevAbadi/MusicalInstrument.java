@@ -1,3 +1,4 @@
+
 //Shalev Abadi 205740772
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -76,7 +77,7 @@ abstract class MusicalInstrument implements InstrumentFunc<MusicalInstrument> {
 	public int compareTo(MusicalInstrument compared) {
 		return compareTo(compared.getBrand(), compared.getPrice());
 	}
-	
+
 	public int compareTo(String Brand, Number price) {
 		int brandCompare = this.getBrand().compareTo(Brand);
 		if (brandCompare == 0) {

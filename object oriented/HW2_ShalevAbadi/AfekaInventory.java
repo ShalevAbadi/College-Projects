@@ -79,7 +79,7 @@ public class AfekaInventory implements StorageManagement {
 		int high = list.size() - 1, low = 0, middle;
 		while (high >= low) {
 			middle = (high + low) / 2;
-			int compareResult = list.get(middle).compareTo(brand,price);
+			int compareResult = list.get(middle).compareTo(brand, price);
 			if (compareResult == 0) {
 				return middle;
 			} else if (compareResult > 0) {
