@@ -74,9 +74,13 @@ abstract class MusicalInstrument implements InstrumentFunc<MusicalInstrument> {
 
 	@Override
 	public int compareTo(MusicalInstrument compared) {
-		int brandCompare = this.getBrand().compareTo(compared.getBrand());
+		return compareTo(compared.getBrand(), compared.getPrice());
+	}
+	
+	public int compareTo(String Brand, Number price) {
+		int brandCompare = this.getBrand().compareTo(Brand);
 		if (brandCompare == 0) {
-			double priceCompare = (this.getPrice().doubleValue() - compared.getPrice().doubleValue());
+			double priceCompare = (this.getPrice().doubleValue() - price.doubleValue());
 			if (priceCompare < 0) {
 				return -1;
 			} else if (priceCompare > 0) {

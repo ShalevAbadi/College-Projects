@@ -79,9 +79,9 @@ public class AfekaInventory implements StorageManagement {
 		int high = list.size() - 1, low = 0, middle;
 		while (high >= low) {
 			middle = (high + low) / 2;
-			int compareResult = list.get(middle).getBrand().compareTo(brand);
+			int compareResult = list.get(middle).compareTo(brand,price);
 			if (compareResult == 0) {
-				return secondSearch(list, brand, price, high, low, middle);
+				return middle;
 			} else if (compareResult > 0) {
 				high = middle - 1;
 			} else {
@@ -89,45 +89,6 @@ public class AfekaInventory implements StorageManagement {
 			}
 		}
 		return -1;
-	}
-
-	private int secondSearch(ArrayList<? extends MusicalInstrument> list, String brand, Number price, int high,
-			int low, int currentRes) {
-		// searchRight
-		for (int i = currentRes + 1; i <= high; i++) {
-			if (list.get(i).getBrand().equals(brand)) {
-				if(list.get(i).getPrice().doubleValue() == price.doubleValue())
-					return i;
-
-				else if (list.get(i).getPrice().doubleValue()
-						- (price).doubleValue() < list.get(i).getPrice().doubleValue()
-								- list.get(currentRes).getPrice().doubleValue()) {
-					currentRes = i;
-				}
-				}
-			else if (!list.get(i).getBrand().equals(brand)
-							|| list.get(i).getPrice().doubleValue() > price.doubleValue()) {
-						i = high + 1;
-			}
-			}
-		// searchLeft
-		for (int i = currentRes - 1; i >= low; i--) {
-			if (list.get(i).getBrand().equals(brand)) {
-			if(list.get(i).getPrice().doubleValue() == price.doubleValue())
-				return i;
-
-			else if (list.get(i).getPrice().doubleValue()
-					- (price).doubleValue() < list.get(i).getPrice().doubleValue()
-							- list.get(currentRes).getPrice().doubleValue()) {
-				currentRes = i;
-			}
-			}
-		else if (!list.get(i).getBrand().equals(brand)
-						|| list.get(i).getPrice().doubleValue() < price.doubleValue()) {
-					i = low - 1;
-		}
-		}
-		return currentRes;
 	}
 
 	@Override
