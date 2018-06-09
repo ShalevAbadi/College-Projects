@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Calendar;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -17,7 +16,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class ImpressiveWindow extends BorderPane {
@@ -173,12 +171,11 @@ public class ImpressiveWindow extends BorderPane {
 			clock.setCycleCount(Animation.INDEFINITE);
 			clock.play();
 			//
-			double keys = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
 			Duration startDuration = Duration.ZERO;
 			Duration endDuration = Duration.seconds(10);
-			KeyValue startKeyValue = new KeyValue(this.translateXProperty(), -(keys));
+			KeyValue startKeyValue = new KeyValue(this.translateXProperty(), -(100));
 			KeyFrame startKeyFrame = new KeyFrame(startDuration, startKeyValue);
-			KeyValue endKeyValue = new KeyValue(this.translateXProperty(), 0);
+			KeyValue endKeyValue = new KeyValue(this.translateXProperty(), 100);
 			KeyFrame endKeyFrame = new KeyFrame(endDuration, endKeyValue);
 			Timeline timeline = new Timeline(startKeyFrame, endKeyFrame);
 			timeline.setCycleCount(Timeline.INDEFINITE);
@@ -187,6 +184,15 @@ public class ImpressiveWindow extends BorderPane {
 			//
 			setFill(Color.RED);
 			setFont(Font.font("Arial", FontWeight.BOLD, 10));
+			
+			setOnMouseMoved(e->{
+				timeline.pause();
+			});
+			
+			setOnMouseExited(e->{
+				timeline.play();
+			});
+			
 
 		}
 	}

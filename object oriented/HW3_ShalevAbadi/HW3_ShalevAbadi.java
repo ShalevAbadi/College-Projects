@@ -44,7 +44,7 @@ public class HW3_ShalevAbadi extends Application {
 
 	public TextInputDialog createAndShowFileTextInput() {
 		TextInputDialog textInput = new TextInputDialog();
-		textInput.setHeaderText("confirmation");
+		textInput.setTitle("confirmation");
 		textInput.setHeaderText("Load Instruments From File");
 		textInput.setContentText("Plaese enter file name:");
 		return textInput;
