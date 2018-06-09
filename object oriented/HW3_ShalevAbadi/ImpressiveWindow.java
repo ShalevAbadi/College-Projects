@@ -1,7 +1,12 @@
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.text.NavigationFilter;
-
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,9 +17,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class ImpressiveWindow extends BorderPane {
 	private ArrayList<MusicalInstrument> instrumentsSearchResault = new ArrayList<MusicalInstrument>();
@@ -116,11 +124,12 @@ public class ImpressiveWindow extends BorderPane {
 			instrumentVals.clearLines();
 			String searchText = searchTextField.getText();
 			System.out.println(searchText);
-			instrumentsSearchResault = new ArrayList<MusicalInstrument>();
+			if(!instrumentsSearchResault.isEmpty()) {
+			instrumentsSearchResault.removeAll(instrumentsSearchResault);
+			}
 			for (int i = 0; i < allInstruments.size(); i++) {
 				if (allInstruments.get(i).toString().toUpperCase().contains(searchText.toUpperCase())) {
 					instrumentsSearchResault.add(allInstruments.get(i));
-					System.out.println(allInstruments.get(i).toString());
 				}
 			}
 	}
@@ -152,10 +161,39 @@ public class ImpressiveWindow extends BorderPane {
 	}
 
 	private class Commercial extends Text {
+		
 		private Commercial() {
-			setText("The quick brown fox jumps over the lazy dog");
-			setFill(Color.RED);
-			setFont(Font.font("Arial", FontWeight.BOLD, 15));
+			Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {            
+		        Calendar cal = Calendar.getInstance();
+		        int second = cal.get(Calendar.SECOND);
+		        int minute = cal.get(Calendar.MINUTE);
+		        int hour = cal.get(Calendar.HOUR);
+		        int mounth = cal.get(Calendar.MONTH);
+		        int day = cal.get(Calendar.DAY_OF_MONTH);
+		        int year = cal.get(Calendar.YEAR);
+		        setText(year + "-" + mounth + "-" + day + "  " + hour + ":" + (minute) + ":" + second + "Afeka Instruments Music Store $$$ ON SALE!!! $$$ Guitars, Basses, Flutes, Saxophones and more!");
+		    }),
+		         new KeyFrame(Duration.seconds(1))
+		    );
+		    clock.setCycleCount(Animation.INDEFINITE);
+		    clock.play();
+
+		    setFill(Color.RED);
+			setFont(Font.font("Arial", FontWeight.BOLD, 10));
+			//
+			Path path = new Path();
+			PathTransition animation = new PathTransition();
+			path.getElements().add(new MoveTo(0, 0));
+			animation.setNode(this);
+			animation.setDuration(Duration.seconds(10));
+			animation.setCycleCount(Timeline.INDEFINITE);
+			
+					
+			//
+			setOnMouseDragOver(e ->{
+				setX(e.getX());
+		        setY(e.getY());
+		    });  
 		}
 	}
 
@@ -195,8 +233,11 @@ public class ImpressiveWindow extends BorderPane {
 			buttons.setAlignment(Pos.CENTER);
 			delete.setOnAction(e -> {
 				if(!instrumentsSearchResault.isEmpty()) {
+				allInstruments.remove(instrumentsSearchResault.get(instrumentIndex));
 				instrumentsSearchResault.remove(instrumentIndex);
-				allInstruments.remove(instrumentIndex);
+				if(instrumentIndex == (instrumentsSearchResault.size()) && !instrumentsSearchResault.isEmpty()) {
+					instrumentIndex--;
+				}
 				showInstrument();
 				}
 			});
