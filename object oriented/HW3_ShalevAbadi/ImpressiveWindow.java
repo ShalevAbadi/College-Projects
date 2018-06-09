@@ -1,13 +1,10 @@
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import javax.swing.text.NavigationFilter;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
-import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -17,11 +14,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class ImpressiveWindow extends BorderPane {
@@ -44,15 +40,15 @@ public class ImpressiveWindow extends BorderPane {
 			previousHandle();
 			nextHandle();
 		}
-		
+
 		public MyButtons getPrevious() {
 			return previous;
 		}
-		
+
 		public MyButtons getNext() {
 			return next;
 		}
-		
+
 		private void previousHandle() {
 			previous.setOnAction(e -> {
 				if (instrumentsSearchResault.isEmpty()) {
@@ -80,10 +76,10 @@ public class ImpressiveWindow extends BorderPane {
 				instrumentVals.showInstrument();
 			});
 		}
-		
+
 	}
 
-	private class SearchPanel extends HBox {	
+	private class SearchPanel extends HBox {
 		TextField search = new TextField("search...");
 		Button go = new Button("Go!");
 
@@ -121,17 +117,17 @@ public class ImpressiveWindow extends BorderPane {
 	}
 
 	private void searchInstruments(TextField searchTextField) {
-			instrumentVals.clearLines();
-			String searchText = searchTextField.getText();
-			System.out.println(searchText);
-			if(!instrumentsSearchResault.isEmpty()) {
+		instrumentVals.clearLines();
+		String searchText = searchTextField.getText();
+		System.out.println(searchText);
+		if (!instrumentsSearchResault.isEmpty()) {
 			instrumentsSearchResault.removeAll(instrumentsSearchResault);
+		}
+		for (int i = 0; i < allInstruments.size(); i++) {
+			if (allInstruments.get(i).toString().toUpperCase().contains(searchText.toUpperCase())) {
+				instrumentsSearchResault.add(allInstruments.get(i));
 			}
-			for (int i = 0; i < allInstruments.size(); i++) {
-				if (allInstruments.get(i).toString().toUpperCase().contains(searchText.toUpperCase())) {
-					instrumentsSearchResault.add(allInstruments.get(i));
-				}
-			}
+		}
 	}
 
 	private class TextAndTextField extends HBox {
@@ -161,39 +157,37 @@ public class ImpressiveWindow extends BorderPane {
 	}
 
 	private class Commercial extends Text {
-		
-		private Commercial() {
-			Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {            
-		        Calendar cal = Calendar.getInstance();
-		        int second = cal.get(Calendar.SECOND);
-		        int minute = cal.get(Calendar.MINUTE);
-		        int hour = cal.get(Calendar.HOUR);
-		        int mounth = cal.get(Calendar.MONTH);
-		        int day = cal.get(Calendar.DAY_OF_MONTH);
-		        int year = cal.get(Calendar.YEAR);
-		        setText(year + "-" + mounth + "-" + day + "  " + hour + ":" + (minute) + ":" + second + "Afeka Instruments Music Store $$$ ON SALE!!! $$$ Guitars, Basses, Flutes, Saxophones and more!");
-		    }),
-		         new KeyFrame(Duration.seconds(1))
-		    );
-		    clock.setCycleCount(Animation.INDEFINITE);
-		    clock.play();
 
-		    setFill(Color.RED);
+		private Commercial() {
+			Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
+				Calendar cal = Calendar.getInstance();
+				int second = cal.get(Calendar.SECOND);
+				int minute = cal.get(Calendar.MINUTE);
+				int hour = cal.get(Calendar.HOUR);
+				int mounth = cal.get(Calendar.MONTH);
+				int day = cal.get(Calendar.DAY_OF_MONTH);
+				int year = cal.get(Calendar.YEAR);
+				setText(year + "-" + mounth + "-" + day + "  " + hour + ":" + (minute) + ":" + second
+						+ "Afeka Instruments Music Store $$$ ON SALE!!! $$$ Guitars, Basses, Flutes, Saxophones and more!");
+			}), new KeyFrame(Duration.seconds(1)));
+			clock.setCycleCount(Animation.INDEFINITE);
+			clock.play();
+			//
+			double keys = javafx.stage.Screen.getPrimary().getVisualBounds().getWidth();
+			Duration startDuration = Duration.ZERO;
+			Duration endDuration = Duration.seconds(10);
+			KeyValue startKeyValue = new KeyValue(this.translateXProperty(), -(keys));
+			KeyFrame startKeyFrame = new KeyFrame(startDuration, startKeyValue);
+			KeyValue endKeyValue = new KeyValue(this.translateXProperty(), 0);
+			KeyFrame endKeyFrame = new KeyFrame(endDuration, endKeyValue);
+			Timeline timeline = new Timeline(startKeyFrame, endKeyFrame);
+			timeline.setCycleCount(Timeline.INDEFINITE);
+			timeline.setAutoReverse(true);
+			timeline.play();
+			//
+			setFill(Color.RED);
 			setFont(Font.font("Arial", FontWeight.BOLD, 10));
-			//
-			Path path = new Path();
-			PathTransition animation = new PathTransition();
-			path.getElements().add(new MoveTo(0, 0));
-			animation.setNode(this);
-			animation.setDuration(Duration.seconds(10));
-			animation.setCycleCount(Timeline.INDEFINITE);
-			
-					
-			//
-			setOnMouseDragOver(e ->{
-				setX(e.getX());
-		        setY(e.getY());
-		    });  
+
 		}
 	}
 
@@ -201,6 +195,7 @@ public class ImpressiveWindow extends BorderPane {
 		TextAndTextField typeLine = new TextAndTextField("Type:", 15);
 		TextAndTextField brandLine = new TextAndTextField("Brand:", 10);
 		TextAndTextField priceLine = new TextAndTextField("Price:", 15);
+
 		private InstrumentVals() {
 			setSpacing(10);
 			minWidth(300);
@@ -208,20 +203,20 @@ public class ImpressiveWindow extends BorderPane {
 			getChildren().addAll(typeLine, brandLine, priceLine, buttons);
 			showInstrument();
 		}
-		
+
 		private void clearLines() {
-	        brandLine.getTextField().clear();
-	        typeLine.getTextField().clear();
-	        priceLine.getTextField().clear();
-	    }
-		
+			brandLine.getTextField().clear();
+			typeLine.getTextField().clear();
+			priceLine.getTextField().clear();
+		}
+
 		private void showInstrument() {
-			if(!instrumentsSearchResault.isEmpty()) {
-			 typeLine.getTextField().setText(instrumentsSearchResault.get(instrumentIndex).getClass().getCanonicalName().toString());
-			 brandLine.getTextField().setText(instrumentsSearchResault.get(instrumentIndex).getBrand());
-			 priceLine.getTextField().setText(instrumentsSearchResault.get(instrumentIndex).getPrice().toString());
-			}
-			else {
+			if (!instrumentsSearchResault.isEmpty()) {
+				typeLine.getTextField().setText(
+						instrumentsSearchResault.get(instrumentIndex).getClass().getCanonicalName().toString());
+				brandLine.getTextField().setText(instrumentsSearchResault.get(instrumentIndex).getBrand());
+				priceLine.getTextField().setText(instrumentsSearchResault.get(instrumentIndex).getPrice().toString());
+			} else {
 				clearLines();
 			}
 		}
@@ -232,23 +227,23 @@ public class ImpressiveWindow extends BorderPane {
 			buttons.getChildren().addAll(add, delete, clear);
 			buttons.setAlignment(Pos.CENTER);
 			delete.setOnAction(e -> {
-				if(!instrumentsSearchResault.isEmpty()) {
-				allInstruments.remove(instrumentsSearchResault.get(instrumentIndex));
-				instrumentsSearchResault.remove(instrumentIndex);
-				if(instrumentIndex == (instrumentsSearchResault.size()) && !instrumentsSearchResault.isEmpty()) {
-					instrumentIndex--;
-				}
-				showInstrument();
+				if (!instrumentsSearchResault.isEmpty()) {
+					allInstruments.remove(instrumentsSearchResault.get(instrumentIndex));
+					instrumentsSearchResault.remove(instrumentIndex);
+					if (instrumentIndex == (instrumentsSearchResault.size()) && !instrumentsSearchResault.isEmpty()) {
+						instrumentIndex--;
+					}
+					showInstrument();
 				}
 			});
-			
+
 			clear.setOnAction(e -> {
 				allInstruments.removeAll(allInstruments);
 				instrumentsSearchResault.removeAll(instrumentsSearchResault);
 				showInstrument();
 			});
 			return buttons;
-			
+
 		}
 	}
 
