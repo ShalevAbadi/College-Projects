@@ -14,12 +14,16 @@ public class HW3_ShalevAbadi extends Application {
 	}
 
 	public void start(Stage primaryStage) throws Exception {
-		File file = getFileFromUser();
-		ArrayList<MusicalInstrument> instruments = new ArrayList<MusicalInstrument>();
-        AfekaInstruments.loadInstrumentsFromFile(file, instruments);
-		ImpressiveWindow window = new ImpressiveWindow(instruments);
-		Scene scene = new Scene(window);
-		primaryStage.setScene(scene);
+		//File file = getFileFromUser();
+		//ArrayList<MusicalInstrument> instruments = new ArrayList<MusicalInstrument>();
+        //AfekaInstruments.loadInstrumentsFromFile(file, instruments);
+		//ImpressiveWindow window = new ImpressiveWindow(instruments);
+		//Scene scene = new Scene(window);
+		AddGuitarPane pane = new AddGuitarPane();
+		Scene scene = new Scene(pane);
+		
+		//primaryStage.setScene(scene);
+		primaryStage = new AddNewInstrument();
 		primaryStage.show();
 	}
 

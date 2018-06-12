@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -90,26 +91,31 @@ public class ImpressiveWindow extends BorderPane {
 		}
 
 		private void enterEvent() {
-			search.setOnKeyPressed(e -> {
+			addEventFilter(KeyEvent.KEY_PRESSED, e -> {
 				if (e.getCode() == KeyCode.ENTER) {
-					searchInstruments(search);
-					search.setText(null);
-					instrumentVals.showInstrument();
+					searchEvent();
 				}
 			});
 		}
 
+
 		private void goEvent() {
 			go.setOnAction(e -> {
-				searchInstruments(search);
-				search.setText(null);
-				instrumentVals.showInstrument();
+				searchEvent();
 			});
+		}
+		public void searchEvent() {
+			searchInstruments(search);
+			search.setText(null);
+			instrumentVals.showInstrument();
 		}
 	}
 
 	private void searchInstruments(TextField searchTextField) {
 		String searchText = searchTextField.getText();
+		if (searchText == null) {
+			return;
+		}
 		System.out.println(searchText);
 		if (!instrumentsSearchResault.isEmpty()) {
 			instrumentsSearchResault.removeAll(instrumentsSearchResault);
@@ -241,16 +247,14 @@ public class ImpressiveWindow extends BorderPane {
 			buttons.getChildren().addAll(add, delete, clear);
 			buttons.setAlignment(Pos.CENTER);
 			delete.setOnAction(e -> {
-				if (!instrumentsSearchResault.isEmpty()) {
-					allInstruments.remove(instrumentsSearchResault.get(instrumentIndex));
-					instrumentsSearchResault.remove(instrumentIndex);
-					if (instrumentIndex == (instrumentsSearchResault.size()) && !instrumentsSearchResault.isEmpty()) {
-						instrumentIndex--;
-					}
-					showInstrument();
+				deleteInstrument();
+			});
+			
+			addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+				if (e.getCode() == KeyCode.DELETE) {
+					deleteInstrument();
 				}
 			});
-
 			clear.setOnAction(e -> {
 				allInstruments.removeAll(allInstruments);
 				instrumentsSearchResault.removeAll(instrumentsSearchResault);
@@ -259,6 +263,17 @@ public class ImpressiveWindow extends BorderPane {
 			});
 			return buttons;
 
+		}
+
+		public void deleteInstrument() {
+			if (!instrumentsSearchResault.isEmpty()) {
+				allInstruments.remove(instrumentsSearchResault.get(instrumentIndex));
+				instrumentsSearchResault.remove(instrumentIndex);
+				if (instrumentIndex == (instrumentsSearchResault.size()) && !instrumentsSearchResault.isEmpty()) {
+					instrumentIndex--;
+				}
+				showInstrument();
+			}
 		}
 	}
 
@@ -270,7 +285,7 @@ public class ImpressiveWindow extends BorderPane {
 		setPadding(new Insets(10, 10, 10, 10));
 		setPositions();
 		setChildrenAlignments();
-
+		
 	}
 
 	private void setChildrenAlignments() {
