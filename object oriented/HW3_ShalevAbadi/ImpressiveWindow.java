@@ -20,7 +20,7 @@ import javafx.util.Duration;
 
 public class ImpressiveWindow extends BorderPane {
 	private ArrayList<MusicalInstrument> instrumentsSearchResault = new ArrayList<MusicalInstrument>();
-	private ArrayList<MusicalInstrument> allInstruments;
+	private ArrayList<MusicalInstrument> allInstruments = new ArrayList<MusicalInstrument>();
 	private int instrumentIndex = 0;
 	SearchPanel searchPanel = new SearchPanel();
 	Navigation navigation = new Navigation();
@@ -49,10 +49,7 @@ public class ImpressiveWindow extends BorderPane {
 
 		private void previousHandle() {
 			previous.setOnAction(e -> {
-				if (instrumentsSearchResault.isEmpty()) {
-					return;
-				}
-				if (instrumentIndex == 0) {
+				if (instrumentIndex <= 0) {
 					instrumentIndex = (instrumentsSearchResault.size() - 1);
 				} else {
 					instrumentIndex--;
@@ -63,10 +60,7 @@ public class ImpressiveWindow extends BorderPane {
 
 		private void nextHandle() {
 			next.setOnAction(e -> {
-				if (instrumentsSearchResault.isEmpty()) {
-					return;
-				}
-				if (instrumentIndex == (instrumentsSearchResault.size() - 1)) {
+				if (instrumentIndex >= (instrumentsSearchResault.size()-1)) {
 					instrumentIndex = 0;
 				} else {
 					instrumentIndex++;
@@ -115,7 +109,6 @@ public class ImpressiveWindow extends BorderPane {
 	}
 
 	private void searchInstruments(TextField searchTextField) {
-		instrumentVals.clearLines();
 		String searchText = searchTextField.getText();
 		System.out.println(searchText);
 		if (!instrumentsSearchResault.isEmpty()) {
@@ -125,6 +118,9 @@ public class ImpressiveWindow extends BorderPane {
 			if (allInstruments.get(i).toString().toUpperCase().contains(searchText.toUpperCase())) {
 				instrumentsSearchResault.add(allInstruments.get(i));
 			}
+		}
+		if (instrumentsSearchResault.isEmpty()) {
+			instrumentsSearchResault.addAll(allInstruments);
 		}
 	}
 
@@ -158,42 +154,53 @@ public class ImpressiveWindow extends BorderPane {
 
 		private Commercial() {
 			Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-				Calendar cal = Calendar.getInstance();
-				int second = cal.get(Calendar.SECOND);
-				int minute = cal.get(Calendar.MINUTE);
-				int hour = cal.get(Calendar.HOUR);
-				int mounth = cal.get(Calendar.MONTH);
-				int day = cal.get(Calendar.DAY_OF_MONTH);
-				int year = cal.get(Calendar.YEAR);
-				setText(year + "-" + mounth + "-" + day + "  " + hour + ":" + (minute) + ":" + second
-						+ "Afeka Instruments Music Store $$$ ON SALE!!! $$$ Guitars, Basses, Flutes, Saxophones and more!");
+				setTextContent();
 			}), new KeyFrame(Duration.seconds(1)));
+			setClockAndPlay(clock);
+			Timeline timeline = setTextMovement();
+			setTextApearance();
+			setOnMouseMoved(e->{
+				timeline.pause();
+			});
+			setOnMouseExited(e->{
+				timeline.play();
+			});
+		}
+
+		public void setClockAndPlay(Timeline clock) {
 			clock.setCycleCount(Animation.INDEFINITE);
 			clock.play();
-			//
+		}
+
+		public void setTextApearance() {
+			setFill(Color.RED);
+			setFont(Font.font("Arial", FontWeight.BOLD, 10));
+		}
+
+		public Timeline setTextMovement() {
 			Duration startDuration = Duration.ZERO;
 			Duration endDuration = Duration.seconds(10);
-			KeyValue startKeyValue = new KeyValue(this.translateXProperty(), -(100));
+			KeyValue startKeyValue = new KeyValue(this.translateXProperty(), -600);
 			KeyFrame startKeyFrame = new KeyFrame(startDuration, startKeyValue);
-			KeyValue endKeyValue = new KeyValue(this.translateXProperty(), 100);
+			KeyValue endKeyValue = new KeyValue(this.translateXProperty(), 600);
 			KeyFrame endKeyFrame = new KeyFrame(endDuration, endKeyValue);
 			Timeline timeline = new Timeline(startKeyFrame, endKeyFrame);
 			timeline.setCycleCount(Timeline.INDEFINITE);
 			timeline.setAutoReverse(true);
 			timeline.play();
-			//
-			setFill(Color.RED);
-			setFont(Font.font("Arial", FontWeight.BOLD, 10));
-			
-			setOnMouseMoved(e->{
-				timeline.pause();
-			});
-			
-			setOnMouseExited(e->{
-				timeline.play();
-			});
-			
+			return timeline;
+		}
 
+		public void setTextContent() {
+			Calendar cal = Calendar.getInstance();
+			int second = cal.get(Calendar.SECOND);
+			int minute = cal.get(Calendar.MINUTE);
+			int hour = cal.get(Calendar.HOUR);
+			int mounth = cal.get(Calendar.MONTH);
+			int day = cal.get(Calendar.DAY_OF_MONTH);
+			int year = cal.get(Calendar.YEAR);
+			setText(year + "-" + mounth + "-" + day + "  " + hour + ":" + (minute) + ":" + second
+					+ "Afeka Instruments Music Store $$$ ON SALE!!! $$$ Guitars, Basses, Flutes, Saxophones and more!");
 		}
 	}
 
@@ -210,10 +217,11 @@ public class ImpressiveWindow extends BorderPane {
 			showInstrument();
 		}
 
-		private void clearLines() {
-			brandLine.getTextField().clear();
-			typeLine.getTextField().clear();
-			priceLine.getTextField().clear();
+		private void showNoItems() {
+			String noItems = "No Items";
+			brandLine.getTextField().setText(noItems);
+			typeLine.getTextField().setText(noItems);
+			priceLine.getTextField().setText(noItems);
 		}
 
 		private void showInstrument() {
@@ -223,7 +231,7 @@ public class ImpressiveWindow extends BorderPane {
 				brandLine.getTextField().setText(instrumentsSearchResault.get(instrumentIndex).getBrand());
 				priceLine.getTextField().setText(instrumentsSearchResault.get(instrumentIndex).getPrice().toString());
 			} else {
-				clearLines();
+				showNoItems();
 			}
 		}
 
@@ -246,6 +254,7 @@ public class ImpressiveWindow extends BorderPane {
 			clear.setOnAction(e -> {
 				allInstruments.removeAll(allInstruments);
 				instrumentsSearchResault.removeAll(instrumentsSearchResault);
+				instrumentIndex = 0;
 				showInstrument();
 			});
 			return buttons;
@@ -254,7 +263,9 @@ public class ImpressiveWindow extends BorderPane {
 	}
 
 	public ImpressiveWindow(ArrayList<MusicalInstrument> instruments) {
-		allInstruments = instruments;
+		allInstruments.addAll(instruments);
+		instrumentsSearchResault.addAll(allInstruments);
+		instrumentVals.showInstrument();
 		setPrefSize(600, 225);
 		setPadding(new Insets(10, 10, 10, 10));
 		setPositions();
