@@ -14,7 +14,9 @@ public class AddNewInstrument extends Stage {
 	ComboBox<String> instrumentsComboBox = new ComboBox<>(INSTRUMENTS);
 	AddGuitarPane guitarPane = new AddGuitarPane();
 	AddBassPane bassPane = new AddBassPane();
+	AddSaxophonePane saxsophonePane = new AddSaxophonePane();
 	VBox layoutContainer = new VBox();
+	Button addButton = new Button("add");
 	
 	public AddNewInstrument() {
 		setTitle("Add an instrument");
@@ -37,17 +39,19 @@ public class AddNewInstrument extends Stage {
 		switch (value) {
 		case "Guitar":
 			resetLayoutContainer();
-			layoutContainer.getChildren().add(guitarPane);
+			layoutContainer.getChildren().addAll(guitarPane, addButton);
 			break;
 		case "Saxophone":
-			// showAddSaxophone();
+			resetLayoutContainer();
+			layoutContainer.getChildren().addAll(saxsophonePane, addButton);
 			break;
 		case "Bass":
 			resetLayoutContainer();
-			layoutContainer.getChildren().add(bassPane);
+			layoutContainer.getChildren().addAll(bassPane, addButton);
 			break;
 		case "Flute":
-			// showAddFlute();
+			resetLayoutContainer();
+			layoutContainer.getChildren().addAll(new AddFlutePane(), addButton);
 			break;
 		}
 

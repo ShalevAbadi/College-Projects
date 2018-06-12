@@ -8,7 +8,10 @@ public class AddBassPane extends AddStringInstrumentPane {
 	CheckBox fretlessBox = new CheckBox();
 	
 	public AddBassPane() {
-		addRow(getRowCount(),fretless, fretlessBox);
-		addRow(getRowCount(), new Text(), addButton);
+		addRow(getRowCount(), fretless, fretlessBox);
+		brandPrompt = "FenderJazz";
+		pricePrompt = "Ex: 7500";
+		numberOfStringPrompt = "Ex: 4";
+		setPrompts();
 	}
 }
