@@ -5,17 +5,17 @@ import javafx.scene.text.Text;
 
 public class AddFlutePane extends AddInstrumentPane {
 	final static Text MATERIAL = new Text("Material:");
-	private ComboBox<String> materialsCombeBox = new ComboBox<>(MATERIALS_LIST);
+	 ComboBox<String> materialsComboBox = new ComboBox<>(MATERIALS_LIST);
 	final static ObservableList<String> MATERIALS_LIST = FXCollections.observableArrayList(Flute.WIND_INSTRUMENT_MATERIAL);
 	final static Text TYPE = new Text("Flute Type:");
 	final static ObservableList<String> TYPES_LIST = FXCollections.observableArrayList(Flute.FLUET_TYPE);
-	private ComboBox<String> typesCombeBox = new ComboBox<>(TYPES_LIST);
+	 ComboBox<String> typesComboBox = new ComboBox<>(TYPES_LIST);
 	
 	public AddFlutePane() {
-		materialsCombeBox.setPromptText("Material");
-		typesCombeBox.setPromptText("type");
-		addRow(getRowCount(), MATERIAL, materialsCombeBox);
-		addRow(getRowCount(),TYPE, typesCombeBox);
+		materialsComboBox.setPromptText("Material");
+		typesComboBox.setPromptText("type");
+		addRow(getRowCount(), MATERIAL, materialsComboBox);
+		addRow(getRowCount(),TYPE, typesComboBox);
 		brandPrompt = "Ex: Levit";
 		pricePrompt = "Ex: 300";
 		setPrompts();

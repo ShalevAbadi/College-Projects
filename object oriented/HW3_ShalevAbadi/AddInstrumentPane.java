@@ -1,12 +1,13 @@
 
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 public abstract class AddInstrumentPane extends GridPane {
+	
 	protected String brandPrompt ;
 	protected String pricePrompt;
 	TextField brandField = new TextField();
@@ -23,6 +24,7 @@ public abstract class AddInstrumentPane extends GridPane {
         addRow(getRowCount(), brand, brandField);
         addRow(getRowCount(), price, priceField);
 	}
+	
 	protected void setPrompts() {
 		brandField.setPromptText(brandPrompt);
 		priceField.setPromptText(pricePrompt);

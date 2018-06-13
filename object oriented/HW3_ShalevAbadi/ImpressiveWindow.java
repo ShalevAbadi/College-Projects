@@ -21,7 +21,7 @@ import javafx.util.Duration;
 
 public class ImpressiveWindow extends BorderPane {
 	private ArrayList<MusicalInstrument> instrumentsSearchResault = new ArrayList<MusicalInstrument>();
-	private ArrayList<MusicalInstrument> allInstruments = new ArrayList<MusicalInstrument>();
+	ArrayList<MusicalInstrument> allInstruments = new ArrayList<MusicalInstrument>();
 	private int instrumentIndex = 0;
 	SearchPanel searchPanel = new SearchPanel();
 	Navigation navigation = new Navigation();
@@ -255,12 +255,19 @@ public class ImpressiveWindow extends BorderPane {
 					deleteInstrument();
 				}
 			});
+			
 			clear.setOnAction(e -> {
 				allInstruments.removeAll(allInstruments);
 				instrumentsSearchResault.removeAll(instrumentsSearchResault);
 				instrumentIndex = 0;
 				showInstrument();
 			});
+			
+			add.setOnAction(e -> {
+				AddNewInstrument addStage = new AddNewInstrument(allInstruments);
+				addStage.show();
+			});
+			
 			return buttons;
 
 		}
