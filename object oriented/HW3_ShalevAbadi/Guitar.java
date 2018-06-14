@@ -16,6 +16,7 @@ public class Guitar extends StringInstrument {
     //constructor 1
     public Guitar(String brand, double price, int numOfStrings, String type){
         super(brand, price, numOfStrings);
+        setType(type);
     }
     
     //constructor 2

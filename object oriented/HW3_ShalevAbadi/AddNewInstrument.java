@@ -3,16 +3,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 
 public class AddNewInstrument extends Stage {
-	private ArrayList<MusicalInstrument> addTo; 
+	private MusicalInstrument instrumentToAdd; 
 	public static final ObservableList<String> INSTRUMENTS = FXCollections.observableArrayList("Guitar", "Saxophone",
 			"Bass", "Flute");
 	ComboBox<String> instrumentsComboBox = new ComboBox<>(INSTRUMENTS);
@@ -21,10 +19,9 @@ public class AddNewInstrument extends Stage {
 	AddSaxophonePane saxsophonePane = new AddSaxophonePane();
 	AddFlutePane flutePane = new AddFlutePane();
 	VBox layoutContainer = new VBox();
-	Button addButton = new Button("add");
+	private Button addButton = new Button("add");
 	
-	public AddNewInstrument(ArrayList<MusicalInstrument> addTo) {
-		this.addTo = addTo;
+	public AddNewInstrument() {
 		setTitle("Add an instrument");
 		setMinHeight(400);
 		setMinWidth(400);
@@ -37,10 +34,16 @@ public class AddNewInstrument extends Stage {
 		layoutContainer.setFillWidth(true);
 		layoutContainer.setAlignment(Pos.CENTER);
 		setScene(new Scene(layoutContainer));
-		
-
 	}
 
+	public Button getAddButton() {
+		return addButton;
+	}
+	
+	public MusicalInstrument getInstrumentToAdd() {
+		return instrumentToAdd;
+	}
+	
 	private void openAddInstrumentWindow(String value) {
 		switch (value) {
 		case "Guitar":
@@ -68,45 +71,51 @@ public class AddNewInstrument extends Stage {
 	}
 	
 private void addGuitar() {
-	addButton.setOnAction(e ->{
+	addButton.setOnAction(n ->{
 				String brand = guitarPane.brandField.getText();
 				int price = Integer.parseInt(guitarPane.priceField.getText());
 				int numOfStrings = Integer.parseInt(guitarPane.numberOfStringsField.getText());
 				String type = guitarPane.typesComboBox.getValue();
-				addTo.add(new Guitar(brand, price, numOfStrings, type));
+				instrumentToAdd = new Guitar(brand, price, numOfStrings, type);
 				close();
 				});
 }
 
+
 private void addSaxophone() {
-	addButton.setOnAction(e ->{
+	addButton.setOnAction(n ->{
 		String brand = saxsophonePane.brandField.getText();
 		int price = Integer.parseInt(saxsophonePane.priceField.getText());
-		addTo.add(new Saxophone(brand, price));
+		instrumentToAdd = new Saxophone(brand, price);
+		System.out.println(instrumentToAdd.toString());
 		close();
 	});
 }
 
 private void addBass() {
-	addButton.setOnAction(e ->{
+	addButton.setOnAction(n ->{
 		String brand = bassPane.brandField.getText();
 		int price = Integer.parseInt(bassPane.priceField.getText());
 		int numOfStrings = Integer.parseInt(bassPane.numberOfStringsField.getText());
 		Boolean isFretless = bassPane.fretlessBox.isSelected();
-		addTo.add(new Bass(brand, price, numOfStrings, isFretless));
+		instrumentToAdd = new Bass(brand, price, numOfStrings, isFretless);
 		close();
 	});
 }
 
 private void addFlute() {
-	addButton.setOnAction(e ->{
+	addButton.setOnAction(n ->{
 		String brand = guitarPane.brandField.getText();
 		int price = Integer.parseInt(guitarPane.priceField.getText());
 		String material = flutePane.materialsComboBox.getValue();
 		String fluteType = flutePane.typesComboBox.getValue();
-		addTo.add(new Flute(brand, price, material, fluteType));
+		instrumentToAdd = new Flute(brand, price, material, fluteType);
 		close();
 	});
+}
+
+public void setEventHandler(EventHandler<ActionEvent> handler) {
+	addButton.setOnAction(handler);
 }
 
 	private void resetLayoutContainer() {

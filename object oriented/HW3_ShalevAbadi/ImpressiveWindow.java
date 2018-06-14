@@ -112,9 +112,11 @@ public class ImpressiveWindow extends BorderPane {
 	}
 
 	private void searchInstruments(TextField searchTextField) {
+		instrumentIndex = 0;
 		String searchText = searchTextField.getText();
 		if (searchText == null) {
-			return;
+			instrumentsSearchResault.removeAll(instrumentsSearchResault);
+			instrumentsSearchResault.addAll(allInstruments);
 		}
 		System.out.println(searchText);
 		if (!instrumentsSearchResault.isEmpty()) {
@@ -264,8 +266,12 @@ public class ImpressiveWindow extends BorderPane {
 			});
 			
 			add.setOnAction(e -> {
-				AddNewInstrument addStage = new AddNewInstrument(allInstruments);
+				AddNewInstrument addStage = new AddNewInstrument();
 				addStage.show();
+				addStage.setEventHandler(e -> {
+					
+				}
+						);
 			});
 			
 			return buttons;
