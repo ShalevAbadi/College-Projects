@@ -268,10 +268,8 @@ public class ImpressiveWindow extends BorderPane {
 			add.setOnAction(e -> {
 				AddNewInstrument addStage = new AddNewInstrument();
 				addStage.show();
-				addStage.setEventHandler(e -> {
-					
-				}
-						);
+				addStage.getAddButton().setOnAction(n -> {
+				allInstruments.add(addStage.getAddInstrumentPane().getInstrumentToAdd());});
 			});
 			
 			return buttons;

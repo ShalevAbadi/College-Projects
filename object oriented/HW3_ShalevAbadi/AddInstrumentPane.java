@@ -29,4 +29,6 @@ public abstract class AddInstrumentPane extends GridPane {
 		brandField.setPromptText(brandPrompt);
 		priceField.setPromptText(pricePrompt);
 	}
+	
+	public abstract MusicalInstrument getInstrumentToAdd();
 }
