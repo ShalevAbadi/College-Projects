@@ -6,7 +6,7 @@ public class AddBassPane extends AddStringInstrumentPane {
 
 	Text fretless = new Text("fretless");
 	CheckBox fretlessBox = new CheckBox();
-	
+
 	public AddBassPane() {
 		addRow(getRowCount(), fretless, fretlessBox);
 		brandPrompt = "FenderJazz";

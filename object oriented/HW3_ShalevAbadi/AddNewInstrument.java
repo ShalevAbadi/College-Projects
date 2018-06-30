@@ -16,15 +16,15 @@ public class AddNewInstrument extends Stage {
 	private Button addButton = new Button("add");
 
 	public AddNewInstrument() {
-		setTitle("Add an instrument");
+		layoutContainer.getChildren().add(instrumentsComboBox);
 		setMinHeight(400);
 		setMinWidth(400);
+		setTitle("Add an instrument");
 		instrumentsComboBox.setPromptText("Choose Instrument Type Here");
 		instrumentsComboBox.setMinWidth(200);
 		instrumentsComboBox.setOnAction(e -> {
 			openAddInstrumentWindow(instrumentsComboBox.getValue());
 		});
-		layoutContainer.getChildren().add(instrumentsComboBox);
 		layoutContainer.setFillWidth(true);
 		layoutContainer.setAlignment(Pos.CENTER);
 		setScene(new Scene(layoutContainer));
@@ -63,7 +63,12 @@ public class AddNewInstrument extends Stage {
 	}
 
 	private void resetLayoutContainer(AddInstrumentPane instrumentToAddPane) {
-		layoutContainer.getChildren().clear();
-		layoutContainer.getChildren().addAll(instrumentsComboBox, instrumentToAddPane, addButton);
+		if (layoutContainer.getChildren().size() > 1) {
+			layoutContainer.getChildren().remove((layoutContainer.getChildren().size() - 2));
+			layoutContainer.getChildren().add(layoutContainer.getChildren().size() - 1, instrumentToAddPane);
+		} else {
+			layoutContainer.getChildren().add(instrumentToAddPane);
+			layoutContainer.getChildren().add(addButton);
+		}
 	}
 }

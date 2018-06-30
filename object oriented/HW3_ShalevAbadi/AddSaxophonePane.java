@@ -1,5 +1,5 @@
 
-public class AddSaxophonePane extends AddInstrumentPane{
+public class AddSaxophonePane extends AddInstrumentPane {
 
 	@Override
 	public MusicalInstrument getInstrumentToAdd() {
@@ -7,6 +7,5 @@ public class AddSaxophonePane extends AddInstrumentPane{
 		int price = Integer.parseInt(priceField.getText());
 		return new Saxophone(brand, price);
 	}
-	
-	
+
 }

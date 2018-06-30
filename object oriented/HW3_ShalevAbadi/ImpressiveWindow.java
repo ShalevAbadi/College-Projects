@@ -1,7 +1,9 @@
 import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
@@ -18,7 +20,7 @@ public class ImpressiveWindow extends BorderPane {
 	public ImpressiveWindow(ArrayList<MusicalInstrument> instruments) {
 		allInstruments.addAll(instruments);
 		instrumentsSearchResault.addAll(allInstruments);
-		setPrefSize(600, 225);
+		setPrefSize(600, 300);
 		setPadding(new Insets(10, 10, 10, 10));
 		setPositions();
 		setChildrenAlignments();
@@ -26,6 +28,31 @@ public class ImpressiveWindow extends BorderPane {
 		showCurrentInstrument();
 	}
 
+
+	private void setChildrenAlignments() {
+		searchPanel.setAlignment(Pos.TOP_CENTER);
+		midSection.setAlignment(Pos.CENTER);
+		setAlignment(navigation.getPrevious(), Pos.CENTER);
+		setAlignment(navigation.getNext(), Pos.CENTER);
+	}
+	
+	private void setPositions() {
+		setTop(searchPanel);
+		setCenter(midSection);
+		setLeft(navigation.getPrevious());
+		setRight(navigation.getNext());
+		setBottom(commercial);
+	}
+	
+	private void initializeImpressiveWindowActions() {
+		initializeDeleteAction();
+		initializeClearAction();
+		initializeAddAction();
+		initializeSearchPanelActions();
+		initializeNextButtonAction();
+		initializePreviousButtonAction();
+	}
+	
 	public void showCurrentInstrument() {
 		if (instrumentsSearchResault.isEmpty()) {
 			midSection.showNoItems();
@@ -40,7 +67,7 @@ public class ImpressiveWindow extends BorderPane {
 			showCurrentInstrument();
 		});
 	}
-
+	
 	public void setIndexToPrevious() {
 		if (instrumentIndex <= 0) {
 			instrumentIndex = (instrumentsSearchResault.size() - 1);
@@ -64,6 +91,85 @@ public class ImpressiveWindow extends BorderPane {
 		}
 	}
 
+
+	public void initializeClearAction() {
+		midSection.getButtons().getClearButton().setOnAction(e -> {
+			allInstruments.removeAll(allInstruments);
+			instrumentsSearchResault.removeAll(instrumentsSearchResault);
+			instrumentIndex = 0;
+			showCurrentInstrument();
+		});
+	}
+
+	public void initializeAddAction() {
+		midSection.getButtons().getAddButton().setOnAction(e -> {
+			addInstrumentWindowFlow();
+		});
+
+		addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+			if (e.getCode() == KeyCode.A) {
+				if (!searchPanel.getSearchTextField().isFocused()) {
+					addInstrumentWindowFlow();
+				}
+			}
+		});
+	}
+
+	public void addInstrumentWindowFlow() {
+		AddNewInstrument addStage = new AddNewInstrument();
+		addStage.show();
+		addStage.getAddButton().setOnAction(n -> {
+			addInstrumentToList(addStage);
+			showLastAddedInstrument();
+			addStage.close();
+		});
+	}
+
+	public void addInstrumentToList(AddNewInstrument addStage) {
+		try {
+			MusicalInstrument new1 = addStage.getAddInstrumentPane().getInstrumentToAdd();
+			allInstruments.add(new1);
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Error");
+			alert.setHeaderText("Error");
+			alert.setContentText(e.getMessage());
+			alert.showAndWait();
+		}
+	}
+
+	private void showLastAddedInstrument() {
+		if (allInstruments.size() > 0) {
+			midSection.showInstrument(allInstruments.get(allInstruments.size() - 1));
+		}
+	}
+
+	public void initializeDeleteAction() {
+		midSection.getButtons().getDeleteButton().setOnAction(e -> {
+			deleteInstrument();
+		});
+
+		addEventFilter(KeyEvent.KEY_PRESSED, e -> {
+			if (e.getCode() == KeyCode.DELETE) {
+				if (!searchPanel.getSearchTextField().isFocused()) {
+					deleteInstrument();
+				}
+			}
+		});
+	}
+
+	public void deleteInstrument() {
+		if (!instrumentsSearchResault.isEmpty()) {
+			allInstruments.remove(instrumentsSearchResault.get(instrumentIndex));
+			instrumentsSearchResault.remove(instrumentIndex);
+			if (instrumentIndex == (instrumentsSearchResault.size()) && !instrumentsSearchResault.isEmpty()) {
+				instrumentIndex--;
+			}
+			showCurrentInstrument();
+		}
+	}
+
+
 	private void initializeSearchPanelActions() {
 		initializeGoEvent();
 		initializeEnterEvent();
@@ -86,23 +192,18 @@ public class ImpressiveWindow extends BorderPane {
 	private void searchEvent() {
 		searchHandle(searchPanel.getSearchTextField());
 		showCurrentInstrument();
-		searchPanel.getSearchTextField().setText(null);
 	}
 
 	private void searchHandle(TextField searchTextField) {
 		instrumentIndex = 0;
 		String searchText = searchTextField.getText();
+		instrumentsSearchResault.removeAll(instrumentsSearchResault);
 		if (searchText == null) {
-			instrumentsSearchResault.removeAll(instrumentsSearchResault);
 			instrumentsSearchResault.addAll(allInstruments);
 		}
 
-		else if (!instrumentsSearchResault.isEmpty()) {
-			instrumentsSearchResault.removeAll(instrumentsSearchResault);
+		else {
 			searchInAllInstruments(searchText);
-		}
-		else if (instrumentsSearchResault.isEmpty()) {
-			instrumentsSearchResault.addAll(allInstruments);
 		}
 	}
 
@@ -113,88 +214,4 @@ public class ImpressiveWindow extends BorderPane {
 			}
 		}
 	}
-
-	private void initializeImpressiveWindowActions() {
-		initializeDeleteAction();
-		initializeClearAction();
-		initializeAddAction();
-		initializeSearchPanelActions();
-		initializeNextButtonAction();
-		initializePreviousButtonAction();
-	}
-
-	public void initializeClearAction() {
-		midSection.getButtons().getClearButton().setOnAction(e -> {
-			allInstruments.removeAll(allInstruments);
-			instrumentsSearchResault.removeAll(instrumentsSearchResault);
-			instrumentIndex = 0;
-			showCurrentInstrument();
-		});
-	}
-
-	public void initializeAddAction() {
-		midSection.getButtons().getAddButton().setOnAction(e -> {
-			addInstrument();
-		});
-
-		addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-			if (e.getCode() == KeyCode.A) {
-				addInstrument();
-			}
-		});
-	}
-
-	public void addInstrument() {
-		AddNewInstrument addStage = new AddNewInstrument();
-		addStage.show();
-		addStage.getAddButton().setOnAction(n -> {
-			MusicalInstrument new1 = addStage.getAddInstrumentPane().getInstrumentToAdd();
-			allInstruments.add(new1);
-			showLastAddedInstrument();
-			addStage.close();
-		});
-	}
-
-	private void showLastAddedInstrument() {
-		midSection.showInstrument(allInstruments.get(allInstruments.size() - 1));
-	}
-
-	public void initializeDeleteAction() {
-		midSection.getButtons().getDeleteButton().setOnAction(e -> {
-			deleteInstrument();
-		});
-
-		addEventFilter(KeyEvent.KEY_PRESSED, e -> {
-			if (e.getCode() == KeyCode.DELETE) {
-				deleteInstrument();
-			}
-		});
-	}
-
-	public void deleteInstrument() {
-		if (!instrumentsSearchResault.isEmpty()) {
-			allInstruments.remove(instrumentsSearchResault.get(instrumentIndex));
-			instrumentsSearchResault.remove(instrumentIndex);
-			if (instrumentIndex == (instrumentsSearchResault.size()) && !instrumentsSearchResault.isEmpty()) {
-				instrumentIndex--;
-			}
-			showCurrentInstrument();
-		}
-	}
-
-	private void setChildrenAlignments() {
-		searchPanel.setAlignment(Pos.TOP_CENTER);
-		midSection.setAlignment(Pos.CENTER);
-		setAlignment(navigation.getPrevious(), Pos.CENTER);
-		setAlignment(navigation.getNext(), Pos.CENTER);
-	}
-
-	private void setPositions() {
-		setTop(searchPanel);
-		setCenter(midSection);
-		setLeft(navigation.getPrevious());
-		setRight(navigation.getNext());
-		setBottom(commercial);
-	}
-
 }
