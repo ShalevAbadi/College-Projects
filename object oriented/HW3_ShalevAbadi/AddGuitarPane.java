@@ -1,4 +1,3 @@
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
@@ -17,5 +16,14 @@ public class AddGuitarPane extends AddStringInstrumentPane {
 		pricePrompt = "Ex: 7500";
 		numberOfStringPrompt = "Ex: 6";
 		setPrompts();
+	}
+
+	@Override
+	public MusicalInstrument getInstrumentToAdd() {
+		String brand = brandField.getText();
+		int price = Integer.parseInt(priceField.getText());
+		int numOfStrings = Integer.parseInt(numberOfStringsField.getText());
+		String type = typesComboBox.getValue();
+		return new Guitar(brand, price, numOfStrings, type);
 	}
 }

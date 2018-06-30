@@ -21,5 +21,14 @@ public class AddFlutePane extends AddInstrumentPane {
 		setPrompts();
 	}
 
+	@Override
+	public MusicalInstrument getInstrumentToAdd() {
+		String brand = brandField.getText();
+		int price = Integer.parseInt(priceField.getText());
+		String material = materialsComboBox.getValue();
+		String fluteType = typesComboBox.getValue();
+		return new Flute(brand, price, material, fluteType);
+	}
+
 
 }

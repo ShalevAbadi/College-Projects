@@ -14,4 +14,13 @@ public class AddBassPane extends AddStringInstrumentPane {
 		numberOfStringPrompt = "Ex: 4";
 		setPrompts();
 	}
+
+	@Override
+	public MusicalInstrument getInstrumentToAdd() {
+		String brand = brandField.getText();
+		int price = Integer.parseInt(priceField.getText());
+		int numOfStrings = Integer.parseInt(numberOfStringsField.getText());
+		Boolean isFretless = fretlessBox.isSelected();
+		return new Bass(brand, price, numOfStrings, isFretless);
+	}
 }
