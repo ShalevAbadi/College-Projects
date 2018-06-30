@@ -65,11 +65,11 @@ public class ImpressiveWindow extends BorderPane {
 	}
 
 	private void initializeSearchPanelActions() {
-		goEvent();
-		enterEvent();
+		initializeGoEvent();
+		initializeEnterEvent();
 	}
 
-	private void enterEvent() {
+	private void initializeEnterEvent() {
 		addEventFilter(KeyEvent.KEY_PRESSED, e -> {
 			if (e.getCode() == KeyCode.ENTER) {
 				searchEvent();
@@ -77,16 +77,16 @@ public class ImpressiveWindow extends BorderPane {
 		});
 	}
 
-	private void goEvent() {
-		searchPanel.getGoButton().setOnAction(e -> {
+	private void initializeGoEvent() {
+		searchPanel.getGoButton().setOnAction(s -> {
 			searchEvent();
 		});
 	}
 
 	private void searchEvent() {
 		searchHandle(searchPanel.getSearchTextField());
-		searchPanel.getSearchTextField().setText(null);
 		showCurrentInstrument();
+		searchPanel.getSearchTextField().setText(null);
 	}
 
 	private void searchHandle(TextField searchTextField) {

@@ -1,27 +1,37 @@
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 public class MidSectionButtons extends HBox {
-	MyButtons add = new MyButtons("Add", 50, 50);
-	MyButtons delete = new MyButtons("Delete", 50, 50);
-	MyButtons clear = new MyButtons("Clear", 50, 50);
+	Button add = new Button("Add");
+	Button delete = new Button("Delete");
+	Button clear = new Button("Clear");
 
 	public MidSectionButtons() {
-		super(10);
+		super(20);
 		minWidth(300);
+		setPadding(new Insets(10));
+		setButtonsPadding();
 		getChildren().addAll(add, delete, clear);
 		setAlignment(Pos.CENTER);
 	}
-	
-	public MyButtons getAddButton(){
+
+	public void setButtonsPadding() {
+		add.setPadding(new Insets(5));
+		delete.setPadding(new Insets(5));
+		clear.setPadding(new Insets(5));
+	}
+
+	public Button getAddButton() {
 		return add;
 	}
-	
-	public MyButtons getDeleteButton(){
+
+	public Button getDeleteButton() {
 		return delete;
 	}
-	
-	public MyButtons getClearButton(){
+
+	public Button getClearButton() {
 		return clear;
 	}
 }

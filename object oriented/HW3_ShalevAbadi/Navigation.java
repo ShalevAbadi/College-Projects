@@ -1,12 +1,14 @@
-public class Navigation {
-	private MyButtons previous = new MyButtons("<", 50, 50);
-	private MyButtons next = new MyButtons(">", 50, 50);
+import javafx.scene.control.Button;
 
-	public MyButtons getPrevious() {
+public class Navigation {
+	private Button previous = new Button("<");
+	private Button next = new Button(">");
+
+	public Button getPrevious() {
 		return previous;
 	}
 
-	public MyButtons getNext() {
+	public Button getNext() {
 		return next;
 	}
 }
