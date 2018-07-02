@@ -4,23 +4,27 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 public class MidSectionButtons extends HBox {
-	Button add = new Button("Add");
-	Button delete = new Button("Delete");
-	Button clear = new Button("Clear");
+	public final static int MID_SEC_BUTTONS_SPACING = 20;
+	public final static int MID_SECTION_BUTTONS_PADDING = 10;
+	public final static int MID_SECTION_BUTTONS_MIN_WIDTH = 300;
+	public final static int BUTTON_PDDING = 5;
+	private Button add = new Button("Add");
+	private Button delete = new Button("Delete");
+	private Button clear = new Button("Clear");
 
 	public MidSectionButtons() {
-		super(20);
-		minWidth(300);
-		setPadding(new Insets(10));
+		super(MID_SEC_BUTTONS_SPACING);
+		minWidth(MID_SECTION_BUTTONS_MIN_WIDTH);
+		setPadding(new Insets(MID_SECTION_BUTTONS_PADDING));
 		setButtonsPadding();
 		getChildren().addAll(add, delete, clear);
 		setAlignment(Pos.CENTER);
 	}
 
 	public void setButtonsPadding() {
-		add.setPadding(new Insets(5));
-		delete.setPadding(new Insets(5));
-		clear.setPadding(new Insets(5));
+		add.setPadding(new Insets(BUTTON_PDDING));
+		delete.setPadding(new Insets(BUTTON_PDDING));
+		clear.setPadding(new Insets(BUTTON_PDDING));
 	}
 
 	public Button getAddButton() {

@@ -5,12 +5,12 @@ import javafx.scene.text.Text;
 
 public class AddFlutePane extends AddInstrumentPane {
 	final static Text MATERIAL = new Text("Material:");
-	ComboBox<String> materialsComboBox = new ComboBox<>(MATERIALS_LIST);
 	final static ObservableList<String> MATERIALS_LIST = FXCollections
 			.observableArrayList(Flute.WIND_INSTRUMENT_MATERIAL);
 	final static Text TYPE = new Text("Flute Type:");
 	final static ObservableList<String> TYPES_LIST = FXCollections.observableArrayList(Flute.FLUET_TYPE);
-	ComboBox<String> typesComboBox = new ComboBox<>(TYPES_LIST);
+	private ComboBox<String> materialsComboBox = new ComboBox<>(MATERIALS_LIST);
+	private ComboBox<String> typesComboBox = new ComboBox<>(TYPES_LIST);
 
 	public AddFlutePane() {
 		materialsComboBox.setPromptText("Material");

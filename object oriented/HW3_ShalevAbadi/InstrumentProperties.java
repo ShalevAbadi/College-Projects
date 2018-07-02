@@ -4,7 +4,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
 public class InstrumentProperties extends GridPane {
-	private final int TEXT_MIN_WIDTH = 200;
+	public final int TEXT_FIELDS_MIN_WIDTH = 300;
+	public final int INTSRUMENT_PROPERTIED_VGAP = 10;
+	public final int INTSRUMENT_PROPERTIED_HGAP = 10;
+	public final int TEXT_MIN_WIDTH = 200;
 	private Text typeText = new Text("Type: ");
 	private Text brandText = new Text("Brand: ");
 	private Text priceText = new Text("Price: ");
@@ -13,8 +16,8 @@ public class InstrumentProperties extends GridPane {
 	private TextField priceField = new TextField();
 
 	public InstrumentProperties() {
-		setHgap(10);
-		setVgap(10);
+		setHgap(INTSRUMENT_PROPERTIED_HGAP);
+		setVgap(INTSRUMENT_PROPERTIED_VGAP);
 		initializeAllTextsProperties();
 		initializeAllTextsFields();
 		initializeRows();
@@ -44,7 +47,7 @@ public class InstrumentProperties extends GridPane {
 	}
 
 	private void setTextFieldProperties(TextField textField) {
-		textField.setMinWidth(300);
+		textField.setMinWidth(TEXT_FIELDS_MIN_WIDTH);
 		textField.setEditable(false);
 	}
 

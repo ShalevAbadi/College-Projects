@@ -10,19 +10,26 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class Commercial extends Text {
+	public final static int DURATION = 10;
+	private double containerWidth;
+	private double textWidth = getLayoutBounds().getWidth();
 
-	public Commercial() {
+	public Commercial(double containerWidth) {
+		this.containerWidth = containerWidth;
 		Timeline clock = new Timeline(new KeyFrame(Duration.ZERO, e -> {
 			setTextContent();
 		}), new KeyFrame(Duration.seconds(1)));
+		setTextContent();
 		setClockAndPlay(clock);
-		Timeline timeline = setTextMovement();
 		setTextApearance();
+		Timeline timeline = setTextMovement();
 		setOnMouseMoved(e -> {
 			timeline.pause();
+			clock.pause();
 		});
 		setOnMouseExited(e -> {
 			timeline.play();
+			clock.play();
 		});
 	}
 
@@ -38,10 +45,11 @@ public class Commercial extends Text {
 
 	public Timeline setTextMovement() {
 		Duration startDuration = Duration.ZERO;
-		Duration endDuration = Duration.seconds(10);
-		KeyValue startKeyValue = new KeyValue(this.translateXProperty(), -600);
+		textWidth = getLayoutBounds().getWidth();
+		KeyValue startKeyValue = new KeyValue(translateXProperty(), -textWidth);
 		KeyFrame startKeyFrame = new KeyFrame(startDuration, startKeyValue);
-		KeyValue endKeyValue = new KeyValue(this.translateXProperty(), 600);
+		Duration endDuration = Duration.seconds(DURATION);
+		KeyValue endKeyValue = new KeyValue(translateXProperty(), containerWidth);
 		KeyFrame endKeyFrame = new KeyFrame(endDuration, endKeyValue);
 		Timeline timeline = new Timeline(startKeyFrame, endKeyFrame);
 		timeline.setCycleCount(Timeline.INDEFINITE);

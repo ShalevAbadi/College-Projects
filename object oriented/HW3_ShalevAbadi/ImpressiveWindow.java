@@ -9,25 +9,27 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
 public class ImpressiveWindow extends BorderPane {
+	public final static int IMPRESSIVE_WINDOW_PADDING = 10;
+	public final static int IMPRESSIVE_WINDOW_WIDTH = 600;
+	public final static int IMPRESSIC_WINDOW_HEIGHT = 300;
 	private ArrayList<MusicalInstrument> instrumentsSearchResault = new ArrayList<MusicalInstrument>();
-	ArrayList<MusicalInstrument> allInstruments = new ArrayList<MusicalInstrument>();
+	private ArrayList<MusicalInstrument> allInstruments = new ArrayList<MusicalInstrument>();
 	private int instrumentIndex = 0;
-	SearchPanel searchPanel = new SearchPanel();
-	Navigation navigation = new Navigation();
-	MidSection midSection = new MidSection();
-	Commercial commercial = new Commercial();
+	private SearchPanel searchPanel = new SearchPanel();
+	private Navigation navigation = new Navigation();
+	private MidSection midSection = new MidSection();
+	private Commercial commercial = new Commercial(IMPRESSIVE_WINDOW_WIDTH);
 
 	public ImpressiveWindow(ArrayList<MusicalInstrument> instruments) {
 		allInstruments.addAll(instruments);
 		instrumentsSearchResault.addAll(allInstruments);
-		setPrefSize(600, 300);
-		setPadding(new Insets(10, 10, 10, 10));
+		setPrefSize(IMPRESSIVE_WINDOW_WIDTH, IMPRESSIC_WINDOW_HEIGHT);
+		setPadding(new Insets(IMPRESSIVE_WINDOW_PADDING));
 		setPositions();
 		setChildrenAlignments();
 		initializeImpressiveWindowActions();
 		showCurrentInstrument();
 	}
-
 
 	private void setChildrenAlignments() {
 		searchPanel.setAlignment(Pos.TOP_CENTER);
@@ -35,7 +37,7 @@ public class ImpressiveWindow extends BorderPane {
 		setAlignment(navigation.getPrevious(), Pos.CENTER);
 		setAlignment(navigation.getNext(), Pos.CENTER);
 	}
-	
+
 	private void setPositions() {
 		setTop(searchPanel);
 		setCenter(midSection);
@@ -43,7 +45,7 @@ public class ImpressiveWindow extends BorderPane {
 		setRight(navigation.getNext());
 		setBottom(commercial);
 	}
-	
+
 	private void initializeImpressiveWindowActions() {
 		initializeDeleteAction();
 		initializeClearAction();
@@ -52,7 +54,7 @@ public class ImpressiveWindow extends BorderPane {
 		initializeNextButtonAction();
 		initializePreviousButtonAction();
 	}
-	
+
 	public void showCurrentInstrument() {
 		if (instrumentsSearchResault.isEmpty()) {
 			midSection.showNoItems();
@@ -67,7 +69,7 @@ public class ImpressiveWindow extends BorderPane {
 			showCurrentInstrument();
 		});
 	}
-	
+
 	public void setIndexToPrevious() {
 		if (instrumentIndex <= 0) {
 			instrumentIndex = (instrumentsSearchResault.size() - 1);
@@ -90,7 +92,6 @@ public class ImpressiveWindow extends BorderPane {
 			instrumentIndex++;
 		}
 	}
-
 
 	public void initializeClearAction() {
 		midSection.getButtons().getClearButton().setOnAction(e -> {
@@ -168,7 +169,6 @@ public class ImpressiveWindow extends BorderPane {
 			showCurrentInstrument();
 		}
 	}
-
 
 	private void initializeSearchPanelActions() {
 		initializeGoEvent();

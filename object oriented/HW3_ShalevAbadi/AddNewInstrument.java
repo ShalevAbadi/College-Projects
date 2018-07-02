@@ -8,11 +8,11 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 
 public class AddNewInstrument extends Stage {
-	private MusicalInstrument instrumentToAdd;
 	public static final ObservableList<String> INSTRUMENTS = FXCollections.observableArrayList("Guitar", "Saxophone",
 			"Bass", "Flute");
-	ComboBox<String> instrumentsComboBox = new ComboBox<>(INSTRUMENTS);
-	VBox layoutContainer = new VBox();
+	private MusicalInstrument instrumentToAdd;
+	private ComboBox<String> instrumentsComboBox = new ComboBox<>(INSTRUMENTS);
+	private VBox layoutContainer = new VBox();
 	private Button addButton = new Button("add");
 
 	public AddNewInstrument() {

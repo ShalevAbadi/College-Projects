@@ -5,9 +5,9 @@ import javafx.scene.text.Text;
 
 public class AddGuitarPane extends AddStringInstrumentPane {
 
-	Text type = new Text("Guitar Type:");
 	final static ObservableList<String> TYPES_LIST = FXCollections.observableArrayList(Guitar.GUITAR_TYPE);
-	ComboBox<String> typesComboBox = new ComboBox<>(TYPES_LIST);
+	private Text type = new Text("Guitar Type:");
+	private ComboBox<String> typesComboBox = new ComboBox<>(TYPES_LIST);
 
 	public AddGuitarPane() {
 		typesComboBox.setPromptText("Type");

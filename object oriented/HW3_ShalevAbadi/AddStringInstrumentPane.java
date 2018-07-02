@@ -3,9 +3,9 @@ import javafx.scene.text.Text;
 
 public abstract class AddStringInstrumentPane extends AddInstrumentPane {
 
-	TextField numberOfStringsField = new TextField();
-	Text numberOfStrings = new Text("Number Of Strings:");
-	String numberOfStringPrompt;
+	protected TextField numberOfStringsField = new TextField();
+	protected Text numberOfStrings = new Text("Number Of Strings:");
+	protected String numberOfStringPrompt;
 
 	public AddStringInstrumentPane() {
 		addRow(getRowCount(), numberOfStrings, numberOfStringsField);
