@@ -7,6 +7,7 @@ public class MidSection extends VBox {
 
 	public MidSection() {
 		getChildren().addAll(instrumentProperties, buttons);
+		buttons.getAddButton().requestFocus();
 	}
 
 	public MidSectionButtons getButtons() {
