@@ -5,5 +5,5 @@
  *      Author: shale
  */
 
-void generateMatrix(int size, int matrix[size][size]);
+void fillMatrixWithRandoms(int size, int * matrix);
 

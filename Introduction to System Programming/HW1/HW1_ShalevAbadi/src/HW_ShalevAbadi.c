@@ -7,9 +7,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "fillMatrixWithRandoms.h"
 #include "printMenu.h"
 #include "handleUserChoice.h"
-#include "generateMatrix.h"
 
 int main(){
 	printMenu();

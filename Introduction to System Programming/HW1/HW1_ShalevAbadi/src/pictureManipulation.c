@@ -8,13 +8,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "pictureManipulation.h"
-#include "generateMatrix.h"
+#include "fillMatrixWithRandoms.h"
 #include "printMatrix.h"
+#include "pictureManipulationPrintMenu.h"
+#include "rotateMatrix90DegreeClockwise.h"
 
 void pictureManipulation(){
 	int size= 5;
 	int matrix[size][size];
-	generateMatrix(size, matrix);
+	fillMatrixWithRandoms(size, matrix);
 	printMatrix(size, matrix);
+	pictureManipulationPrintMenu();
+	rotateMatrix90DegreeClockwise(size, matrix);
+	printMatrix(size, matrix);
+
+
 
 }
