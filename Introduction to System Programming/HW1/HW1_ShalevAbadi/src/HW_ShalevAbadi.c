@@ -6,8 +6,13 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "printMenu.h"
+#include "handleUserChoice.h"
+#include "generateMatrix.h"
+
 int main(){
 	printMenu();
+	handleUserChoice();
 }
 
