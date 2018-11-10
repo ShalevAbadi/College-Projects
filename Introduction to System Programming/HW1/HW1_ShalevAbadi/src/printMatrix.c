@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "printMatrix.h"
 
-void printMatrix(int size, int *p) {
+void printMatrix(int size, int * p) {
 	int index = 0;
 	for (int j = 0; j < size; j++) {
 		for (int i = 0; i < size; i++) {

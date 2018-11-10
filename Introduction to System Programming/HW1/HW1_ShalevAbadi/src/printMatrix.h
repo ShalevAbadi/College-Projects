@@ -5,4 +5,4 @@
  *      Author: shale
  */
 
-void printMatrix(int size, int *p);
+void printMatrix(int size, int * p);

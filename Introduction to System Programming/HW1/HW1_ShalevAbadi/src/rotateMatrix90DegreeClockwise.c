@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include "rotateMatrix90DegreeClockwise.h"
+#include "flipVertical.h"
 
 void rotateMatrix90DegreeClockwise(int size, int * matrix) {
 	int temp;
@@ -18,12 +19,5 @@ void rotateMatrix90DegreeClockwise(int size, int * matrix) {
 		}
 	}
 
-	for (int i = 0; i < size; i++) {
-		for (int j = 0; j < size / 2; j++) {
-			temp = *(matrix + (i * size + j));
-			*(matrix + (i * size + j)) =
-					*(matrix + (i * size + (size - 1 - j)));
-			*(matrix + (i * size + (size - 1 - j))) = temp;
-		}
-	}
+	flipVertical(size, matrix);
 }

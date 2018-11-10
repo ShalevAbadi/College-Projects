@@ -12,6 +12,8 @@
 #include "printMatrix.h"
 #include "pictureManipulationPrintMenu.h"
 #include "rotateMatrix90DegreeClockwise.h"
+#include  "rotateMatrix90DegreeCounterClockwise.h"
+#include "handlePMchoice.h"
 
 void pictureManipulation(){
 	int size= 5;
@@ -19,9 +21,6 @@ void pictureManipulation(){
 	fillMatrixWithRandoms(size, matrix);
 	printMatrix(size, matrix);
 	pictureManipulationPrintMenu();
-	rotateMatrix90DegreeClockwise(size, matrix);
-	printMatrix(size, matrix);
-
-
+	handlePMchoice(size, matrix);
 
 }
