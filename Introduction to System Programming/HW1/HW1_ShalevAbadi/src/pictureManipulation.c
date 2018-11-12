@@ -19,7 +19,7 @@ void pictureManipulation(){
 	int size= 5;
 	int matrix[size][size];
 	fillMatrixWithRandoms(size, matrix);
-	printMatrix(size, matrix);
+	printMatrix(size, size, matrix);
 	pictureManipulationPrintMenu();
 	handlePMchoice(size, matrix);
 

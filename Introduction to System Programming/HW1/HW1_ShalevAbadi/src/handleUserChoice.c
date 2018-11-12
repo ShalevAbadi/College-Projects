@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include "handleUserChoice.h"
 #include "pictureManipulation.h"
+#include "puzzleMain.h"
 
 void handleUserChoice() {
 	char choice;
@@ -22,7 +23,7 @@ void handleUserChoice() {
 			break;
 		case 'n':
 		case 'N':
-			printf("nN is working");
+			puzzleMain();
 			break;
 		case 'e':
 		case 'E':
