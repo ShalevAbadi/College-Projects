@@ -7,7 +7,7 @@
 
 #include "swap.h"
 
-void swap(int first, int second, int * arr) {
+void swap1(int first, int second, int * arr) {
 	int temp = *(arr + first);
 	*(arr + first) = *(arr + second);
 	*(arr + second) = temp;

@@ -6,4 +6,4 @@
  */
 
 
-void handlePMchoice(int size, int * matrix);
+void handlePMchoice1(int size, int * matrix);

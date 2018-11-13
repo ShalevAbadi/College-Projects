@@ -5,4 +5,4 @@
  *      Author: shale
  */
 
-void initializePuzzle(int rows, int cols, int * puzzle);
+void initializePuzzle1(int rows, int cols, int * puzzle);

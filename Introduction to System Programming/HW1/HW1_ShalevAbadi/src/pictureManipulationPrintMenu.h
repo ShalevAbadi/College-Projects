@@ -6,4 +6,4 @@
  */
 
 
-void pictureManipulationPrintMenu();
+void pictureManipulationPrintMenu1();

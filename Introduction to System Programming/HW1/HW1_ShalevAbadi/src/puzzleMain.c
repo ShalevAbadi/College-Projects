@@ -7,14 +7,14 @@
 
 #include "puzzleMain.h"
 #include "initializePuzzle.h"
-#include "printMatrix.h"
+#include "generalMethods.h"
 #include <stdio.h>
 #define ROWS 4
 #define COLS 3
 int puzzle[ROWS][COLS];
 
-void puzzleMain() {
-	initializePuzzle(ROWS, COLS, puzzle);
-	printMatrix(ROWS,COLS,puzzle);
+void puzzleMain1() {
+	initializePuzzle1(ROWS, COLS, puzzle);
 
 }
+

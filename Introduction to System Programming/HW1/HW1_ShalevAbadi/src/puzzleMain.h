@@ -5,4 +5,4 @@
  *      Author: shale
  */
 
-void puzzleMain();
+void puzzleMain1();

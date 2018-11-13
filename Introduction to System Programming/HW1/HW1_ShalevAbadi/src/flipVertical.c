@@ -9,7 +9,7 @@
 #include "flipVertical.h"
 #include "swap.h"
 
-void flipVertical(int size, int * matrix) {
+void flipVertical1(int size, int * matrix) {
 	for (int i = 0; i < size; i++) {
 		for (int j = 0; j < size / 2; j++) {
 			swap((i * size + j), (i * size + (size - 1 - j)), matrix);

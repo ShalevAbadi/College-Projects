@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "initializePuzzle.h"
 
-void initializePuzzle(int rows, int cols, int * puzzle){
+void initializePuzzle1(int rows, int cols, int * puzzle){
 	for (int i = 0 ; i < rows*cols; i++){
 		*(puzzle + i) = i;
 	}

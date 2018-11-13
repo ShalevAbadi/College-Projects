@@ -13,9 +13,10 @@
 
 int lower = 1;
 int upper = 99;
-void fillMatrixWithRandoms(int size, int * matrix) {
+void fillMatrixWithRandoms1(int size, int * matrix) {
 	srand(time(NULL));
 	for (int i = 0; i < size * size; i++) {
 		*(matrix + i) = (rand() % (upper - lower + 1)) + lower;
 	}
 }
+
