@@ -26,3 +26,12 @@ int randomFromRange(int lower, int upper){
 	int res = (rand() % (upper - lower + 1)) + lower;
 	return res;
 }
+
+
+void clearBuffer(){
+	char garbage;
+	do{
+		scanf("%c", &garbage);
+	}while(garbage != '\n');
+}
+

@@ -62,12 +62,13 @@ void move() {
 	printf("%s", STEP_STR);
 	int c;
 	scanf("%d", &c);
+	clearBuffer();
 	if (checkRight(c) < 0) {
 		if (checkLeft(c) < 0) {
 			if (checkUp(c) < 0) {
 				if (checkDown(c) < 0) {
 					printf("%s", INVALID_MESSAGE_STR);
-					getchar();
+					c= 0;
 				}
 			}
 		}
