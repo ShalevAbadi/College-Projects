@@ -6,7 +6,7 @@
  */
 
 
-void printMatrix(int rows,int cols, int * p);
-void swap(int first, int second, int * arr);
-int randomFromRange(int lower, int upper);
-void clearBuffer();
+void print_matrix(int rows,int cols, int * first_index_pointer);
+void swap(int first, int second, int * first_index_pointer);
+int random_from_range(int lower, int upper);
+void clear_buffer();

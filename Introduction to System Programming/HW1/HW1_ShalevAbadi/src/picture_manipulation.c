@@ -5,114 +5,127 @@
  *      Author: shale
  */
 
+#include "picture_manipulation.h"
+
 #include <stdio.h>
 #include <stdlib.h>
-#include "pictureManipulation.h"
-#include "generalMethods.h"
+#include <time.h>
+#include "general_methods.h"
 
 #define PM_SIZE 5
-#define PM_MENU_STR "Please choose one of the following options\n1 - 90 degree clockwise\n2 - 90 degree counter clockwise\n3 - Flip Horizontal\n4 - Flip Vertical\n-1 - Quit\n"
+#define PM_MENU_STR "\nPlease choose one of the following options\n1 - 90 degree clockwise\n2 - 90 degree counter clockwise\n3 - Flip Horizontal\n4 - Flip Vertical\n-1 - Quit\n"
+#define PM_AFTER_STR "--------- picture after manipulation ---------\n"
+#define PM_INVALID_STR "invalid input\n"
 #define PM_LOWER_RAND 0
 #define PM_UPPER_RAND 99
 #define PM_DIGITS 2
 
 int PM_MATRIX[PM_SIZE][PM_SIZE];
+int *matrix_first_index_pointer = &PM_MATRIX[0][0];
 
-void pictureManipulationMain() {
-	fillMatrixWithRandoms(PM_MATRIX);
-	printMatrix(PM_SIZE, PM_SIZE, PM_MATRIX);
-	pictureManipulationPrintMenu();
-	handlePMchoice();
+void picture_manipulation_main() {
+	fill_matrix_with_randoms();
 
+	int return_to_main_menu = 0;
+	do {
+		print_matrix(PM_SIZE, PM_SIZE, matrix_first_index_pointer);
+		handle_pm_choice(&return_to_main_menu);
+		if (!return_to_main_menu) {
+			printf("%s", PM_AFTER_STR);
+		}
+	} while (!return_to_main_menu);
 }
 
-void fillMatrixWithRandoms(int * matrix) {
+void fill_matrix_with_randoms() {
 	srand(time(NULL));
 	for (int i = 0; i < PM_SIZE * PM_SIZE; i++) {
-		*(matrix + i) = randomFromRange(PM_LOWER_RAND, PM_UPPER_RAND);
+		*(matrix_first_index_pointer + i) = random_from_range(PM_LOWER_RAND,
+		PM_UPPER_RAND);
 	}
 }
 
-void pictureManipulationPrintMenu() {
+void picture_manipulation_print_menu() {
 	printf("%s", PM_MENU_STR);
 }
 
-void handlePMchoice() {
+void handle_pm_choice(int * return_to_main_menu) {
+	int is_invalid_choice;
 	int choice;
-
 	do {
+		clear_buffer();
+		picture_manipulation_print_menu();
 		scanf("%d", &choice);
+		is_invalid_choice = 0;
 		switch (choice) {
 		case 1:
-			rotateMatrix90DegreesClockwise(PM_MATRIX);
-			printMatrix(PM_SIZE, PM_SIZE, PM_MATRIX);
+			rotate_matrix_90_degrees_clockwise();
 			break;
 		case 2:
-			rotateMatrix90DegreesCounterClockwise(PM_MATRIX);
-			printMatrix(PM_SIZE, PM_SIZE, PM_MATRIX);
+			rotate_matrix_90_degrees_counter_clockwise();
 			break;
 		case 3:
-			flipHorizontal(PM_MATRIX);
-			printMatrix(PM_SIZE, PM_SIZE, PM_MATRIX);
+			flip_horizontal();
 			break;
 		case 4:
-			flipVertical(PM_MATRIX);
-			printMatrix(PM_SIZE, PM_SIZE, PM_MATRIX);
+			flip_vertical();
 			break;
 		case -1:
-			exit(0);
+			*return_to_main_menu = 1;
 			break;
 		default:
-			getchar();
+			is_invalid_choice = 1;
+			printf("%s", PM_INVALID_STR);
+			break;
 		}
-	} while (1);
+	} while (is_invalid_choice);
+
 }
 
-void rotateMatrix90DegreesClockwise(int * matrix) {
+void rotate_matrix_90_degrees_clockwise() {
 
 	int temp;
 	for (int i = 0; i < PM_SIZE; i++) {
 		for (int j = i + 1; j < PM_SIZE; j++) {
-			temp = *(matrix + (i * PM_SIZE + j));
-			*(matrix + (i * PM_SIZE + j)) = *(matrix + (j * PM_SIZE + i));
-			*(matrix + (j * PM_SIZE + i)) = temp;
+			temp = *(matrix_first_index_pointer + (i * PM_SIZE + j));
+			*(matrix_first_index_pointer + (i * PM_SIZE + j)) = *(matrix_first_index_pointer + (j * PM_SIZE + i));
+			*(matrix_first_index_pointer + (j * PM_SIZE + i)) = temp;
 		}
 	}
 
-	flipVertical(matrix);
+	flip_vertical();
 }
 
-void flipVertical(int * matrix) {
+void flip_vertical() {
 	for (int i = 0; i < PM_SIZE; i++) {
 		for (int j = 0; j < PM_SIZE / 2; j++) {
-			swap((i * PM_SIZE + j), (i * PM_SIZE + (PM_SIZE - 1 - j)), matrix);
+			swap((i * PM_SIZE + j), (i * PM_SIZE + (PM_SIZE - 1 - j)), matrix_first_index_pointer);
 		}
 	}
 }
 
-void flipHorizontal(int * matrix){
+void flip_horizontal() {
 	int temp;
-		for (int i = 0; i < PM_SIZE / 2; i++) {
-			for (int j = 0; j < PM_SIZE; j++) {
-				temp = *(matrix + (i * PM_SIZE + j));
-				*(matrix + (i * PM_SIZE + j)) =
-						*(matrix + ((PM_SIZE-1-i) * PM_SIZE + j));
-				*(matrix + ((PM_SIZE-1-i) * PM_SIZE + j)) = temp;
-			}
+	for (int i = 0; i < PM_SIZE / 2; i++) {
+		for (int j = 0; j < PM_SIZE; j++) {
+			temp = *(matrix_first_index_pointer + (i * PM_SIZE + j));
+			*(matrix_first_index_pointer + (i * PM_SIZE + j)) = *(matrix_first_index_pointer
+					+ ((PM_SIZE - 1 - i) * PM_SIZE + j));
+			*(matrix_first_index_pointer + ((PM_SIZE - 1 - i) * PM_SIZE + j)) = temp;
 		}
+	}
 }
 
-void rotateMatrix90DegreesCounterClockwise(int * matrix) {
+void rotate_matrix_90_degrees_counter_clockwise() {
 	int temp;
 	for (int i = 0; i < PM_SIZE; i++) {
 		for (int j = PM_SIZE - i - 2; j >= 0; j--) {
-			temp = *(matrix + (i * PM_SIZE + j));
-			*(matrix + (i * PM_SIZE + j)) = *(matrix
+			temp = *(matrix_first_index_pointer + (i * PM_SIZE + j));
+			*(matrix_first_index_pointer + (i * PM_SIZE + j)) = *(matrix_first_index_pointer
 					+ ((PM_SIZE - 1 - j) * PM_SIZE + PM_SIZE - 1 - i));
-			*(matrix + ((PM_SIZE - 1 - j) * PM_SIZE + PM_SIZE - 1 - i)) = temp;
+			*(matrix_first_index_pointer + ((PM_SIZE - 1 - j) * PM_SIZE + PM_SIZE - 1 - i)) = temp;
 		}
 	}
 
-	flipVertical(matrix);
+	flip_vertical();
 }
 

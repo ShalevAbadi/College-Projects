@@ -8,10 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "mainMenu.h"
+#include "main_menu.h"
 
 int main(){
-	printMainMenu();
-	handleMainMenuUserChoice();
+	main_menu_run();
 }
 
