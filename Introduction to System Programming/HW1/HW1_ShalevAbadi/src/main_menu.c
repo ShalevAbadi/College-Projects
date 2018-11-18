@@ -13,6 +13,7 @@
 #include "number_game.h"
 #include "picture_manipulation.h"
 #define MAIN_MENU_STR "Please choose one of the following options\nP/p - Picture Manipulation\nN/n - Number Game\nE/e - Quit\n"
+#define MAIN_MENU_INVALID_STR "Invalid Choice"
 #define EXIT_MESSAGE "Bye Bye"
 
 void main_menu_run() {
@@ -46,6 +47,8 @@ void handle_main_menu_user_choice() {
 		break;
 	default:
 		clear_buffer();
+		printf("%s", MAIN_MENU_INVALID_STR);
+		break;
 	}
 
 }

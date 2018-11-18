@@ -25,7 +25,6 @@ int *matrix_first_index_pointer = &PM_MATRIX[0][0];
 
 void picture_manipulation_main() {
 	fill_matrix_with_randoms();
-
 	int return_to_main_menu = 0;
 	do {
 		print_matrix(PM_SIZE, PM_SIZE, matrix_first_index_pointer);
@@ -82,50 +81,46 @@ void handle_pm_choice(int * return_to_main_menu) {
 }
 
 void rotate_matrix_90_degrees_clockwise() {
-
-	int temp;
-	for (int i = 0; i < PM_SIZE; i++) {
-		for (int j = i + 1; j < PM_SIZE; j++) {
-			temp = *(matrix_first_index_pointer + (i * PM_SIZE + j));
-			*(matrix_first_index_pointer + (i * PM_SIZE + j)) = *(matrix_first_index_pointer + (j * PM_SIZE + i));
-			*(matrix_first_index_pointer + (j * PM_SIZE + i)) = temp;
-		}
-	}
-
+	transpose_matrix();
 	flip_vertical();
 }
 
+void rotate_matrix_90_degrees_counter_clockwise() {
+	flip_vertical();
+	transpose_matrix();
+}
+
+void transpose_matrix() {
+	int first_index, second_index;
+	for (int i = 0; i < PM_SIZE; i++) {
+		for (int j = i + 1; j < PM_SIZE; j++) {
+			first_index = i * PM_SIZE + j;
+			second_index = j * PM_SIZE + i;
+			swap(first_index, second_index, matrix_first_index_pointer);
+		}
+	}
+}
+
 void flip_vertical() {
+	int first_index, second_index;
 	for (int i = 0; i < PM_SIZE; i++) {
 		for (int j = 0; j < PM_SIZE / 2; j++) {
-			swap((i * PM_SIZE + j), (i * PM_SIZE + (PM_SIZE - 1 - j)), matrix_first_index_pointer);
+			first_index = i * PM_SIZE + j;
+			second_index = i * PM_SIZE + (PM_SIZE - 1 - j);
+			swap(first_index, second_index, matrix_first_index_pointer);
 		}
 	}
 }
 
 void flip_horizontal() {
-	int temp;
+	int first_index, second_index;
 	for (int i = 0; i < PM_SIZE / 2; i++) {
 		for (int j = 0; j < PM_SIZE; j++) {
-			temp = *(matrix_first_index_pointer + (i * PM_SIZE + j));
-			*(matrix_first_index_pointer + (i * PM_SIZE + j)) = *(matrix_first_index_pointer
-					+ ((PM_SIZE - 1 - i) * PM_SIZE + j));
-			*(matrix_first_index_pointer + ((PM_SIZE - 1 - i) * PM_SIZE + j)) = temp;
+			first_index = (i * PM_SIZE + j);
+			second_index = (PM_SIZE - 1 - i) * PM_SIZE + j;
+			swap(first_index,second_index , matrix_first_index_pointer);
 		}
 	}
 }
 
-void rotate_matrix_90_degrees_counter_clockwise() {
-	int temp;
-	for (int i = 0; i < PM_SIZE; i++) {
-		for (int j = PM_SIZE - i - 2; j >= 0; j--) {
-			temp = *(matrix_first_index_pointer + (i * PM_SIZE + j));
-			*(matrix_first_index_pointer + (i * PM_SIZE + j)) = *(matrix_first_index_pointer
-					+ ((PM_SIZE - 1 - j) * PM_SIZE + PM_SIZE - 1 - i));
-			*(matrix_first_index_pointer + ((PM_SIZE - 1 - j) * PM_SIZE + PM_SIZE - 1 - i)) = temp;
-		}
-	}
-
-	flip_vertical();
-}
 

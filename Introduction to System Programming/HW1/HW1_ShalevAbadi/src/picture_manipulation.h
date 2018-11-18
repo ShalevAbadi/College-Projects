@@ -11,5 +11,6 @@ void picture_manipulation_print_menu();
 void handle_pm_choice(int * returnToMainMenu);
 void flip_vertical();
 void rotate_matrix_90_degrees_clockwise();
+void transpose_matrix();
 void rotate_matrix_90_degrees_counter_clockwise();
 void flip_horizontal();

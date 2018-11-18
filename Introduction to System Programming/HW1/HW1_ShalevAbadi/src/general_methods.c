@@ -28,7 +28,6 @@ int random_from_range(int lower, int upper){
 	return res;
 }
 
-
 void clear_buffer(){
 	char garbage;
 	do{

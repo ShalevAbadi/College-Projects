@@ -98,7 +98,7 @@ int validate_win() {
 }
 
 int check_up(int userInput) {
-	if (empty_position_index >= COLS) {
+	if (!is_empty_position_on_top()) {
 		int up = *(first_index_pointer + empty_position_index - COLS);
 		if (up == userInput) {
 			swap(empty_position_index - COLS, empty_position_index, *puzzle);
@@ -109,8 +109,12 @@ int check_up(int userInput) {
 	return 0;
 }
 
+int is_empty_position_on_top(){
+	return empty_position_index < COLS;
+}
+
 int check_down(int userInput) {
-	if (empty_position_index < COLS * (ROWS - 1)) {
+	if (!is_empty_position_on_bottom()) {
 		int up = *(first_index_pointer + empty_position_index + COLS);
 		if (up == userInput) {
 			swap(empty_position_index + COLS, empty_position_index, *puzzle);
@@ -121,8 +125,12 @@ int check_down(int userInput) {
 	return 0;
 }
 
+int is_empty_position_on_bottom(){
+	return (empty_position_index > COLS * (ROWS - 1));
+}
+
 int check_left(int user_input) {
-	if ((empty_position_index + COLS) % COLS != 0) {
+	if (!is_empty_position_on_left_edge()) {
 		int left = *(first_index_pointer + empty_position_index - 1);
 		if (left == user_input) {
 			swap(empty_position_index - 1, empty_position_index, *puzzle);
@@ -133,8 +141,12 @@ int check_left(int user_input) {
 	return 0;
 }
 
+int is_empty_position_on_left_edge(){
+	return (empty_position_index + COLS) % COLS == 0;
+}
+
 int check_right(int userInput) {
-	if ((empty_position_index) % COLS != COLS - 1) {
+	if (!is_empty_position_on_right_edge()) {
 		int right = *(first_index_pointer + empty_position_index + 1);
 		if (right == userInput) {
 			swap(empty_position_index + 1, empty_position_index, *puzzle);
@@ -145,3 +157,6 @@ int check_right(int userInput) {
 	return 0;
 }
 
+int is_empty_position_on_right_edge(){
+	return ((empty_position_index) % COLS == COLS - 1);
+}
