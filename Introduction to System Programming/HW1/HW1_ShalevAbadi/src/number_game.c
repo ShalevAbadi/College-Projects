@@ -16,14 +16,15 @@ void initialize_puzzle();
 void shuffle_puzzle();
 void move();
 int validate_win();
-int check_left(int userInput);
-int check_right(int userInput);
-int check_up(int userInput);
+int check_left_and_swap(int userInput);
+int check_right_and_swap(int user_input);
+int check_up_and_swap(int user_input);
+int check_down_and_swap(int user_input);
+int is_user_input_at_index(int index, int user_input);
 int is_empty_position_on_top();
 int is_empty_position_on_bottom();
 int is_empty_position_on_right_edge();
 int is_empty_position_on_left_edge();
-int check_down(int userInput);
 void generate_row_and_col_randoms(int * rowPointer, int * colPointer);
 
 #define ROWS 4
@@ -81,20 +82,26 @@ void generate_row_and_col_randoms(int * row_pointer, int * col_pointer){
 }
 
 void move() {
-	printf("%s", STEP_STR);
 	int user_input = 0;
+	int invalid_step;
+	do{
+	printf("%s", STEP_STR);
 	scanf("%d", &user_input);
 	clear_buffer();
-	if (!check_right(user_input)) {
-		if (!check_left(user_input)) {
-			if (!check_up(user_input)) {
-				if (!check_down(user_input)) {
+	invalid_step = 0;
+	if (!check_right_and_swap(user_input)) {
+		if (!check_left_and_swap(user_input)) {
+			if (!check_up_and_swap(user_input)) {
+				if (!check_down_and_swap(user_input)) {
 					printf("%s", INVALID_MESSAGE_STR);
+					invalid_step = 1;
 				}
 			}
 		}
 	}
+	}while(invalid_step);
 	print_matrix(ROWS, COLS, *puzzle);
+
 
 }
 
@@ -110,11 +117,11 @@ int validate_win() {
 	return 0;
 }
 
-int check_up(int userInput) {
+int check_up_and_swap(int user_input) {
 	if (!is_empty_position_on_top()) {
-		int up = *(first_index_pointer + empty_position_index - COLS);
-		if (up == userInput) {
-			swap(empty_position_index - COLS, empty_position_index, *puzzle);
+		int up = empty_position_index - COLS;
+		if (is_user_input_at_index(up, user_input)) {
+			swap(up, empty_position_index, *puzzle);
 			empty_position_index = empty_position_index - COLS;
 			return 1;
 		}
@@ -126,11 +133,15 @@ int is_empty_position_on_top(){
 	return empty_position_index < COLS;
 }
 
-int check_down(int userInput) {
+int is_user_input_at_index(int index, int user_input){
+		return (*(first_index_pointer + index) == user_input);
+}
+
+int check_down_and_swap(int user_input) {
 	if (!is_empty_position_on_bottom()) {
-		int up = *(first_index_pointer + empty_position_index + COLS);
-		if (up == userInput) {
-			swap(empty_position_index + COLS, empty_position_index, *puzzle);
+		int down = empty_position_index + COLS;
+		if (is_user_input_at_index(down, user_input)) {
+			swap(down, empty_position_index, *puzzle);
 			empty_position_index = empty_position_index + COLS;
 			return 1;
 		}
@@ -139,14 +150,14 @@ int check_down(int userInput) {
 }
 
 int is_empty_position_on_bottom(){
-	return (empty_position_index > COLS * (ROWS - 1) -1);
+	return (empty_position_index >= COLS * (ROWS - 1));
 }
 
-int check_left(int user_input) {
+int check_left_and_swap(int user_input) {
 	if (!is_empty_position_on_left_edge()) {
-		int left = *(first_index_pointer + empty_position_index - 1);
-		if (left == user_input) {
-			swap(empty_position_index - 1, empty_position_index, *puzzle);
+		int left = empty_position_index - 1;
+		if (is_user_input_at_index(left, user_input)) {
+			swap(left, empty_position_index, *puzzle);
 			empty_position_index--;
 			return 1;
 		}
@@ -158,11 +169,11 @@ int is_empty_position_on_left_edge(){
 	return (empty_position_index + COLS) % COLS == 0;
 }
 
-int check_right(int userInput) {
+int check_right_and_swap(int user_input) {
 	if (!is_empty_position_on_right_edge()) {
-		int right = *(first_index_pointer + empty_position_index + 1);
-		if (right == userInput) {
-			swap(empty_position_index + 1, empty_position_index, *puzzle);
+		int right = empty_position_index + 1;
+		if (is_user_input_at_index(right,user_input)) {
+			swap(right, empty_position_index, *puzzle);
 			empty_position_index++;
 			return 1;
 		}

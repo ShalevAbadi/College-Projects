@@ -14,7 +14,7 @@
 
 void fill_matrix_with_randoms();
 void picture_manipulation_print_menu();
-void handle_pm_choice(int * returnToMainMenu);
+void handle_pm_choice(int *returnToMainMenu);
 void flip_vertical();
 void rotate_matrix_90_degrees_clockwise();
 void transpose_matrix();
@@ -56,7 +56,7 @@ void picture_manipulation_print_menu() {
 	printf("%s", PM_MENU_STR);
 }
 
-void handle_pm_choice(int * return_to_main_menu) {
+void handle_pm_choice(int *return_to_main_menu) {
 	int is_invalid_choice;
 	int choice;
 	do {
@@ -127,9 +127,8 @@ void flip_horizontal() {
 		for (int j = 0; j < PM_SIZE; j++) {
 			first_index = (i * PM_SIZE + j);
 			second_index = (PM_SIZE - 1 - i) * PM_SIZE + j;
-			swap(first_index,second_index , matrix_first_index_pointer);
+			swap(first_index, second_index, matrix_first_index_pointer);
 		}
 	}
 }
-
 

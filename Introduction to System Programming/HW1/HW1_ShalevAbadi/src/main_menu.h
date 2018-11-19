@@ -6,6 +6,5 @@
  */
 
 
-void print_main_menu();
-void handle_main_menu_user_choice();
+
 void main_menu_run();
