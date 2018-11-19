@@ -5,12 +5,26 @@
  *      Author: shale
  */
 
-#include "number_game.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include "number_game.h"
 #include "general_methods.h"
+
+void initialize_puzzle();
+void shuffle_puzzle();
+void move();
+int validate_win();
+int check_left(int userInput);
+int check_right(int userInput);
+int check_up(int userInput);
+int is_empty_position_on_top();
+int is_empty_position_on_bottom();
+int is_empty_position_on_right_edge();
+int is_empty_position_on_left_edge();
+int check_down(int userInput);
+void generate_row_and_col_randoms(int * rowPointer, int * colPointer);
 
 #define ROWS 4
 #define COLS 3
@@ -76,7 +90,6 @@ void move() {
 			if (!check_up(user_input)) {
 				if (!check_down(user_input)) {
 					printf("%s", INVALID_MESSAGE_STR);
-					user_input = 0;
 				}
 			}
 		}
@@ -126,7 +139,7 @@ int check_down(int userInput) {
 }
 
 int is_empty_position_on_bottom(){
-	return (empty_position_index > COLS * (ROWS - 1));
+	return (empty_position_index > COLS * (ROWS - 1) -1);
 }
 
 int check_left(int user_input) {

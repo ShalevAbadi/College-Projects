@@ -12,6 +12,15 @@
 #include <time.h>
 #include "general_methods.h"
 
+void fill_matrix_with_randoms();
+void picture_manipulation_print_menu();
+void handle_pm_choice(int * returnToMainMenu);
+void flip_vertical();
+void rotate_matrix_90_degrees_clockwise();
+void transpose_matrix();
+void rotate_matrix_90_degrees_counter_clockwise();
+void flip_horizontal();
+
 #define PM_SIZE 5
 #define PM_MENU_STR "\nPlease choose one of the following options\n1 - 90 degree clockwise\n2 - 90 degree counter clockwise\n3 - Flip Horizontal\n4 - Flip Vertical\n-1 - Quit\n"
 #define PM_AFTER_STR "--------- picture after manipulation ---------\n"
