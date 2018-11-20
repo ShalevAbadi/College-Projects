@@ -10,6 +10,6 @@
 #include "mainMenu.h"
 
 int main(){
-	return mainMenuRun();
+	return mainMenuLoop();
 }
 

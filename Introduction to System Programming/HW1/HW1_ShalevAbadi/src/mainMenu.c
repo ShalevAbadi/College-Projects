@@ -19,7 +19,7 @@
 #define MAIN_MENU_INVALID_STR "Invalid Choice"
 #define EXIT_MESSAGE "Bye Bye"
 
-int mainMenuRun() {
+int mainMenuLoop() {
 	int run = 1;
 	while(run) {
 		printMainMenu();

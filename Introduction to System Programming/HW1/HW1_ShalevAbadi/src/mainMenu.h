@@ -8,7 +8,7 @@
 #ifndef SRC_MAINMENU_H_
 #define SRC_MAINMENU_H_
 
-int mainMenuRun();
+int mainMenuLoop();
 void printMainMenu();
 int handleMainMenuUserChoice();
 
