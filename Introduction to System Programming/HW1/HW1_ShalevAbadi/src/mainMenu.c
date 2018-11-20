@@ -5,54 +5,57 @@
  *      Author: shale
  */
 
-#include "main_menu.h"
+
+#include "mainMenu.h"
 
 #include <stdio.h>
-#include <stdlib.h>
-#include "general_methods.h"
-#include "number_game.h"
-#include "picture_manipulation.h"
 
-void print_main_menu();
-void handle_main_menu_user_choice();
+#include "numberGame.h"
+#include "pictureManipulation.h"
+#include "utilities.h"
+
 
 #define MAIN_MENU_STR "Please choose one of the following options\nP/p - Picture Manipulation\nN/n - Number Game\nE/e - Quit\n"
 #define MAIN_MENU_INVALID_STR "Invalid Choice"
 #define EXIT_MESSAGE "Bye Bye"
 
-void main_menu_run() {
-	do {
-		print_main_menu();
-		handle_main_menu_user_choice();
-		clear_buffer();
-	} while (1);
+int mainMenuRun() {
+	int run = 1;
+	while(run) {
+		printMainMenu();
+		run = handleMainMenuUserChoice();
+		clearBuffer();
+	};
+	return 0;
 }
 
-void print_main_menu() {
+void printMainMenu() {
 	printf("%s", MAIN_MENU_STR);
 }
 
-void handle_main_menu_user_choice() {
+int handleMainMenuUserChoice() {
 	char choice;
 	choice = getchar();
 	switch (choice) {
 	case 'p':
 	case 'P':
-		picture_manipulation_main();
+		pictureManipulationMain();
 		break;
 	case 'n':
 	case 'N':
-		puzzle_main();
+		puzzleMain();
 		break;
 	case 'e':
 	case 'E':
 		printf("%s", EXIT_MESSAGE);
-		exit(0);
+		return 0;
 		break;
 	default:
-		clear_buffer();
+		clearBuffer();
 		printf("%s", MAIN_MENU_INVALID_STR);
 		break;
 	}
+	return 1;
+
 
 }

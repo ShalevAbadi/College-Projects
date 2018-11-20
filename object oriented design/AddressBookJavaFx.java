@@ -332,7 +332,7 @@ class FirstButton extends CommandButton {
 class Sort1Button extends CommandButton {
 	public Sort1Button(AddressBookPane pane, RandomAccessFile r) {
 		super(pane, r);
-		this.setText("First");
+		this.setText("Sort1");
 	}
 
 	@Override
@@ -349,7 +349,7 @@ class Sort1Button extends CommandButton {
 class Sort2Button extends CommandButton {
 	public Sort2Button(AddressBookPane pane, RandomAccessFile r) {
 		super(pane, r);
-		this.setText("First");
+		this.setText("Sort2");
 	}
 
 	@Override
@@ -366,7 +366,7 @@ class Sort2Button extends CommandButton {
 class IterButton extends CommandButton {
 	public IterButton(AddressBookPane pane, RandomAccessFile r) {
 		super(pane, r);
-		this.setText("First");
+		this.setText("Iter");
 	}
 
 	@Override
