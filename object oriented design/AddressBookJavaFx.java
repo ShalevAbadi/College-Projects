@@ -1,5 +1,7 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.ListIterator;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -143,6 +145,9 @@ class AddressBookPane extends GridPane {
 		jbtNext.setOnAction(ae);
 		jbtPrevious.setOnAction(ae);
 		jbtLast.setOnAction(ae);
+		jbtSort1.setOnAction(ae);
+		jbtSort2.setOnAction(ae);
+		jbtIter.setOnAction(ae);
 		jbtFirst.Execute();
 	}
 
@@ -202,6 +207,7 @@ class CommandButton extends Button implements Command {
 	public final static int STATE_SIZE = 10;
 	public final static int ZIP_SIZE = 5;
 	public final static int RECORD_SIZE = (NAME_SIZE + STREET_SIZE + CITY_SIZE + STATE_SIZE + ZIP_SIZE);
+	public final static int RECORD_BYTES_SIZE = 2 * RECORD_SIZE;
 	protected AddressBookPane p;
 	protected RandomAccessFile raf;
 
@@ -242,6 +248,153 @@ class CommandButton extends Button implements Command {
 		p.SetState(state);
 		p.SetZip(zip);
 	}
+
+	public void sortByComperator(AddressBookComparator comparator) throws IOException {
+		int i, j;
+		int numberOfRecords = (int) (raf.length() / RECORD_BYTES_SIZE);
+		for (i = 0; i < numberOfRecords - 1; i++) {
+			for (j = 0; j < numberOfRecords - i - 1; j++) {
+				if (comparator.compare(readRecordAtIndex(j), readRecordAtIndex(j + 1)) > 0) {
+					swapRecords(j, j + 1);
+				}
+			}
+		}
+	}
+
+	public void swapRecords(int index1, int index2) throws IOException {
+		String temp = readRecordAtIndex(index1);
+		writeRecordAtIndex(index1, readRecordAtIndex(index2));
+		writeRecordAtIndex(index2, temp);
+	}
+
+	public String readRecordAtIndex(int index) throws IOException {
+		long position = index * RECORD_BYTES_SIZE;
+		raf.seek(position);
+		return FixedLengthStringIO.readFixedLengthString(RECORD_SIZE, raf);
+	}
+
+	public void writeRecordAtIndex(int index, String recordToWrite) {
+		try {
+			long position = index * RECORD_BYTES_SIZE;
+			raf.seek(position);
+			FixedLengthStringIO.writeFixedLengthString(recordToWrite, RECORD_SIZE, raf);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	class FileIterator implements ListIterator<String> {
+
+		int currentIndex = 0;
+
+		private long indexToPosition(int index) {
+			return index * RECORD_BYTES_SIZE;
+		}
+
+		@Override
+		public void add(String recordToWrite) {
+			try {
+				long currentPosition = indexToPosition(currentIndex);
+				int restSize = (int) ((raf.length() - currentPosition) / 2);
+				raf.seek(currentPosition);
+				String temp = FixedLengthStringIO.readFixedLengthString(restSize, raf);
+				writeRecordAtIndex(currentIndex, recordToWrite);
+				currentIndex++;
+				currentPosition = indexToPosition(currentIndex);
+				raf.seek(currentPosition);
+				FixedLengthStringIO.writeFixedLengthString(temp, restSize, raf);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public boolean hasNext() {
+			try {
+				return (indexToPosition(currentIndex) < raf.length());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+
+		@Override
+		public boolean hasPrevious() {
+			return currentIndex > 0;
+		}
+
+		@Override
+		public String next() {
+			if (this.hasNext()) {
+				try {
+					currentIndex = nextIndex();
+					return readRecordAtIndex(previousIndex());
+				} catch (IOException e) {
+					currentIndex = previousIndex();
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
+
+		@Override
+		public int nextIndex() {
+			if (!this.hasNext()) {
+				try {
+					return ((int) raf.length());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return currentIndex + 1;
+		}
+
+		@Override
+		public String previous() {
+			if (this.hasPrevious()) {
+				try {
+					currentIndex = previousIndex();
+					return readRecordAtIndex(currentIndex);
+				} catch (IOException e) {
+					currentIndex = nextIndex();
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
+
+		@Override
+		public int previousIndex() {
+			if (this.hasPrevious()) {
+				return currentIndex - 1;
+			}
+			return -1;
+		}
+
+		@Override
+		public void remove() {
+			long currentPosition = indexToPosition(currentIndex);
+			long nextPosition = indexToPosition(currentIndex + 1);
+			try {
+				int restSize = (int) ((raf.length() - nextPosition) / 2);
+				raf.seek(nextPosition);
+				String temp = FixedLengthStringIO.readFixedLengthString(restSize, raf);
+				raf.seek(currentPosition);
+				FixedLengthStringIO.writeFixedLengthString(temp, restSize, raf);
+				raf.setLength(raf.length() - RECORD_BYTES_SIZE);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void set(String arg0) {
+			if (this.hasNext()) {
+				writeRecordAtIndex(currentIndex, arg0);
+			}
+		}
+
+	}
 }
 
 class AddButton extends CommandButton {
@@ -272,6 +425,7 @@ class NextButton extends CommandButton {
 			ex.printStackTrace();
 		}
 	}
+
 }
 
 class PreviousButton extends CommandButton {
@@ -332,14 +486,14 @@ class FirstButton extends CommandButton {
 class Sort1Button extends CommandButton {
 	public Sort1Button(AddressBookPane pane, RandomAccessFile r) {
 		super(pane, r);
-		this.setText("First");
+		this.setText("Sort1");
 	}
 
 	@Override
 	public void Execute() {
 		try {
 			if (raf.length() > 0)
-				readAddress(0);
+				sortByComperator(new StringComparator());
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -349,14 +503,14 @@ class Sort1Button extends CommandButton {
 class Sort2Button extends CommandButton {
 	public Sort2Button(AddressBookPane pane, RandomAccessFile r) {
 		super(pane, r);
-		this.setText("First");
+		this.setText("Sort2");
 	}
 
 	@Override
 	public void Execute() {
 		try {
 			if (raf.length() > 0)
-				readAddress(0);
+				sortByComperator(new ZipComparator());
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -366,16 +520,10 @@ class Sort2Button extends CommandButton {
 class IterButton extends CommandButton {
 	public IterButton(AddressBookPane pane, RandomAccessFile r) {
 		super(pane, r);
-		this.setText("First");
+		this.setText("Iter");
 	}
 
 	@Override
 	public void Execute() {
-		try {
-			if (raf.length() > 0)
-				readAddress(0);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		}
 	}
 }
