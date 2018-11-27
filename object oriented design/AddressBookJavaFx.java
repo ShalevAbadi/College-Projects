@@ -287,16 +287,11 @@ class CommandButton extends Button implements Command {
 		}
 	}
 
-	protected class CommandFileStructure implements Iterable<String> {
-
-		@Override
-		public Iterator<String> iterator() {
-			return new FileIterator();
-		}
-
+	public ListIterator<String> iterator() {
+		return new FileIterator();
 	}
 
-	protected class FileIterator implements ListIterator<String> {
+	private class FileIterator implements ListIterator<String> {
 
 		int currentIndex = 0;
 		int lastIndex = 0;
@@ -314,35 +309,33 @@ class CommandButton extends Button implements Command {
 			return index * RECORD_BYTES_SIZE;
 		}
 
-		public boolean removeAll() {
-			try {
-				raf.setLength(0);
-				currentIndex = 0;
-				lastIndex = 0;
-				return true;
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return false;
-
-		}
-
 		@Override
 		public void add(String recordToWrite) {
 			try {
-				long currentPosition = indexToPosition(currentIndex);
-				int restSize = (int) ((raf.length() - currentPosition) / 2);
-				raf.seek(currentPosition);
-				String temp = FixedLengthStringIO.readFixedLengthString(restSize, raf);
+				String temp = copyRestOfFileFromIndex(currentIndex);
 				writeRecordAtIndex(currentIndex, recordToWrite);
 				currentIndex++;
 				lastIndex = currentIndex;
-				currentPosition = indexToPosition(currentIndex);
-				raf.seek(currentPosition);
-				FixedLengthStringIO.writeFixedLengthString(temp, restSize, raf);
+				pasteRestOfFileAtIndex(currentIndex, temp);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+
+		private void pasteRestOfFileAtIndex(int index, String restOfFile) throws IOException {
+			long position = indexToPosition(index);
+			int restSize = (int) ((raf.length() - position) / 2);
+			raf.seek(position);
+			FixedLengthStringIO.writeFixedLengthString(restOfFile, restSize, raf);
+
+		}
+
+		private String copyRestOfFileFromIndex(int index) throws IOException {
+			long position = indexToPosition(index);
+			int restSize;
+			restSize = (int) ((raf.length() - position) / 2);
+			raf.seek(position);
+			return FixedLengthStringIO.readFixedLengthString(restSize, raf);
 		}
 
 		@Override
@@ -414,15 +407,11 @@ class CommandButton extends Button implements Command {
 		public void remove() {
 			if (hasPrevious()) {
 				try {
+					
 					int removeIndex = maxIndex();
-					long removePosition = indexToPosition(removeIndex);
-					long restPosition = indexToPosition(removeIndex + 1);
+					String temp = copyRestOfFileFromIndex(removeIndex);
 					lastIndex = currentIndex;
-					raf.seek(restPosition);
-					int restSize = (int) ((raf.length() - restPosition) / 2);
-					String temp = FixedLengthStringIO.readFixedLengthString(restSize, raf);
-					raf.seek(removePosition);
-					FixedLengthStringIO.writeFixedLengthString(temp, restSize, raf);
+					pasteRestOfFileAtIndex(currentIndex, temp);
 					raf.setLength(raf.length() - RECORD_BYTES_SIZE);
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -570,8 +559,7 @@ class Sort2Button extends CommandButton {
 }
 
 class IterButton extends CommandButton {
-	private CommandFileStructure fileStructure = new CommandFileStructure();
-	private FileIterator lit = (FileIterator) fileStructure.iterator();
+	private ListIterator<String> lit = this.iterator();
 	private LinkedHashMap<String, String> addressMap = new LinkedHashMap<String, String>();
 	private TreeSet<String> addressTree = new TreeSet<String>(new StreetComparator());
 
@@ -591,15 +579,25 @@ class IterButton extends CommandButton {
 		}
 	}
 
+	private void emptyFileWithIterator() {
+		while (lit.hasNext()) {
+			lit.next();
+			lit.remove();
+		}
+		while (lit.hasPrevious()) {
+			lit.previous();
+			lit.remove();
+		}
+	}
+
 	private void writeAddressMapToFile() {
-		if (lit.removeAll()) {
-			Iterator<Entry<String, String>> addressMapIterator = addressMap.entrySet().iterator();
-			Entry<String, String> entry;
-			while (addressMapIterator.hasNext()) {
-				entry = addressMapIterator.next();
-				lit.add(entry.getKey() + entry.getValue());
-				lit.next();
-			}
+		emptyFileWithIterator();
+		Iterator<Entry<String, String>> addressMapIterator = addressMap.entrySet().iterator();
+		Entry<String, String> entry;
+		while (addressMapIterator.hasNext()) {
+			entry = addressMapIterator.next();
+			lit.add(entry.getKey() + entry.getValue());
+			lit.next();
 		}
 	}
 
@@ -607,7 +605,7 @@ class IterButton extends CommandButton {
 		while (lit.hasNext()) {
 			String fullRecord = lit.next();
 			String key = fullRecord.substring(0, RECORD_SIZE - ZIP_SIZE);
-			String value = fullRecord.substring(RECORD_SIZE - ZIP_SIZE, RECORD_SIZE );
+			String value = fullRecord.substring(RECORD_SIZE - ZIP_SIZE, RECORD_SIZE);
 			addressMap.put(key, value);
 		}
 	}
@@ -622,13 +620,11 @@ class IterButton extends CommandButton {
 	}
 
 	private void writeAddressTreeToFile() {
-		if (lit.removeAll()) {
-			Iterator<String> addressTreeIterator = addressTree.iterator();
-			while (addressTreeIterator.hasNext()) {
-				String entry = addressTreeIterator.next();
-				lit.add(entry);
-			}
-			System.out.println("\n");
+		emptyFileWithIterator();
+		Iterator<String> addressTreeIterator = addressTree.iterator();
+		while (addressTreeIterator.hasNext()) {
+			String entry = addressTreeIterator.next();
+			lit.add(entry);
 		}
 	}
 }
