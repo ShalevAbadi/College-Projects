@@ -3,7 +3,7 @@ import java.util.Comparator;
 public abstract class AddressBookComparator implements Comparator<String> {
 	protected int beginingIndex;
 	protected int endIndex;
-
+	
 	public AddressBookComparator(int beginingIndex, int endIndex) {
 		this.beginingIndex = beginingIndex;
 		this.endIndex = endIndex;

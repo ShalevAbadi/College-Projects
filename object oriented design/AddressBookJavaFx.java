@@ -1,6 +1,10 @@
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.ListIterator;
+import java.util.Map.Entry;
+import java.util.TreeSet;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -283,12 +287,44 @@ class CommandButton extends Button implements Command {
 		}
 	}
 
-	class FileIterator implements ListIterator<String> {
+	protected class CommandFileStructure implements Iterable<String> {
+
+		@Override
+		public Iterator<String> iterator() {
+			return new FileIterator();
+		}
+
+	}
+
+	protected class FileIterator implements ListIterator<String> {
 
 		int currentIndex = 0;
+		int lastIndex = 0;
+
+		public FileIterator() {
+			this(0);
+		}
+
+		public FileIterator(int beginingIndex) {
+			this.currentIndex = beginingIndex;
+			this.lastIndex = beginingIndex;
+		}
 
 		private long indexToPosition(int index) {
 			return index * RECORD_BYTES_SIZE;
+		}
+
+		public boolean removeAll() {
+			try {
+				raf.setLength(0);
+				currentIndex = 0;
+				lastIndex = 0;
+				return true;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return false;
+
 		}
 
 		@Override
@@ -300,6 +336,7 @@ class CommandButton extends Button implements Command {
 				String temp = FixedLengthStringIO.readFixedLengthString(restSize, raf);
 				writeRecordAtIndex(currentIndex, recordToWrite);
 				currentIndex++;
+				lastIndex = currentIndex;
 				currentPosition = indexToPosition(currentIndex);
 				raf.seek(currentPosition);
 				FixedLengthStringIO.writeFixedLengthString(temp, restSize, raf);
@@ -327,6 +364,7 @@ class CommandButton extends Button implements Command {
 		public String next() {
 			if (this.hasNext()) {
 				try {
+					lastIndex = currentIndex;
 					currentIndex = nextIndex();
 					return readRecordAtIndex(previousIndex());
 				} catch (IOException e) {
@@ -353,6 +391,7 @@ class CommandButton extends Button implements Command {
 		public String previous() {
 			if (this.hasPrevious()) {
 				try {
+					lastIndex = currentIndex;
 					currentIndex = previousIndex();
 					return readRecordAtIndex(currentIndex);
 				} catch (IOException e) {
@@ -373,24 +412,37 @@ class CommandButton extends Button implements Command {
 
 		@Override
 		public void remove() {
-			long currentPosition = indexToPosition(currentIndex);
-			long nextPosition = indexToPosition(currentIndex + 1);
-			try {
-				int restSize = (int) ((raf.length() - nextPosition) / 2);
-				raf.seek(nextPosition);
-				String temp = FixedLengthStringIO.readFixedLengthString(restSize, raf);
-				raf.seek(currentPosition);
-				FixedLengthStringIO.writeFixedLengthString(temp, restSize, raf);
-				raf.setLength(raf.length() - RECORD_BYTES_SIZE);
-			} catch (IOException e) {
-				e.printStackTrace();
+			if (hasPrevious()) {
+				try {
+					int removeIndex = maxIndex();
+					long removePosition = indexToPosition(removeIndex);
+					long restPosition = indexToPosition(removeIndex + 1);
+					lastIndex = currentIndex;
+					raf.seek(restPosition);
+					int restSize = (int) ((raf.length() - restPosition) / 2);
+					String temp = FixedLengthStringIO.readFixedLengthString(restSize, raf);
+					raf.seek(removePosition);
+					FixedLengthStringIO.writeFixedLengthString(temp, restSize, raf);
+					raf.setLength(raf.length() - RECORD_BYTES_SIZE);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
+		}
+
+		private int maxIndex() {
+			return currentIndex < lastIndex ? currentIndex : lastIndex;
+		}
+
+		private boolean isNextOrPreviousHasBeenCalled() {
+			return currentIndex != lastIndex;
 		}
 
 		@Override
 		public void set(String arg0) {
-			if (this.hasNext()) {
-				writeRecordAtIndex(currentIndex, arg0);
+			if (isNextOrPreviousHasBeenCalled()) {
+				writeRecordAtIndex(maxIndex(), arg0);
+				lastIndex = currentIndex;
 			}
 		}
 
@@ -493,7 +545,7 @@ class Sort1Button extends CommandButton {
 	public void Execute() {
 		try {
 			if (raf.length() > 0)
-				sortByComperator(new StringComparator());
+				sortByComperator(new NameComparator());
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -518,6 +570,11 @@ class Sort2Button extends CommandButton {
 }
 
 class IterButton extends CommandButton {
+	private CommandFileStructure fileStructure = new CommandFileStructure();
+	private FileIterator lit = (FileIterator) fileStructure.iterator();
+	private LinkedHashMap<String, String> addressMap = new LinkedHashMap<String, String>();
+	private TreeSet<String> addressTree = new TreeSet<String>(new StreetComparator());
+
 	public IterButton(AddressBookPane pane, RandomAccessFile r) {
 		super(pane, r);
 		this.setText("Iter");
@@ -525,5 +582,53 @@ class IterButton extends CommandButton {
 
 	@Override
 	public void Execute() {
+		if (addressMap.isEmpty()) {
+			fillAddressMap();
+			writeAddressMapToFile();
+		} else {
+			fillAddressTree();
+			writeAddressTreeToFile();
+		}
+	}
+
+	private void writeAddressMapToFile() {
+		if (lit.removeAll()) {
+			Iterator<Entry<String, String>> addressMapIterator = addressMap.entrySet().iterator();
+			Entry<String, String> entry;
+			while (addressMapIterator.hasNext()) {
+				entry = addressMapIterator.next();
+				lit.add(entry.getKey() + entry.getValue());
+				lit.next();
+			}
+		}
+	}
+
+	private void fillAddressMap() {
+		while (lit.hasNext()) {
+			String fullRecord = lit.next();
+			String key = fullRecord.substring(0, RECORD_SIZE - ZIP_SIZE);
+			String value = fullRecord.substring(RECORD_SIZE - ZIP_SIZE, RECORD_SIZE );
+			addressMap.put(key, value);
+		}
+	}
+
+	private void fillAddressTree() {
+		Iterator<Entry<String, String>> addressMapIterator = addressMap.entrySet().iterator();
+		Entry<String, String> entry;
+		while (addressMapIterator.hasNext()) {
+			entry = addressMapIterator.next();
+			addressTree.add(entry.getKey() + entry.getValue());
+		}
+	}
+
+	private void writeAddressTreeToFile() {
+		if (lit.removeAll()) {
+			Iterator<String> addressTreeIterator = addressTree.iterator();
+			while (addressTreeIterator.hasNext()) {
+				String entry = addressTreeIterator.next();
+				lit.add(entry);
+			}
+			System.out.println("\n");
+		}
 	}
 }
