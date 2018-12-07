@@ -3,6 +3,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -13,6 +15,7 @@ public class Commercial extends Text {
 	public final static int DURATION = 10;
 	private double containerWidth;
 	private double textWidth = getLayoutBounds().getWidth();
+	SimpleDoubleProperty doublefaf = new SimpleDoubleProperty(containerWidth);
 
 	public Commercial(double containerWidth) {
 		this.containerWidth = containerWidth;
@@ -49,7 +52,8 @@ public class Commercial extends Text {
 		KeyValue startKeyValue = new KeyValue(translateXProperty(), -textWidth);
 		KeyFrame startKeyFrame = new KeyFrame(startDuration, startKeyValue);
 		Duration endDuration = Duration.seconds(DURATION);
-		KeyValue endKeyValue = new KeyValue(translateXProperty(), containerWidth);
+	
+		KeyValue endKeyValue = new KeyValue(translateXProperty(), doublefaf.getValue());
 		KeyFrame endKeyFrame = new KeyFrame(endDuration, endKeyValue);
 		Timeline timeline = new Timeline(startKeyFrame, endKeyFrame);
 		timeline.setCycleCount(Timeline.INDEFINITE);

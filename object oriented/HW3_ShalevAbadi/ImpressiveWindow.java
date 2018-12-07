@@ -1,4 +1,8 @@
 import java.util.ArrayList;
+import javafx.beans.binding.Binding;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.beans.value.ObservableNumberValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
@@ -10,7 +14,7 @@ import javafx.scene.layout.BorderPane;
 
 public class ImpressiveWindow extends BorderPane {
 	public final static int IMPRESSIVE_WINDOW_PADDING = 10;
-	public final static int IMPRESSIVE_WINDOW_WIDTH = 600;
+	public static final int IMPRESSIVE_WINDOW_WIDTH = 600;
 	public final static int IMPRESSIC_WINDOW_HEIGHT = 300;
 	private ArrayList<MusicalInstrument> instrumentsSearchResault = new ArrayList<MusicalInstrument>();
 	private ArrayList<MusicalInstrument> allInstruments = new ArrayList<MusicalInstrument>();
@@ -19,7 +23,7 @@ public class ImpressiveWindow extends BorderPane {
 	private Navigation navigation = new Navigation();
 	private MidSection midSection = new MidSection();
 	private Commercial commercial = new Commercial(IMPRESSIVE_WINDOW_WIDTH);
-
+	
 	public ImpressiveWindow(ArrayList<MusicalInstrument> instruments) {
 		allInstruments.addAll(instruments);
 		instrumentsSearchResault.addAll(allInstruments);
@@ -29,6 +33,10 @@ public class ImpressiveWindow extends BorderPane {
 		setChildrenAlignments();
 		initializeImpressiveWindowActions();
 		showCurrentInstrument();
+		widthProperty().addListener(e -> {
+			commercial = new Commercial(getWidth());
+			setBottom(commercial);
+		});
 	}
 
 	private void setChildrenAlignments() {
@@ -40,10 +48,10 @@ public class ImpressiveWindow extends BorderPane {
 
 	private void setPositions() {
 		setTop(searchPanel);
-		setCenter(midSection);
 		setLeft(navigation.getPrevious());
 		setRight(navigation.getNext());
 		setBottom(commercial);
+		setCenter(midSection);
 	}
 
 	private void initializeImpressiveWindowActions() {
@@ -214,4 +222,6 @@ public class ImpressiveWindow extends BorderPane {
 			}
 		}
 	}
+	
+	
 }
