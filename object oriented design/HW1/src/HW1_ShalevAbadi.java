@@ -1,3 +1,4 @@
+
 // Shalev Abadi 205740772
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
-public class AddressBookJavaFx extends Application {
+public class HW1_ShalevAbadi extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -329,7 +330,6 @@ class CommandButton extends Button implements Command {
 			int restSize = (int) ((raf.length() - position) / 2);
 			raf.seek(position);
 			FixedLengthStringIO.writeFixedLengthString(restOfFile, restSize, raf);
-
 		}
 
 		private String copyRestOfFileFromIndex(int index) throws IOException {
@@ -367,7 +367,7 @@ class CommandButton extends Button implements Command {
 					e.printStackTrace();
 				}
 			}
-			return null;
+			throw new IndexOutOfBoundsException();
 		}
 
 		@Override
@@ -394,7 +394,7 @@ class CommandButton extends Button implements Command {
 					e.printStackTrace();
 				}
 			}
-			return null;
+			throw new IndexOutOfBoundsException();
 		}
 
 		@Override
@@ -407,9 +407,9 @@ class CommandButton extends Button implements Command {
 
 		@Override
 		public void remove() {
-			if (hasPrevious()) {
+			if (isNextOrPreviousHasBeenCalled()) {
 				try {
-					
+
 					int removeIndex = maxIndex();
 					String temp = copyRestOfFileFromIndex(removeIndex);
 					lastIndex = currentIndex;
@@ -418,6 +418,8 @@ class CommandButton extends Button implements Command {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+			} else {
+				throw new UnsupportedOperationException("Next or previous must be called before remove");
 			}
 		}
 
@@ -434,6 +436,8 @@ class CommandButton extends Button implements Command {
 			if (isNextOrPreviousHasBeenCalled()) {
 				writeRecordAtIndex(maxIndex(), arg0);
 				lastIndex = currentIndex;
+			} else {
+				throw new UnsupportedOperationException("Next or previous must be called before set");
 			}
 		}
 
@@ -572,6 +576,7 @@ class IterButton extends CommandButton {
 
 	@Override
 	public void Execute() {
+
 		if (addressMap.isEmpty()) {
 			fillAddressMap();
 			writeAddressMapToFile();
@@ -599,7 +604,6 @@ class IterButton extends CommandButton {
 		while (addressMapIterator.hasNext()) {
 			entry = addressMapIterator.next();
 			lit.add(entry.getKey() + entry.getValue());
-			lit.next();
 		}
 	}
 
