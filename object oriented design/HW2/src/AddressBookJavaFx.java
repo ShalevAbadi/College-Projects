@@ -29,7 +29,7 @@ public class AddressBookJavaFx extends Application {
 	}
 
 	private AddressBookPane[] initializeAddressBookPanes() {
-		AddressBookPane[] panes = { new AddressBookPane(), new AddressBookPane(), new AddressBookPrimary() };
+		AddressBookPane[] panes = { new AddressBookPane(), new AddressBookPane(), (new AddressBookPrimary(new SimpleAddressBookPane())).convertToAddressBook() };
 		return panes;
 	}
 
@@ -276,7 +276,27 @@ class AddButton extends CommandButton {
 		writeAddress();
 	}
 }
+class RedoButton extends CommandButton {
+	public RedoButton(AddressBookPane pane, RandomAccessFile r) {
+		super(pane, r);
+		this.setText("Redo");
+	}
 
+	@Override
+	public void Execute() {
+	}
+}
+
+class UndoButton extends CommandButton {
+	public UndoButton(AddressBookPane pane, RandomAccessFile r) {
+		super(pane, r);
+		this.setText("Undo");
+	}
+
+	@Override
+	public void Execute() {
+	}
+}
 class NextButton extends CommandButton {
 	public NextButton(AddressBookPane pane, RandomAccessFile r) {
 		super(pane, r);

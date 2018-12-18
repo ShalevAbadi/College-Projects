@@ -1,10 +1,24 @@
 
-public class AddressBookPrimary extends AddressBookPane{
+public class AddressBookPrimary extends DecoratedAddressBookPane{
+	AddButton addBtn;
+	RedoButton reBtn;
+	UndoButton unBtn;
 	
-	public AddressBookPrimary() {
-		super();
-		AddButton jbtAdd = new AddButton(this, raf);
-		jbtAdd.setOnAction(ae);
-		this.jpButton.getChildren().add(jbtAdd);
+	public AddressBookPrimary(MyAddressBookPane myAddressBookPane) {
+		super(myAddressBookPane);
+		addBtn = new AddButton(super.convertToAddressBook(), super.convertToAddressBook().raf);
+		reBtn = new RedoButton(super.convertToAddressBook(), super.convertToAddressBook().raf);
+		unBtn = new UndoButton(super.convertToAddressBook(), super.convertToAddressBook().raf);
+		
+	}
+	
+	private void decorateAddressBookPane() {
+		super.convertToAddressBook().jpButton.getChildren().addAll(addBtn, reBtn, unBtn);
+	}
+	
+	@Override
+	public AddressBookPane convertToAddressBook() {
+		decorateAddressBookPane();
+		return super.convertToAddressBook();
 	}
 }
