@@ -4,7 +4,7 @@ public class SimpleAddressBookPane implements MyAddressBookPane{
 	private AddressBookPane addressBookPane;
 	
 	public SimpleAddressBookPane() {
-		this.addressBookPane = new AddressBookPane();
+		this.addressBookPane = AddressBookPane.getInstance();
 	}
 
 	@Override

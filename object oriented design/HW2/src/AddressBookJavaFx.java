@@ -24,28 +24,33 @@ public class AddressBookJavaFx extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		AddressBookPane[] panes = initializeAddressBookPanes();
 		Scene[] scenes = initializeScenes(panes);
-		AddressBookStage[] stages = initializeAddressBookStages(scenes);
+		Stage[] stages = initializeAddressBookStages(scenes);
 		showStages(stages);
 	}
 
 	private AddressBookPane[] initializeAddressBookPanes() {
-		AddressBookPane[] panes = { new AddressBookPane(), new AddressBookPane(), (new AddressBookPrimary(new SimpleAddressBookPane())).convertToAddressBook() };
+		AddressBookPane[] panes = { AddressBookPane.getInstance(), AddressBookPane.getInstance(),
+				(new AddressBookPrimary(new SimpleAddressBookPane())).convertToAddressBook() };
 		return panes;
 	}
 
 	private void showStages(Stage[] stages) {
 		for (int i = 0; i < stages.length; i++) {
-			stages[i].show();
+			if (stages[i] != null) {
+				stages[i].show();
+			}
 		}
 	}
 
-	private AddressBookStage[] initializeAddressBookStages(Scene[] scenes) {
-		AddressBookStage[] stages = new AddressBookStage[scenes.length];
+	private Stage[] initializeAddressBookStages(Scene[] scenes) {
+		Stage[] stages = new Stage[scenes.length];
 		for (int i = 0; i < stages.length; i++) {
-			AddressBookStage newStage = AddressBookStage.getInstace();
-			newStage.setTitle("AddressBook");
-			newStage.setScene(scenes[i]);
-			stages[i] = newStage;
+			if (scenes[i] != null) {
+				Stage newStage = new Stage();
+				newStage.setTitle("AddressBook");
+				newStage.setScene(scenes[i]);
+				stages[i] = newStage;
+			}
 		}
 		return stages;
 	}
@@ -53,17 +58,21 @@ public class AddressBookJavaFx extends Application {
 	private Scene[] initializeScenes(Pane[] panes) {
 		Scene[] scenes = new Scene[panes.length];
 		for (int i = 0; i < panes.length; i++) {
-			Scene newScene = new Scene(panes[i]);
-			newScene.getStylesheets().add("styles.css");
-			scenes[i] = newScene;
+			if (panes[i] != null) {
+				Scene newScene = new Scene(panes[i]);
+				newScene.getStylesheets().add("styles.css");
+				scenes[i] = newScene;
+			}
 		}
 		return scenes;
 	}
 
 }
 
-class AddressBookPane extends GridPane {
-	protected RandomAccessFile raf;
+class AddressBookPane extends GridPane implements Singleton {
+	private RandomAccessFile raf;
+	public static int currentNumOfInstances = 0;
+	public final static String TOO_MANY_INSTANCES_MASSAGE = "Singelton violation. Only 3 panes were created";
 	// Text fields
 	private TextField jtfName = new TextField();
 	private TextField jtfStreet = new TextField();
@@ -71,7 +80,7 @@ class AddressBookPane extends GridPane {
 	private TextField jtfState = new TextField();
 	private TextField jtfZip = new TextField();
 	// Buttons
-	protected FlowPane jpButton = new FlowPane();
+	private FlowPane jpButton = new FlowPane();
 	private FirstButton jbtFirst;
 	private NextButton jbtNext;
 	private PreviousButton jbtPrevious;
@@ -82,7 +91,17 @@ class AddressBookPane extends GridPane {
 		}
 	};
 
-	public AddressBookPane() { // Open or create a random access file
+	public static AddressBookPane getInstance() {
+		if (currentNumOfInstances < MAX_INSTANCES) {
+			currentNumOfInstances++;
+			return new AddressBookPane();
+		} else {
+			System.out.println(TOO_MANY_INSTANCES_MASSAGE);
+			return null;
+		}
+	}
+
+	private AddressBookPane() { // Open or create a random access file
 		try {
 			raf = new RandomAccessFile("address.dat", "rw");
 		} catch (IOException ex) {
@@ -171,6 +190,21 @@ class AddressBookPane extends GridPane {
 		((Command) e.getSource()).Execute();
 	}
 
+	public RandomAccessFile getRaf() {
+		return this.raf;
+	}
+
+	public FlowPane getButtonsPane() {
+		return this.jpButton;
+	}
+
+	public void cleanText() {
+		jtfCity.setText("");
+		jtfName.setText("");
+		jtfState.setText("");
+		jtfStreet.setText("");
+	}
+
 	public void SetName(String text) {
 		jtfName.setText(text);
 	}
@@ -225,6 +259,8 @@ class CommandButton extends Button implements Command {
 	public final static int RECORD_SIZE = (NAME_SIZE + STREET_SIZE + CITY_SIZE + STATE_SIZE + ZIP_SIZE);
 	protected AddressBookPane p;
 	protected RandomAccessFile raf;
+	private CareTaker careTaker = new CareTaker();
+	private Originator originator = new Originator();
 
 	public CommandButton(AddressBookPane pane, RandomAccessFile r) {
 		super();
@@ -263,6 +299,65 @@ class CommandButton extends Button implements Command {
 		p.SetState(state);
 		p.SetZip(zip);
 	}
+
+	public void removeLastRecord() {
+		try {
+			if (raf.length() > 0) {
+				raf.setLength(raf.length() - 2*RECORD_SIZE);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void undo() {
+		addAddressToOriginator();
+		removeLastRecord();
+	}
+
+	public void addAddressToOriginator() {
+		saveOriginatorStateToCareTaker();
+		setOriginatorStateToCurrendAddress();
+	}
+
+	public void setOriginatorStateToCurrendAddress() {
+		String addressToAdd = p.GetName() + p.GetStreet() + p.GetCity() + p.GetState() + p.GetZip();
+		originator.setState(addressToAdd);
+		System.out.println(originator.getState());
+	}
+
+	public void saveOriginatorStateToCareTaker() {
+		if (!isOriginatorStateNull()) {
+			careTaker.add(this.originator.saveStateToMemento());
+		}
+	}
+
+	public boolean isOriginatorStateNull() {
+		return originator.getState() == null;
+	}
+
+	public void redo() {
+		System.out.println(originator.getState());
+		writeOriginatorStateToFile();
+		Memento tempMemento = careTaker.get();
+		if (tempMemento != null) {
+			originator.setState(tempMemento.getState());
+		} else {
+			originator.setState(null);
+		}
+	}
+
+	private void writeOriginatorStateToFile() {
+		if (!isOriginatorStateNull()) {
+			try {
+				raf.seek(raf.length());
+				FixedLengthStringIO.writeFixedLengthString(originator.getState(), RECORD_SIZE, raf);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+	}
+
 }
 
 class AddButton extends CommandButton {
@@ -276,6 +371,7 @@ class AddButton extends CommandButton {
 		writeAddress();
 	}
 }
+
 class RedoButton extends CommandButton {
 	public RedoButton(AddressBookPane pane, RandomAccessFile r) {
 		super(pane, r);
@@ -284,6 +380,7 @@ class RedoButton extends CommandButton {
 
 	@Override
 	public void Execute() {
+		redo();
 	}
 }
 
@@ -295,8 +392,10 @@ class UndoButton extends CommandButton {
 
 	@Override
 	public void Execute() {
+		undo();
 	}
 }
+
 class NextButton extends CommandButton {
 	public NextButton(AddressBookPane pane, RandomAccessFile r) {
 		super(pane, r);

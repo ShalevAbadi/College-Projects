@@ -1,4 +1,4 @@
 
 public interface Singleton {
-	final static int MAX_STAGES = 3;
+	public final static int MAX_INSTANCES = 3; 
 }
