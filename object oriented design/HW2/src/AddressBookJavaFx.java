@@ -424,7 +424,11 @@ class UndoButton extends CommandButton {
 				super.addAddressToOriginator();
 				super.removeLastRecord();
 				amountOfUndoClicksAvailable--;
-				readAddress(0);
+				if(raf.length() > 0) {
+					readAddress(0);
+				} else {
+					emptyTextBoxesIfFileEmpty();
+				}
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
