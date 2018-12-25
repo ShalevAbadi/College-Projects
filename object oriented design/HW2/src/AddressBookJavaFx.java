@@ -411,6 +411,14 @@ class RedoButton extends CommandButton {
 			super.writeOriginatorStateToFile();
 			super.updateOriginatorStateFromMementoStack();
 			amountOfUndoClicksAvailable++;
+			try {
+				long lastPosition = raf.length();
+				if (lastPosition > 0) {
+					readAddress(lastPosition - 2 * RECORD_SIZE);
+				}
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 }
