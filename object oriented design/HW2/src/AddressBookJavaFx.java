@@ -259,8 +259,9 @@ class CommandButton extends Button implements Command {
 	public final static int RECORD_SIZE = (NAME_SIZE + STREET_SIZE + CITY_SIZE + STATE_SIZE + ZIP_SIZE);
 	protected AddressBookPane p;
 	protected RandomAccessFile raf;
-	private CareTaker careTaker = new CareTaker();
-	private Originator originator = new Originator();
+	public static CareTaker careTaker = new CareTaker();
+	public static Originator originator = new Originator();
+	public static int amountOfUndoClicksAvailable = 0;
 
 	public CommandButton(AddressBookPane pane, RandomAccessFile r) {
 		super();
@@ -303,16 +304,24 @@ class CommandButton extends Button implements Command {
 	public void removeLastRecord() {
 		try {
 			if (raf.length() > 0) {
-				raf.setLength(raf.length() - 2*RECORD_SIZE);
+				raf.setLength(raf.length() - 2 * RECORD_SIZE);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void undo() {
-		addAddressToOriginator();
-		removeLastRecord();
+	private String getLastRecord() {
+		try {
+			if (raf.length() > 0) {
+				raf.seek(raf.length() - 2 * RECORD_SIZE);
+				return FixedLengthStringIO.readFixedLengthString(RECORD_SIZE, raf);
+			}
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public void addAddressToOriginator() {
@@ -321,14 +330,13 @@ class CommandButton extends Button implements Command {
 	}
 
 	public void setOriginatorStateToCurrendAddress() {
-		String addressToAdd = p.GetName() + p.GetStreet() + p.GetCity() + p.GetState() + p.GetZip();
+		String addressToAdd = getLastRecord();
 		originator.setState(addressToAdd);
-		System.out.println(originator.getState());
 	}
 
 	public void saveOriginatorStateToCareTaker() {
 		if (!isOriginatorStateNull()) {
-			careTaker.add(this.originator.saveStateToMemento());
+			careTaker.add(originator.saveStateToMemento());
 		}
 	}
 
@@ -336,18 +344,7 @@ class CommandButton extends Button implements Command {
 		return originator.getState() == null;
 	}
 
-	public void redo() {
-		System.out.println(originator.getState());
-		writeOriginatorStateToFile();
-		Memento tempMemento = careTaker.get();
-		if (tempMemento != null) {
-			originator.setState(tempMemento.getState());
-		} else {
-			originator.setState(null);
-		}
-	}
-
-	private void writeOriginatorStateToFile() {
+	public void writeOriginatorStateToFile() {
 		if (!isOriginatorStateNull()) {
 			try {
 				raf.seek(raf.length());
@@ -358,6 +355,10 @@ class CommandButton extends Button implements Command {
 		}
 	}
 
+	public void updateOriginatorStateFromMementoStack() {
+		Memento tempMemento = careTaker.get();
+		originator.setState(tempMemento != null ? tempMemento.getState() : null);
+	}
 }
 
 class AddButton extends CommandButton {
@@ -369,6 +370,9 @@ class AddButton extends CommandButton {
 	@Override
 	public void Execute() {
 		writeAddress();
+		amountOfUndoClicksAvailable++;
+		careTaker.emptyStack();
+		originator.setState(null);
 	}
 }
 
@@ -380,7 +384,11 @@ class RedoButton extends CommandButton {
 
 	@Override
 	public void Execute() {
-		redo();
+		if (originator.getState() != null) {
+			super.writeOriginatorStateToFile();
+			super.updateOriginatorStateFromMementoStack();
+			amountOfUndoClicksAvailable++;
+		}
 	}
 }
 
@@ -392,7 +400,11 @@ class UndoButton extends CommandButton {
 
 	@Override
 	public void Execute() {
-		undo();
+		if (amountOfUndoClicksAvailable > 0) {
+			super.addAddressToOriginator();
+			super.removeLastRecord();
+			amountOfUndoClicksAvailable--;
+		}
 	}
 }
 

@@ -6,7 +6,11 @@ public class CareTaker {
 	public void add(Memento state) {
 		mementoStack.push(state);
 	}
-
+	
+	public void emptyStack() {
+		mementoStack = new Stack<Memento>();
+	}
+	
 	public Memento get() {
 		if (!mementoStack.isEmpty()) {
 			return mementoStack.pop();
