@@ -31,6 +31,7 @@ public class AddressBookJavaFx extends Application {
 	private AddressBookPane[] initializeAddressBookPanes() {
 		AddressBookPane[] panes = { AddressBookPane.getInstance(), AddressBookPane.getInstance(),
 				(new AddressBookPrimary(new SimpleAddressBookPane())).convertToAddressBook() };
+		AddressBookPane.getInstance();
 		return panes;
 	}
 
