@@ -288,18 +288,21 @@ class CommandButton extends Button implements Command {
 
 	/** Read a record at the specified position */
 	public void readAddress(long position) throws IOException {
-		emptyTextBoxesIfFileEmpty();
-		raf.seek(position);
-		String name = FixedLengthStringIO.readFixedLengthString(NAME_SIZE, raf);
-		String street = FixedLengthStringIO.readFixedLengthString(STREET_SIZE, raf);
-		String city = FixedLengthStringIO.readFixedLengthString(CITY_SIZE, raf);
-		String state = FixedLengthStringIO.readFixedLengthString(STATE_SIZE, raf);
-		String zip = FixedLengthStringIO.readFixedLengthString(ZIP_SIZE, raf);
-		p.SetName(name);
-		p.SetStreet(street);
-		p.SetCity(city);
-		p.SetState(state);
-		p.SetZip(zip);
+		if (raf.length() > 0) {
+			raf.seek(position);
+			String name = FixedLengthStringIO.readFixedLengthString(NAME_SIZE, raf);
+			String street = FixedLengthStringIO.readFixedLengthString(STREET_SIZE, raf);
+			String city = FixedLengthStringIO.readFixedLengthString(CITY_SIZE, raf);
+			String state = FixedLengthStringIO.readFixedLengthString(STATE_SIZE, raf);
+			String zip = FixedLengthStringIO.readFixedLengthString(ZIP_SIZE, raf);
+			p.SetName(name);
+			p.SetStreet(street);
+			p.SetCity(city);
+			p.SetState(state);
+			p.SetZip(zip);
+		} else {
+			emptyTextBoxes();
+		}
 	}
 
 	public void emptyTextBoxesIfFileEmpty() {
@@ -424,11 +427,7 @@ class UndoButton extends CommandButton {
 				super.addAddressToOriginator();
 				super.removeLastRecord();
 				amountOfUndoClicksAvailable--;
-				if(raf.length() > 0) {
-					readAddress(0);
-				} else {
-					emptyTextBoxesIfFileEmpty();
-				}
+				readAddress(0);
 			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -505,11 +504,7 @@ class FirstButton extends CommandButton {
 	@Override
 	public void Execute() {
 		try {
-			if (raf.length() > 0) {
-				readAddress(0);
-			} else {
-				emptyTextBoxes();
-			}
+			readAddress(0);
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
