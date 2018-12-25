@@ -411,14 +411,7 @@ class RedoButton extends CommandButton {
 			super.writeOriginatorStateToFile();
 			super.updateOriginatorStateFromMementoStack();
 			amountOfUndoClicksAvailable++;
-			try {
-				long lastPosition = raf.length();
-				if (lastPosition > 0) {
-					readAddress(lastPosition - 2 * RECORD_SIZE);
-				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
+			new LastButton(p, raf).Execute();
 		}
 	}
 }
@@ -431,15 +424,11 @@ class UndoButton extends CommandButton {
 
 	@Override
 	public void Execute() {
-		try {
-			if (amountOfUndoClicksAvailable > 0) {
-				super.addAddressToOriginator();
-				super.removeLastRecord();
-				amountOfUndoClicksAvailable--;
-				readAddress(0);
-			}
-		} catch (IOException ex) {
-			ex.printStackTrace();
+		if (amountOfUndoClicksAvailable > 0) {
+			super.addAddressToOriginator();
+			super.removeLastRecord();
+			amountOfUndoClicksAvailable--;
+			new FirstButton(p, raf).Execute();
 		}
 	}
 }
