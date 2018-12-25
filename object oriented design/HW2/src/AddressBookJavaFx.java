@@ -301,6 +301,24 @@ class CommandButton extends Button implements Command {
 		p.SetZip(zip);
 	}
 
+	public void emptyTextBoxesIfFileEmpty() {
+		try {
+			if (raf.length() <= 0) {
+				emptyTextBoxes();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void emptyTextBoxes() {
+		p.SetName("");
+		p.SetStreet("");
+		p.SetCity("");
+		p.SetState("");
+		p.SetZip("");
+	}
+
 	public void removeLastRecord() {
 		try {
 			if (raf.length() > 0) {
@@ -400,10 +418,15 @@ class UndoButton extends CommandButton {
 
 	@Override
 	public void Execute() {
-		if (amountOfUndoClicksAvailable > 0) {
-			super.addAddressToOriginator();
-			super.removeLastRecord();
-			amountOfUndoClicksAvailable--;
+		try {
+			if (amountOfUndoClicksAvailable > 0) {
+				super.addAddressToOriginator();
+				super.removeLastRecord();
+				amountOfUndoClicksAvailable--;
+				readAddress(0);
+			}
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 	}
 }
@@ -418,8 +441,10 @@ class NextButton extends CommandButton {
 	public void Execute() {
 		try {
 			long currentPosition = raf.getFilePointer();
-			if (currentPosition < raf.length())
+			if (currentPosition < raf.length()) {
 				readAddress(currentPosition);
+			}
+			emptyTextBoxesIfFileEmpty();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -436,10 +461,10 @@ class PreviousButton extends CommandButton {
 	public void Execute() {
 		try {
 			long currentPosition = raf.getFilePointer();
-			if (currentPosition - 2 * 2 * RECORD_SIZE >= 0)
+			if (currentPosition - 2 * 2 * RECORD_SIZE >= 0) {
 				readAddress(currentPosition - 2 * 2 * RECORD_SIZE);
-			else
-				;
+			}
+			emptyTextBoxesIfFileEmpty();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -456,8 +481,10 @@ class LastButton extends CommandButton {
 	public void Execute() {
 		try {
 			long lastPosition = raf.length();
-			if (lastPosition > 0)
+			if (lastPosition > 0) {
 				readAddress(lastPosition - 2 * RECORD_SIZE);
+			}
+			emptyTextBoxesIfFileEmpty();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -473,8 +500,11 @@ class FirstButton extends CommandButton {
 	@Override
 	public void Execute() {
 		try {
-			if (raf.length() > 0)
+			if (raf.length() > 0) {
 				readAddress(0);
+			} else {
+				emptyTextBoxes();
+			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
