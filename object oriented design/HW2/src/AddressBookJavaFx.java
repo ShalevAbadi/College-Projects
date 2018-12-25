@@ -288,6 +288,7 @@ class CommandButton extends Button implements Command {
 
 	/** Read a record at the specified position */
 	public void readAddress(long position) throws IOException {
+		emptyTextBoxesIfFileEmpty();
 		raf.seek(position);
 		String name = FixedLengthStringIO.readFixedLengthString(NAME_SIZE, raf);
 		String street = FixedLengthStringIO.readFixedLengthString(STREET_SIZE, raf);
