@@ -7,16 +7,16 @@
 
 #include <stdio.h>
 #include "Child.h"
-
-#define ASK_ID "ID No.:\n"
-#define ASK_AGE "Age:\n"
-#define SEARCH_ID "Enter child id:\n"
-#define CHILD_EXIST "This child is in the Kindergarten\n"
+#include "Utilities.h"
 
 Child* initChild(int newId, int newAge) {
 	Child* newChild = (Child*) malloc(sizeof(Child));
-	newChild->id = newId;
-	newChild->age = newAge;
+	if (newChild) {
+		newChild->id = newId;
+		newChild->age = newAge;
+	} else {
+		printAllocationError();
+	}
 	return newChild;
 }
 
@@ -24,57 +24,18 @@ Child** initEmptyChildrenArr(int size) {
 	return (Child**) malloc(sizeof(Child) * size);
 }
 
-Child** initChildrenArrFromUser(int numOfChildren) {
-	int i;
-	Child** childrenArr = initEmptyChildrenArr(numOfChildren);
-	for (i = 0; i < numOfChildren; i++) {
-		childrenArr[i] = initChildFromUserIfNotExist(childrenArr,
-				numOfChildren);
-	}
-	return childrenArr;
-}
-
-Child* initChildFromUserIfNotExist(Child** arrToSearchIn, int size) {
-	int age;
-	int id = getChildIdFromUser(arrToSearchIn, size);
-	printf("%s", ASK_AGE);
-	scanf("%d", &age);
-	getchar();
-	return initChild(id, age);
-}
-
-int getChildIdFromUser(Child** arrToSearchIn, int size) {
-	int loopFlag = 1;
-	int id;
-	while (loopFlag) {
-		printf("%s", ASK_ID);
-		scanf("%d", &id);
-		getchar();
-		loopFlag = isChildInArrById(arrToSearchIn, size, id);
-		if (loopFlag) {
-			printf("%s", CHILD_EXIST);
-		}
-	}
-	return id;
-}
-
 int isChildInArrById(Child** arrToSearch, int size, int id) {
 	return getChildFromArr(arrToSearch, size, id) != NULL;
 }
 
-Child* searchChildInArrByUserInput(Child** arrToSearchIn, int size) {
-	int id;
-	printf("%s", SEARCH_ID);
-	scanf("%d", &id);
-	return getChildFromArr(arrToSearchIn, size, id);
-}
-
 Child* getChildFromArr(Child** arrToSearch, int size, int id) {
 	int i;
-	for (i = 0; i < size; i++) {
-		if (arrToSearch[i]) {
-			if (isChildIdEqualToId(arrToSearch[i], id)) {
-				return arrToSearch[i];
+	if (arrToSearch) {
+		for (i = 0; i < size; i++) {
+			if (arrToSearch[i]) {
+				if (isChildIdEqualToId(arrToSearch[i], id)) {
+					return arrToSearch[i];
+				}
 			}
 		}
 	}
@@ -97,8 +58,12 @@ void writeChildToFile(Child* childToWrite, FILE* dst) {
 }
 
 void printChildrenArr(Child** childrenArr, int numOfChildren) {
-	for (int i = 0; i < numOfChildren; i++) {
-		printChild(childrenArr[i]);
+	if (childrenArr) {
+		for (int i = 0; i < numOfChildren; i++) {
+			if (childrenArr[i]) {
+				printChild(childrenArr[i]);
+			}
+		}
 	}
 }
 
@@ -129,17 +94,23 @@ Child* readChildFromFile(FILE* src) {
 }
 
 void changeChildAge(Child* childToChange, int newAge) {
-	childToChange->age = newAge;
+	if (childToChange) {
+		childToChange->age = newAge;
+	}
 }
 
 void releaseChildrenArr(Child** arrToRelease, int size) {
 	int i;
-	for (i = 0; i < size; i++) {
-		releaseChild(arrToRelease[i]);
+	if (arrToRelease) {
+		for (i = 0; i < size; i++) {
+			releaseChild(arrToRelease[i]);
+		}
+		free(arrToRelease);
 	}
-	free(arrToRelease);
 }
 
 void releaseChild(Child* childToRelease) {
-	free(childToRelease);
+	if (childToRelease) {
+		free(childToRelease);
+	}
 }

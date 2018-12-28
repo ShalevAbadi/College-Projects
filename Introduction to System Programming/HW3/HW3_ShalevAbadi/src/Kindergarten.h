@@ -26,23 +26,15 @@ typedef struct {
 	int numOfChildren;
 } Kindergarten;
 
-Kindergarten* initKindergartenFromUserIfNotExist(Kindergarten** arrToSearchIn,
-		int size);
-char* getKgNameFromUser(Kindergarten** arrToSearchIn, int size);
-kindergartenType getKgTypeFromUser();
-int isValidType(kindergartenType check);
-int getNumOfChildrenFromUser();
 Kindergarten* initKindergarten(char* kgName, kindergartenType kgType,
 		Child** childrenArr, int kgNumOfChildren);
-void addChildToKindergartenFromUser(Kindergarten* kgToAdd);
+int isValidType(kindergartenType check);
 void increaseKindergartenNumOfChildren(Kindergarten* dstKg);
 void addChildToKindergartenArr(Kindergarten* dstKg, Child* childToAdd);
 int isKindergartenInArr(Kindergarten** arrToSearch, int size,
 		char* kgToSearchName);
 Kindergarten* getKindergartenFromArr(Kindergarten** arrToSearch, int size,
 		char* kgToSearchName);
-int isChildInKindergarten(Kindergarten* kgToSearchIn, int id);
-Child* getChildFromKindergarten(Kindergarten* kgToSearchIn, int id);
 int isEqualNames(char* name1, char* name2);
 Kindergarten** readKindergartensArrFromFile(int size, FILE* src);
 Kindergarten* readKindergartenFromFile(FILE* src);

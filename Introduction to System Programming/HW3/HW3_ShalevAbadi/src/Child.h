@@ -18,9 +18,6 @@ typedef struct {
 
 Child* initChild(int newId, int newAge);
 Child** initEmptyChildrenArr(int size);
-Child** initChildrenArrFromUser(int numOfChildren);
-Child* initChildFromUserIfNotExist(Child** arrToSearchIn, int size);
-int getChildIdFromUser(Child** arrToSearchIn, int size);
 int isChildInArrById(Child** arrToSearch, int size, int id);
 Child* getChildFromArr(Child** arrToSearch, int size, int id);
 int isChildIdEqualToId(Child* childToCheck, int idToCheck);

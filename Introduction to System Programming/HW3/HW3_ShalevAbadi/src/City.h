@@ -14,10 +14,7 @@ typedef struct {
 	int numOfKindergartens;
 } City;
 
-City* readCityFromFile(FILE* src);
-Kindergarten* getKgFromCityByUserInputPrintIfNotFound(City* cityToSearch);
-Child* getChildFromCityByUserInputPrintIfNotFound(City* cityToSearchIn);
-void cityAddGarden(City* cityToAdd);
+void readCityFromFile(City* cityToRead, FILE* src);
 void writeCityToFile(City* cityToWrite, FILE* dst);
 void showCityGartens(City* cityToPrint);
 void increaseCityKindergartens(City* dstCity);

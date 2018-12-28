@@ -7,87 +7,70 @@
 
 #include <stdio.h>
 #include "City.h"
-#include "Kindergarten.h"
+#include "Utilities.h"
 
-#define KG_NOT_EXIST_STR "no such kindergarten\n"
-#define SEARCH_KG_NAME_STR "Give me kindergarten name:\n"
-#define CHILD_NOT_FOUND "No such child\n"
-
-City* readCityFromFile(FILE* src) {
-	City* newCity = (City*) malloc(sizeof(City));
-	fscanf(src, "%d", &(newCity->numOfKindergartens));
-	newCity->kindergartensArr = readKindergartensArrFromFile(
-			newCity->numOfKindergartens, src);
-	return newCity;
-}
-
-Kindergarten* getKgFromCityByUserInputPrintIfNotFound(City* cityToSearch) {
-	Kindergarten* res;
-	if (cityToSearch) {
-		res = getKindergartenFromArrByUserInput(cityToSearch->kindergartensArr,
-				cityToSearch->numOfKindergartens);
-		if (!res) {
-			printf("%s", KG_NOT_EXIST_STR);
-		}
-	}
-	return res;
-}
-
-Child* getChildFromCityByUserInputPrintIfNotFound(City* cityToSearchIn) {
-	Kindergarten* kgToSearchIn;
-	Child* res = NULL;
-	kgToSearchIn = getKgFromCityByUserInputPrintIfNotFound(cityToSearchIn);
-	if (kgToSearchIn) {
-		res = searchChildInArrByUserInput(kgToSearchIn->children,
-				kgToSearchIn->numOfChildren);
-		if (!res) {
-			printf("%s", CHILD_NOT_FOUND);
-		}
-	}
-	return res;
-}
-
-void cityAddGarden(City* cityToAdd) {
-	Kindergarten* newKg = initKindergartenFromUserIfNotExist(
-			cityToAdd->kindergartensArr, cityToAdd->numOfKindergartens);
-	if (newKg) {
-		addKindergartenToCity(cityToAdd, newKg);
+void readCityFromFile(City* cityToRead, FILE* src) {
+	if (cityToRead) {
+		releaseKindergartenArr(cityToRead->kindergartensArr,
+				cityToRead->numOfKindergartens);
+		fscanf(src, "%d", &(cityToRead->numOfKindergartens));
+		cityToRead->kindergartensArr = readKindergartensArrFromFile(
+				cityToRead->numOfKindergartens, src);
 	}
 }
 
 void writeCityToFile(City* cityToWrite, FILE* dst) {
-	fprintf(dst, "%d\n", cityToWrite->numOfKindergartens);
-	writeKindergartenArrToFile(cityToWrite->kindergartensArr,
-			cityToWrite->numOfKindergartens, dst);
+	if (dst && cityToWrite) {
+		fprintf(dst, "%d\n", cityToWrite->numOfKindergartens);
+		writeKindergartenArrToFile(cityToWrite->kindergartensArr,
+				cityToWrite->numOfKindergartens, dst);
+	}
 }
 
 void showCityGartens(City* cityToPrint) {
-	printKindergartensArr(cityToPrint->kindergartensArr,
-			cityToPrint->numOfKindergartens);
+	if (cityToPrint) {
+		printKindergartensArr(cityToPrint->kindergartensArr,
+				cityToPrint->numOfKindergartens);
+	}
 }
 
 void addKindergartenToCity(City* dstCity, Kindergarten* kgToAdd) {
-	increaseCityKindergartens(dstCity);
-	addKindergartenToCityArr(dstCity, kgToAdd);
+	if (dstCity && kgToAdd) {
+		increaseCityKindergartens(dstCity);
+		addKindergartenToCityArr(dstCity, kgToAdd);
+	}
 }
 
-void increaseCityKindergartens(City* dstCity) {
-	dstCity->numOfKindergartens++;
-	dstCity->kindergartensArr = realloc(dstCity->kindergartensArr,
-			dstCity->numOfKindergartens);
+void increaseCityKindergartens(City* originCity) {
+	if (originCity) {
+		originCity->numOfKindergartens++;
+		originCity->kindergartensArr = realloc(originCity->kindergartensArr,
+				sizeof(Kindergarten*) * originCity->numOfKindergartens);
+		if (!originCity->kindergartensArr) {
+			printAllocationError();
+		}
+	}
 }
 
 void addKindergartenToCityArr(City* dstCity, Kindergarten* kgToAdd) {
-	dstCity->kindergartensArr[dstCity->numOfKindergartens - 1] = kgToAdd;
+	if (dstCity && kgToAdd) {
+		dstCity->kindergartensArr[dstCity->numOfKindergartens - 1] = kgToAdd;
+	}
 }
 
 Kindergarten* getKindergartenFromCity(City* cityToCheck, char* kgToSearch) {
-	return getKindergartenFromArr(cityToCheck->kindergartensArr,
-			cityToCheck->numOfKindergartens, kgToSearch);
+	Kindergarten* res = NULL;
+	if (cityToCheck && kgToSearch) {
+		res = getKindergartenFromArr(cityToCheck->kindergartensArr,
+				cityToCheck->numOfKindergartens, kgToSearch);
+	}
+	return res;
 }
 
 void releaseCity(City* cityToRelease) {
-	releaseKindergartenArr(cityToRelease->kindergartensArr,
-			cityToRelease->numOfKindergartens);
-	free(cityToRelease);
+	if (cityToRelease) {
+		releaseKindergartenArr(cityToRelease->kindergartensArr,
+				cityToRelease->numOfKindergartens);
+		free(cityToRelease);
+	}
 }
