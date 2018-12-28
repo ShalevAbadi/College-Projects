@@ -21,7 +21,7 @@ Child* initChild(int newId, int newAge) {
 }
 
 Child** initEmptyChildrenArr(int size) {
-	return (Child**) malloc(sizeof(Child) * size);
+	return (Child**) malloc(sizeof(Child*) * size);
 }
 
 int isChildInArrById(Child** arrToSearch, int size, int id) {

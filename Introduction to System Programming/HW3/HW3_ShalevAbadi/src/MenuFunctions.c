@@ -58,7 +58,6 @@ void showSpecificGardenInCity(City* city) {
 	printKindergarten(getKgFromCityByUserInputPrintIfNotFound(city));
 }
 
-
 void cityAddGarden(City* cityToAdd) {
 	if (cityToAdd) {
 		Kindergarten* newKg = initKindergartenFromUserIfNotExist(
@@ -104,8 +103,6 @@ Kindergarten* initKindergartenFromUserIfNotExist(Kindergarten** arrToSearchIn,
 	return initKindergarten(kgName, kgType, childrenArr, numOfChildren);
 }
 
-
-
 Kindergarten* getKgFromCityByUserInputPrintIfNotFound(City* cityToSearch) {
 	Kindergarten* res;
 	if (cityToSearch) {
@@ -131,7 +128,6 @@ Child* getChildFromCityByUserInputPrintIfNotFound(City* cityToSearchIn) {
 	}
 	return res;
 }
-
 
 void addChildToKindergartenFromUser(Kindergarten* kgToAdd) {
 	if (kgToAdd) {
@@ -185,8 +181,7 @@ Child** initChildrenArrFromUser(int numOfChildren) {
 	Child** childrenArr = initEmptyChildrenArr(numOfChildren);
 	if (childrenArr) {
 		for (i = 0; i < numOfChildren; i++) {
-			childrenArr[i] = initChildFromUserIfNotExist(childrenArr,
-					numOfChildren);
+			childrenArr[i] = initChildFromUserIfNotExist(childrenArr, i);
 		}
 	} else {
 		printAllocationError();
