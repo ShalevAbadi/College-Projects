@@ -69,7 +69,7 @@ void printChildrenArr(Child** childrenArr, int numOfChildren) {
 
 void printChild(Child* childToPrint) {
 	if (childToPrint) {
-		printf("ID:%d	Age:%d\n", childToPrint->id, childToPrint->age);
+		printf("ID:%d\tAge:%d\n", childToPrint->id, childToPrint->age);
 	}
 }
 

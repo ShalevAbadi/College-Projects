@@ -105,7 +105,7 @@ void printKindergartensArr(Kindergarten** kgArr, int size) {
 
 void printKindergarten(Kindergarten* kgToPrint) {
 	if (kgToPrint) {
-		printf("Name:%s		Type:%s 	%d Children:\n", kgToPrint->name,
+		printf("Name:%s\tType:%s\t%d Children:\n", kgToPrint->name,
 				kindergartenTypeStr[kgToPrint->type], kgToPrint->numOfChildren);
 		printChildrenArr(kgToPrint->children, kgToPrint->numOfChildren);
 	}
