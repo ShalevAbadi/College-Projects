@@ -10,12 +10,27 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "MenuFunctions.h"
+#include "City.h"
+
+typedef enum {
+	EXIT,
+	READ_CITY,
+	SHOW_CITY,
+	SHOW_GARDEN,
+	WRITE_CITY,
+	ADD_GARDEN,
+	ADD_CHILD,
+	CHILD_BIRTHDAY,
+	COUNT_GRADUATE
+} MENU;
 
 int main() {
 	City utz = { NULL, 0 };
 	int uReq;
 //first time read
 	readCity(&utz);
+
 	do {
 		uReq = menu();
 		switch (uReq) {
@@ -23,7 +38,7 @@ int main() {
 			readCity(&utz);
 			break;
 		case SHOW_CITY:
-			showCityGardens(&utz);
+			showCityGartens(&utz);
 			break;
 		case SHOW_GARDEN:
 			showSpecificGardenInCity(&utz);
@@ -41,11 +56,11 @@ int main() {
 			birthdayToChild(&utz);
 			break;
 		case COUNT_GRADUATE:
-		printf("There are %d children going to school next
-				year\n",countChova(&utz));
-				break;
-			}
-		} while (uReq != EXIT);
-		ReleaseCity(&utz); //free all allocations
-		return 1;
-	}
+			printf("There are %d children going to school next year\n",
+					countChova(&utz));
+			break;
+		}
+	} while (uReq != EXIT);
+	releaseCity(&utz); //free all allocations
+	return 1;
+}
