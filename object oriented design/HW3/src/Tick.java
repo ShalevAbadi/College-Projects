@@ -1,4 +1,3 @@
-package ClockStartStopJavaFx;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -16,6 +15,11 @@ public class Tick implements Runnable
 	public void run()
 	{    moveClock();
 	}
+	public void announceTime() {
+		if(clockPane.getSecond() == 0) {
+			new Thread(new AnnounceTimeOnSeparateThread(clockPane.getHour(), clockPane.getMinute())).start();
+		}
+	}
 	public  void moveClock()
 	{  while (true)
 	   { 	lock.lock();
@@ -32,6 +36,7 @@ public class Tick implements Runnable
 	         else
 	         {   clockPane.setCurrentTime();
   	             Platform.runLater(() -> clockPane.paintClock());
+  	             announceTime();
 	             try
 	             {	Thread.sleep(sleepTime);
 		         } 

@@ -1,4 +1,3 @@
-package ClockStartStopJavaFx;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javafx.scene.layout.Pane;
