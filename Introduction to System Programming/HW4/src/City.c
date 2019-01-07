@@ -4,13 +4,14 @@
 #include "Kindergarten.h"
 
 
-void readCity(City* pCity)
+void readCity(City* pCity, int useBinaryFormat)
 {
 	if (pCity->pGardenList != NULL) {
 		releaseCity(pCity);
 		pCity->count = 0;
 	}
-	pCity->pGardenList = readAllGardensFromFile(DATA_FILE, &pCity->count);
+
+	pCity->pGardenList = readAllGardensFromFile(useBinaryFormat ? DATA_FILE_BIN : DATA_FILE, &pCity->count, useBinaryFormat);
 
 	if (pCity->pGardenList == NULL)
 		printf("Error reading city information\n");
@@ -26,9 +27,9 @@ void	showSpecificGardenInCity(City* pCity)
 	showGardenMenu(pCity->pGardenList, pCity->count);
 }
 
-void saveCity(City* pCity)
+void saveCity(City* pCity, int useBinaryFormat)
 {
-	writeGardensToFile(pCity->pGardenList, pCity->count, DATA_FILE);
+	writeGardensToFile(pCity->pGardenList, pCity->count, useBinaryFormat ? DATA_FILE_BIN : DATA_FILE, useBinaryFormat);
 }
 
 void cityAddGarden(City* pCity)
@@ -38,7 +39,7 @@ void cityAddGarden(City* pCity)
 		printf("Error adding kindergarten\n");
 }
 
-void	addChildToSpecificGardenInCity(City* pCity)
+void addChildToSpecificGardenInCity(City* pCity)
 {
 	addChildToGarden(pCity->pGardenList, pCity->count);
 }

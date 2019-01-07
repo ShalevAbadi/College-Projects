@@ -22,14 +22,14 @@ typedef struct
 }Garden;
 
 
-Garden**	readAllGardensFromFile(char* fileName, int* pGardenCount);
+Garden**	readAllGardensFromFile(char* fileName, int* pGardenCount, int useBinaryFormat);
 void	readGarden(FILE* fp, Garden* pGarden);
 GardenType	getTypeOption();
 
 void	showAllGardens(Garden** pGardenList, int count);
 void	showGarden(const Garden* pGarden);
 
-void	writeGardensToFile(Garden** pGardenList, int gardenCount, char* fileName);
+void	writeGardensToFile(Garden** pGardenList, int gardenCount, char* fileName, int useBinaryFormat);
 void	writeGarden(FILE* fp,const Garden* pGarden);
 
 
@@ -52,9 +52,8 @@ void	release(Garden** pGardenList, int count);
 
 
 
+void readKindergartenFromBinaryFile(FILE* file, Garden* kg);
 
-
-
-
+void writeKgBinary(FILE* fp, Garden* kg);
 
 #endif

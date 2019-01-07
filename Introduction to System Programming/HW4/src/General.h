@@ -1,6 +1,8 @@
 #ifndef __PROTOTYPE__
 #define __PROTOTYPE__
 
+typedef unsigned char Byte;
+
 typedef enum
 {
 	EXIT,
