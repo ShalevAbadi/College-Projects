@@ -86,3 +86,16 @@ void childFromBinary(FILE* file, Child* res) {
 	res->age = age;
 	res->id = id;
 }
+
+void sortChidrenArrById(Child** childrenArr, int size) {
+	insertionSort(childrenArr, size, sizeof(Child*), compareChildrenById);
+}
+
+int compareChildrenById(const void* cmp1, const void* cmp2) {
+	Child* child1 = *(Child**) cmp1;
+	Child* child2 = *(Child**) cmp2;
+	if (child1->id == child2->id) {
+		return 0;
+	}
+	return child1->id > child2->id ? 1 : -1;
+}

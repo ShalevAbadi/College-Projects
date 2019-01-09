@@ -24,6 +24,6 @@ int test_childFromBinary();
 int test_childToBinary();
 int runAllTests();
 int testWorking();
-
-#endif /* TEST_H_ */
+*/
+//#endif /* TEST_H_
 

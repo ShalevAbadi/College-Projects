@@ -3,8 +3,7 @@
 
 typedef unsigned char Byte;
 
-typedef enum
-{
+typedef enum {
 	EXIT,
 	READ_CITY,
 	SHOW_CITY,
@@ -14,15 +13,16 @@ typedef enum
 	ADD_CHILD,
 	CHILD_BIRTHDAY,
 	COUNT_GRADUATE,
+	SORT_KINDERGARTENS_BY_NAME,
+	SORT_CHILDREN_BY_ID,
+	SORT_KINDERGARTENS_BY_TYPE_AND_CHILDREN_COUNT,
 	NofOptions
 } MenuOptions;
 
-
-int		menu();
-char*	getStrExactLength(char* inpStr);
-int		checkAllocation(const void* p);
-
-
-
-
+int menu();
+char* getStrExactLength(char* inpStr);
+int checkAllocation(const void* p);
+void insertionSort(void* arr, int size, int elementSize,
+		int (*compare)(const void*,const void*));
+void printSortCompleted();
 #endif

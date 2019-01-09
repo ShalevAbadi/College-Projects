@@ -412,3 +412,38 @@ void writeKgBinary(FILE* fp, Garden* kg) {
 	writeChildrenArrBinary(fp, kg->childPtrArr, kg->childCount);
 }
 
+void sortKindergartensArrByName(Garden** kgArr, int size){
+	insertionSort(kgArr, size, sizeof(Garden*), compareKindergartensByName);
+}
+
+
+void sortKindergatensArrChildren(Garden** kgArr, int size){
+	int i;
+	for(i = 0; i< size; i++){
+		sortChidrenArrById(kgArr[i] ->childPtrArr, kgArr[i] ->childCount);
+	}
+}
+
+
+int compareKindergartensByName(const void* cmp1, const void* cmp2) {
+	Garden* kg1 = *(Garden**) cmp1;
+	Garden* kg2 = *(Garden**) cmp2;
+	return strcasecmp(kg1->name, kg2->name);
+}
+
+int compareKindergartensByTypeAndNumOfChildren(const void* cmp1,
+		const void* cmp2) {
+	Garden* kg1 = *(Garden**) cmp1;
+	Garden* kg2 = *(Garden**) cmp2;
+	if (kg1->type == kg2->type) {
+		return compareKindergartensByNumOfChildren(kg1, kg2);
+	}
+	return kg1->type > kg2->type ? 1 : -1;
+}
+
+int compareKindergartensByNumOfChildren(const Garden* kg1, const Garden* kg2) {
+	if (kg1->childCount == kg2->childCount) {
+		return 0;
+	}
+	return kg1->childCount > kg2->childCount ? 1 : -1;
+}

@@ -23,4 +23,8 @@ void	birthdayToChild(City* pCity);
 int		countChova(City* pCity);
 void	releaseCity(City* pCity);
 
+void sortCityKindergartensByName(City* cityToSort);
+void sortCityKindergartenKidsByID(City* cityToSort);
+void sortCityKindergartensByTypeAndChildrenCount(City* cityToSort);
+
 #endif

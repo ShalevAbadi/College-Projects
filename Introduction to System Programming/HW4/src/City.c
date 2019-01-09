@@ -61,6 +61,18 @@ int	countChova(City* pCity)
 	return count;
 }
 
+void sortCityKindergartensByName(City* cityToSort){
+	sortKindergartensArrByName(cityToSort -> pGardenList, cityToSort -> count);
+}
+
+void sortCityKindergartenKidsByID(City* cityToSort){
+	sortKindergatensArrChildren(cityToSort -> pGardenList, cityToSort -> count);
+}
+
+void sortCityKindergartensByTypeAndChildrenCount(City* cityToSort){
+
+}
+
 void	releaseCity(City* pCity)
 {
 	release(pCity->pGardenList, pCity->count);

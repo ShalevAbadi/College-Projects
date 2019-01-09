@@ -9,13 +9,13 @@
 
 int main(int argc, char* argv[]) {
 	/*int useBinaryFormat;
-	sscanf(argv[2], "%d", &useBinaryFormat);*/
+	 sscanf(argv[2], "%d", &useBinaryFormat);*/
 	int useBinaryFormat = 1;
 	int uReq;
 	City utz = { NULL, 0 };
 
 	//first time read
-	readCity(&utz , useBinaryFormat);
+	readCity(&utz, useBinaryFormat);
 	do {
 		uReq = menu();
 		switch (uReq) {
@@ -50,6 +50,20 @@ int main(int argc, char* argv[]) {
 		case COUNT_GRADUATE:
 			printf("There are %d children going to school next year\n",
 					countChova(&utz));
+			break;
+		case SORT_KINDERGARTENS_BY_NAME:
+			sortCityKindergartensByName(&utz);
+			printSortCompleted();
+			break;
+
+		case SORT_CHILDREN_BY_ID:
+			sortCityKindergartenKidsByID(&utz);
+			printSortCompleted();
+			break;
+
+		case SORT_KINDERGARTENS_BY_TYPE_AND_CHILDREN_COUNT:
+			sortCityKindergartensByTypeAndChildrenCount(&utz);
+			printSortCompleted();
 			break;
 
 		}
