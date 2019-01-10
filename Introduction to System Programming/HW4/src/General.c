@@ -6,14 +6,13 @@
 
 #define SORT_COMPLETED_STR "Sorting completed!"
 
-const char* optionStr[NofOptions] = { "Exit","Read City information from file",
-	    "Show all Kindergartens","Show a specific Kindergarten",
-	    "Save City information to file","Add a Kindergarten",
-	    "Add a Child","Birthday to a Child",
-	    "Count Hova children",
-	    "Sort kindergartens by name",
-	    "Sort children by ID",
-	    "Sort kindergartens by type and children count"};
+const char* optionStr[NofOptions] = { "Exit", "Read City information from file",
+		"Show all Kindergartens", "Show a specific Kindergarten",
+		"Save City information to file", "Add a Kindergarten", "Add a Child",
+		"Birthday to a Child", "Count Hova children",
+		"Sort kindergartens by name", "Sort children by ID",
+		"Sort kindergartens by type and children count",
+		"Create linked list on same garden type and display on screen" };
 
 /**************************************************/
 int menu()
@@ -61,18 +60,18 @@ void insertionSort(void* arr, int size, int elementSize,
 		memcpy(key, (char*) arr + i, elementSize);
 		for (j = i - elementSize; j >= 0 && (compare(key, (char*) arr + j) < 0);
 				j -= elementSize) {
-			memmove((char*) arr+ j + elementSize, (char*) arr + j, elementSize);
+			memmove((char*) arr + j + elementSize, (char*) arr + j,
+					elementSize);
 		}
-		memmove((char*) arr+ j + elementSize, key, elementSize);
+		memmove((char*) arr + j + elementSize, key, elementSize);
 	}
 	free(key);
 	printSortCompleted();
 }
 
-void printSortCompleted(){
-	printf("%s", SORT_COMPLETED_STR );
+void printSortCompleted() {
+	printf("%s", SORT_COMPLETED_STR);
 }
-
 
 void variadicPrint(char* str, ...) {
 	int num;

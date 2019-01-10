@@ -62,6 +62,9 @@ int main(int argc, char* argv[]) {
 		case SORT_KINDERGARTENS_BY_TYPE_AND_CHILDREN_COUNT:
 			sortCityKindergartensByTypeAndChildrenCount(&utz);
 			break;
+        case LINKED_LIST_SAME_GARDEN_TYPE:
+            kindergartenLinkedList(&utz);
+            break;
 
 		}
 	} while (uReq != EXIT);

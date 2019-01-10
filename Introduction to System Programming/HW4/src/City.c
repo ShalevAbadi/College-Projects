@@ -1,7 +1,7 @@
 #include <stdio.h>
-
+#include <stdlib.h>
+#include "General.h"
 #include "City.h"
-#include "Kindergarten.h"
 
 void readCity(City* pCity, int useBinaryFormat) {
 	if (pCity->pGardenList != NULL) {
@@ -69,4 +69,35 @@ void sortCityKindergartensByTypeAndChildrenCount(City* cityToSort) {
 
 void releaseCity(City* pCity) {
 	release(pCity->pGardenList, pCity->count);
+}
+
+void kindergartenLinkedList(City* pCity) {
+	GardenType kindergartenType;
+	LIST* pList = (LIST*)malloc(sizeof(LIST));
+	if (checkAllocation(pList)) {
+		printf("%s", KG_LINKED_LIST_STR);
+		scanf("%u", &kindergartenType);
+		*pList = initKindergartenListByType(pCity, kindergartenType);
+		showKindergartenList((LIST*) pList->head.next);
+		free(pList);
+	}
+}
+
+LIST initKindergartenListByType(City* pCity, int type) {
+	int i;
+	LIST kindergartenList;
+	NODE* pNode;
+	initLinkedList(&kindergartenList);
+	pNode = &kindergartenList.head;
+	for (i = 0; i < pCity->count; i++) {
+		if (pCity->pGardenList[i]->type == type) {
+			pNode = insertToLinkedList(pNode, pCity->pGardenList[i]);
+		}
+	}
+	return kindergartenList;
+}
+
+void showKindergartenList(LIST* pList)
+{
+    printLinkedList(pList, showGarden);
 }
