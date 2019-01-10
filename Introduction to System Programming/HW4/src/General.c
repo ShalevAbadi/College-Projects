@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 #include "General.h"
 
 #define SORT_COMPLETED_STR "Sorting completed!"
@@ -54,19 +55,34 @@ int checkAllocation(const void* p) {
 
 void insertionSort(void* arr, int size, int elementSize,
 		int (*compare)(const void*, const void*)) {
-	char* key = (char*) malloc(size);
+	char* key = (char*) malloc(elementSize);
 	int i, j;
 	for (i = elementSize; i < size * elementSize; i += elementSize) {
-		memcpy(key, (char*) arr + i, size);
-		for (j = i - elementSize; j >= 0 && (compare(key, (char*) arr + j) > 0);
+		memcpy(key, (char*) arr + i, elementSize);
+		for (j = i - elementSize; j >= 0 && (compare(key, (char*) arr + j) < 0);
 				j -= elementSize) {
-			memmove((char*) j + elementSize, (char*) arr + j, size);
+			memmove((char*) arr+ j + elementSize, (char*) arr + j, elementSize);
 		}
-		memmove((char*) j + size, key, size);
+		memmove((char*) arr+ j + elementSize, key, elementSize);
 	}
 	free(key);
+	printSortCompleted();
 }
 
 void printSortCompleted(){
 	printf("%s", SORT_COMPLETED_STR );
+}
+
+
+void variadicPrint(char* str, ...) {
+	int num;
+	char* currentStr = str;
+	va_list list;
+	va_start(list, str);
+	while (currentStr != NULL) {
+		num = va_arg(list, int);
+		printf("%s ----> %d\n", currentStr, num);
+		currentStr = va_arg(list, char*);
+	}
+	va_end(list);
 }

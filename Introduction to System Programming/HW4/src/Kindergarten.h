@@ -51,6 +51,8 @@ void writeKgBinary(FILE* fp, Garden* kg);
 
 void sortKindergartensArrByName(Garden** kgArr, int size);
 
+void sortKindergartenArrByTypeAndChildrenCount(Garden** kgArr, int size);
+
 void sortKindergatensArrChildren(Garden** kgArr, int size);
 
 int compareKindergartensByName(const void* cmp1, const void* cmp2);

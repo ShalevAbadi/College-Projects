@@ -25,4 +25,5 @@ int checkAllocation(const void* p);
 void insertionSort(void* arr, int size, int elementSize,
 		int (*compare)(const void*,const void*));
 void printSortCompleted();
+void variadicPrint(char* str, ...);
 #endif

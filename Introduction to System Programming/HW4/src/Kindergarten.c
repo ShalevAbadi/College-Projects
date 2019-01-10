@@ -106,6 +106,10 @@ void showAllGardens(Garden** pGardenList, int count) {
 		printf("\n");
 	}
 	printf("\n");
+	if(count >= 3){
+		printf("Kindergrten info:\n");
+		variadicPrint(pGardenList[0]->name, pGardenList[0] -> childCount,pGardenList[1]->name, pGardenList[1] -> childCount,pGardenList[2]->name, pGardenList[2] -> childCount, NULL);
+	}
 }
 
 /**************************************************/
@@ -412,18 +416,21 @@ void writeKgBinary(FILE* fp, Garden* kg) {
 	writeChildrenArrBinary(fp, kg->childPtrArr, kg->childCount);
 }
 
-void sortKindergartensArrByName(Garden** kgArr, int size){
+void sortKindergartensArrByName(Garden** kgArr, int size) {
 	insertionSort(kgArr, size, sizeof(Garden*), compareKindergartensByName);
 }
 
-
-void sortKindergatensArrChildren(Garden** kgArr, int size){
-	int i;
-	for(i = 0; i< size; i++){
-		sortChidrenArrById(kgArr[i] ->childPtrArr, kgArr[i] ->childCount);
-	}
+void sortKindergartenArrByTypeAndChildrenCount(Garden** kgArr, int size) {
+	insertionSort(kgArr, size, sizeof(Garden*),
+			compareKindergartensByTypeAndNumOfChildren);
 }
 
+void sortKindergatensArrChildren(Garden** kgArr, int size) {
+	int i;
+	for (i = 0; i < size; i++) {
+		sortChidrenArrById(kgArr[i]->childPtrArr, kgArr[i]->childCount);
+	}
+}
 
 int compareKindergartensByName(const void* cmp1, const void* cmp2) {
 	Garden* kg1 = *(Garden**) cmp1;

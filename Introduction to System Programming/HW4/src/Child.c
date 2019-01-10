@@ -40,12 +40,15 @@ void writeChild(FILE* fp, const Child* pChild) {
 	fprintf(fp, "%d %d\n", pChild->id, pChild->age);
 }
 
-//linear search
 int findChildById(Child** pChildList, int count, int id) {
-	int i;
-	for (i = 0; i < count; i++) {
-		if (pChildList[i]->id == id)
-			return i;
+	Child childToFind = { id, 0 };
+	Child* pChild = &childToFind;
+	Child** result;
+	qsort(pChildList, count, sizeof(Child*), compareChildrenById);
+	result = (Child**) bsearch(&pChild, pChildList, count, sizeof(Child*),
+			compareChildrenById);
+	if (result) {
+		return result - pChildList;
 	}
 	return -1;
 }

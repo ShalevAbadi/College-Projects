@@ -53,17 +53,14 @@ int main(int argc, char* argv[]) {
 			break;
 		case SORT_KINDERGARTENS_BY_NAME:
 			sortCityKindergartensByName(&utz);
-			printSortCompleted();
 			break;
 
 		case SORT_CHILDREN_BY_ID:
 			sortCityKindergartenKidsByID(&utz);
-			printSortCompleted();
 			break;
 
 		case SORT_KINDERGARTENS_BY_TYPE_AND_CHILDREN_COUNT:
 			sortCityKindergartensByTypeAndChildrenCount(&utz);
-			printSortCompleted();
 			break;
 
 		}
