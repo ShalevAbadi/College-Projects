@@ -79,7 +79,7 @@ void kindergartenLinkedList(City* pCity) {
 		scanf("%u", &kindergartenType);
 		*pList = initKindergartenListByType(pCity, kindergartenType);
 		showKindergartenList((LIST*) pList->head.next);
-		free(pList);
+		freeLinkedList(pList);
 	}
 }
 

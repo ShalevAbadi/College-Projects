@@ -8,9 +8,8 @@
 #include "City.h"
 
 int main(int argc, char* argv[]) {
-	/*int useBinaryFormat;
-	 sscanf(argv[2], "%d", &useBinaryFormat);*/
-	int useBinaryFormat = 1;
+	int useBinaryFormat;
+	sscanf(argv[2], "%d", &useBinaryFormat);
 	int uReq;
 	City utz = { NULL, 0 };
 
@@ -64,7 +63,7 @@ int main(int argc, char* argv[]) {
 			break;
         case LINKED_LIST_SAME_GARDEN_TYPE:
             kindergartenLinkedList(&utz);
-            break;
+			break;
 
 		}
 	} while (uReq != EXIT);

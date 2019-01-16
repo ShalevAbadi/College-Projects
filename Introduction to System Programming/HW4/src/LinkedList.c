@@ -83,8 +83,10 @@ int printLinkedList(LIST* listToPrint, void (*print)(const Garden*)) {
 	printf("\n");
 	for (tmp = (NODE*) listToPrint; tmp; tmp = tmp->next, c++) {
 		print(tmp->key);
-		printf("\n\t|\n\t|\n\tV\n");
+		if (tmp->next) {
+			printf("\n\t|\n\t|\n\tV\n");
+		}
 	}
-	printf("\tNULL\n");
+
 	return c;
 }
