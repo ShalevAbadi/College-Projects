@@ -1,5 +1,14 @@
+
+// Shalev Abadi 205740772
+
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.ListIterator;
+import java.util.Map.Entry;
+import java.util.TreeSet;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,7 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
-public class AddressBookJavaFx extends Application {
+public class HW1_ShalevAbadi extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -143,6 +152,9 @@ class AddressBookPane extends GridPane {
 		jbtNext.setOnAction(ae);
 		jbtPrevious.setOnAction(ae);
 		jbtLast.setOnAction(ae);
+		jbtSort1.setOnAction(ae);
+		jbtSort2.setOnAction(ae);
+		jbtIter.setOnAction(ae);
 		jbtFirst.Execute();
 	}
 
@@ -202,6 +214,7 @@ class CommandButton extends Button implements Command {
 	public final static int STATE_SIZE = 10;
 	public final static int ZIP_SIZE = 5;
 	public final static int RECORD_SIZE = (NAME_SIZE + STREET_SIZE + CITY_SIZE + STATE_SIZE + ZIP_SIZE);
+	public final static int RECORD_BYTES_SIZE = 2 * RECORD_SIZE;
 	protected AddressBookPane p;
 	protected RandomAccessFile raf;
 
@@ -242,6 +255,193 @@ class CommandButton extends Button implements Command {
 		p.SetState(state);
 		p.SetZip(zip);
 	}
+
+	public void sortByComperator(AddressBookComparator comparator) throws IOException {
+		int i, j;
+		int numberOfRecords = (int) (raf.length() / RECORD_BYTES_SIZE);
+		for (i = 0; i < numberOfRecords - 1; i++) {
+			for (j = 0; j < numberOfRecords - i - 1; j++) {
+				if (comparator.compare(readRecordAtIndex(j), readRecordAtIndex(j + 1)) > 0) {
+					swapRecords(j, j + 1);
+				}
+			}
+		}
+	}
+
+	public void swapRecords(int index1, int index2) throws IOException {
+		String temp = readRecordAtIndex(index1);
+		writeRecordAtIndex(index1, readRecordAtIndex(index2));
+		writeRecordAtIndex(index2, temp);
+	}
+
+	public String readRecordAtIndex(int index) throws IOException {
+		long position = index * RECORD_BYTES_SIZE;
+		raf.seek(position);
+		return FixedLengthStringIO.readFixedLengthString(RECORD_SIZE, raf);
+	}
+
+	public void writeRecordAtIndex(int index, String recordToWrite) {
+		try {
+			long position = index * RECORD_BYTES_SIZE;
+			raf.seek(position);
+			FixedLengthStringIO.writeFixedLengthString(recordToWrite, RECORD_SIZE, raf);
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public ListIterator<String> iterator() {
+		return new FileIterator();
+	}
+
+	private class FileIterator implements ListIterator<String> {
+
+		int currentIndex = 0;
+		int lastIndex = 0;
+
+		public FileIterator() {
+			this(0);
+		}
+
+		public FileIterator(int beginingIndex) {
+			this.currentIndex = beginingIndex;
+			this.lastIndex = beginingIndex;
+		}
+
+		private long indexToPosition(int index) {
+			return index * RECORD_BYTES_SIZE;
+		}
+
+		@Override
+		public void add(String recordToWrite) {
+			try {
+				String temp = copyRestOfFileFromIndex(currentIndex);
+				writeRecordAtIndex(currentIndex, recordToWrite);
+				currentIndex++;
+				lastIndex = currentIndex;
+				pasteRestOfFileAtIndex(currentIndex, temp);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		private void pasteRestOfFileAtIndex(int index, String restOfFile) throws IOException {
+			long position = indexToPosition(index);
+			int restSize = (int) ((raf.length() - position) / 2);
+			raf.seek(position);
+			FixedLengthStringIO.writeFixedLengthString(restOfFile, restSize, raf);
+		}
+
+		private String copyRestOfFileFromIndex(int index) throws IOException {
+			long position = indexToPosition(index);
+			int restSize;
+			restSize = (int) ((raf.length() - position) / 2);
+			raf.seek(position);
+			return FixedLengthStringIO.readFixedLengthString(restSize, raf);
+		}
+
+		@Override
+		public boolean hasNext() {
+			try {
+				return (indexToPosition(currentIndex) < raf.length());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return false;
+		}
+
+		@Override
+		public boolean hasPrevious() {
+			return currentIndex > 0;
+		}
+
+		@Override
+		public String next() {
+			if (this.hasNext()) {
+				try {
+					lastIndex = currentIndex;
+					currentIndex = nextIndex();
+					return readRecordAtIndex(previousIndex());
+				} catch (IOException e) {
+					currentIndex = previousIndex();
+					e.printStackTrace();
+				}
+			}
+			throw new IndexOutOfBoundsException();
+		}
+
+		@Override
+		public int nextIndex() {
+			if (!this.hasNext()) {
+				try {
+					return ((int) raf.length());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return currentIndex + 1;
+		}
+
+		@Override
+		public String previous() {
+			if (this.hasPrevious()) {
+				try {
+					lastIndex = currentIndex;
+					currentIndex = previousIndex();
+					return readRecordAtIndex(currentIndex);
+				} catch (IOException e) {
+					currentIndex = nextIndex();
+					e.printStackTrace();
+				}
+			}
+			throw new IndexOutOfBoundsException();
+		}
+
+		@Override
+		public int previousIndex() {
+			if (this.hasPrevious()) {
+				return currentIndex - 1;
+			}
+			return -1;
+		}
+
+		@Override
+		public void remove() {
+			if (isNextOrPreviousHasBeenCalled()) {
+				try {
+
+					int removeIndex = maxIndex();
+					String temp = copyRestOfFileFromIndex(removeIndex);
+					lastIndex = currentIndex;
+					pasteRestOfFileAtIndex(currentIndex, temp);
+					raf.setLength(raf.length() - RECORD_BYTES_SIZE);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} else {
+				throw new UnsupportedOperationException("Next or previous must be called before remove");
+			}
+		}
+
+		private int maxIndex() {
+			return currentIndex < lastIndex ? currentIndex : lastIndex;
+		}
+
+		private boolean isNextOrPreviousHasBeenCalled() {
+			return currentIndex != lastIndex;
+		}
+
+		@Override
+		public void set(String arg0) {
+			if (isNextOrPreviousHasBeenCalled()) {
+				writeRecordAtIndex(maxIndex(), arg0);
+				lastIndex = currentIndex;
+			} else {
+				throw new UnsupportedOperationException("Next or previous must be called before set");
+			}
+		}
+
+	}
 }
 
 class AddButton extends CommandButton {
@@ -272,6 +472,7 @@ class NextButton extends CommandButton {
 			ex.printStackTrace();
 		}
 	}
+
 }
 
 class PreviousButton extends CommandButton {
@@ -339,7 +540,7 @@ class Sort1Button extends CommandButton {
 	public void Execute() {
 		try {
 			if (raf.length() > 0)
-				readAddress(0);
+				sortByComperator(new NameComparator());
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -356,7 +557,7 @@ class Sort2Button extends CommandButton {
 	public void Execute() {
 		try {
 			if (raf.length() > 0)
-				readAddress(0);
+				sortByComperator(new ZipComparator());
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		}
@@ -364,6 +565,10 @@ class Sort2Button extends CommandButton {
 }
 
 class IterButton extends CommandButton {
+	private ListIterator<String> lit = this.iterator();
+	private LinkedHashMap<String, String> addressMap = new LinkedHashMap<String, String>();
+	private TreeSet<String> addressTree = new TreeSet<String>(new StreetComparator());
+
 	public IterButton(AddressBookPane pane, RandomAccessFile r) {
 		super(pane, r);
 		this.setText("Iter");
@@ -371,11 +576,61 @@ class IterButton extends CommandButton {
 
 	@Override
 	public void Execute() {
-		try {
-			if (raf.length() > 0)
-				readAddress(0);
-		} catch (IOException ex) {
-			ex.printStackTrace();
+
+		if (addressMap.isEmpty()) {
+			fillAddressMap();
+			writeAddressMapToFile();
+		} else {
+			fillAddressTree();
+			writeAddressTreeToFile();
+		}
+	}
+
+	private void emptyFileWithIterator() {
+		while (lit.hasNext()) {
+			lit.next();
+			lit.remove();
+		}
+		while (lit.hasPrevious()) {
+			lit.previous();
+			lit.remove();
+		}
+	}
+
+	private void writeAddressMapToFile() {
+		emptyFileWithIterator();
+		Iterator<Entry<String, String>> addressMapIterator = addressMap.entrySet().iterator();
+		Entry<String, String> entry;
+		while (addressMapIterator.hasNext()) {
+			entry = addressMapIterator.next();
+			lit.add(entry.getKey() + entry.getValue());
+		}
+	}
+
+	private void fillAddressMap() {
+		while (lit.hasNext()) {
+			String fullRecord = lit.next();
+			String key = fullRecord.substring(0, RECORD_SIZE - ZIP_SIZE);
+			String value = fullRecord.substring(RECORD_SIZE - ZIP_SIZE, RECORD_SIZE);
+			addressMap.put(key, value);
+		}
+	}
+
+	private void fillAddressTree() {
+		Iterator<Entry<String, String>> addressMapIterator = addressMap.entrySet().iterator();
+		Entry<String, String> entry;
+		while (addressMapIterator.hasNext()) {
+			entry = addressMapIterator.next();
+			addressTree.add(entry.getKey() + entry.getValue());
+		}
+	}
+
+	private void writeAddressTreeToFile() {
+		emptyFileWithIterator();
+		Iterator<String> addressTreeIterator = addressTree.iterator();
+		while (addressTreeIterator.hasNext()) {
+			String entry = addressTreeIterator.next();
+			lit.add(entry);
 		}
 	}
 }
